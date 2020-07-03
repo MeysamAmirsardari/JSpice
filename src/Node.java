@@ -3,15 +3,15 @@ import java.util.List;
 
 public class Node {
     public static Node ground;
-
-    protected double voltage;
-    public int union;
     public boolean added = false;
+    public double V;
+    public int union;
     boolean internal = true;
-    public List<Element> elements = new ArrayList<Element>();
+    public List<Element> elementList = new ArrayList<Element>();
     public List<Node> adjacentNodes = new ArrayList<Node>();
+    public List<Double> voltage = new ArrayList<Double>();
 
-    public void setVoltage(double input){
-        voltage = input;
+    public double getVoltage() {
+        return (voltage.get(voltage.size() - 1));
     }
 }

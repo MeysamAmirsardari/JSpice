@@ -1,11 +1,19 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Element {
+    List<Double> current = new ArrayList<Double>();
+    List<Double> voltage = new ArrayList<Double>();
     double deltaV;
-    double current;
     int node1;
     int node2;
     String name;
-    int num;
 
-    public void setCurrent(){}
-    public void setDeltaV(){deltaV = Circuit.nodeList.get(node1).voltage - Circuit.nodeList.get(node2).voltage;}
+    public double getCurrent(double time) {
+        return 0; //TODO: overRiding for Elements (Based on the value of V not voltageList!)
+    }
+
+    public double getVoltage(double time) {
+        return (Circuit.nodeList.get(node1).getVoltage() - Circuit.nodeList.get(node2).getVoltage());
+    }
 }

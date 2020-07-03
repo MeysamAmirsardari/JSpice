@@ -1,18 +1,19 @@
-public class CurrentDepVoltageSrc extends Element{
-    int refNode1;
-    int refNode2;
+public class CurrentDepVoltageSrc extends Element {
+    Element refElm;
     double R;
 
-    public CurrentDepVoltageSrc(String[] details){
-        name = details[0].replaceFirst("[H]","").trim();
+    public CurrentDepVoltageSrc(String[] details) {
+        name = details[0].trim();
         node1 = Integer.parseInt(details[1].trim());
         node2 = Integer.parseInt(details[2].trim());
-        refNode1 = Integer.parseInt(details[3].trim());
-        refNode2 = Integer.parseInt(details[4].trim());
-        R = Integer.parseInt(details[5].trim());
+        String refElmName = details[3].trim();
+        R = Double.parseDouble(details[4].trim());
+        //TODO: finding refElm
     }
 
-    public void setVoltage(){
-        //TODO
+
+    @Override
+    public double getVoltage(double time) {
+        return (R * refElm.getCurrent(time));
     }
 }

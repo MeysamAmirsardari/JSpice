@@ -1,10 +1,10 @@
-public class VoltageDepVoltageSrc extends Element{
+public class VoltageDepVoltageSrc extends Element {
     int refNode1;
     int refNode2;
     double R;
 
-    public VoltageDepVoltageSrc(String[] details){
-        name = details[0].replaceFirst("[E]","").trim();
+    public VoltageDepVoltageSrc(String[] details) {
+        name = details[0].trim();
         node1 = Integer.parseInt(details[1].trim());
         node2 = Integer.parseInt(details[2].trim());
         refNode1 = Integer.parseInt(details[3].trim());
@@ -12,7 +12,9 @@ public class VoltageDepVoltageSrc extends Element{
         R = Integer.parseInt(details[5].trim());
     }
 
-    public void setVoltage(){
-        deltaV = R*(refNode1-refNode2);
+    @Override
+    public double getVoltage(double time) {
+        double refVoltage = Circuit.nodeList.get(refNode1).getVoltage() - Circuit.nodeList.get(refNode2).getVoltage();
+        return (R * refVoltage);
     }
 }
