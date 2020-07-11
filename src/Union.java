@@ -2,14 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Union {
-    public List<Node> nodeList = new ArrayList<Node>();
-    public List<Element> elementList = new ArrayList<Element>();
+    public ArrayList<Node> nodeList = new ArrayList<Node>();
+    public ArrayList<Element> elementList = new ArrayList<Element>();
     public boolean visited = false;
     public ArrayList<Double> voltage = new ArrayList<Double>();
     public double V;
     public double I_total1;
     public double I_total2;
     public double delta;
+    public String name;
+    public Node parentUnion;
 
     public static void setElementListForAllUnions() {
         for (Union union : Circuit.unionList) {
@@ -44,6 +46,30 @@ public class Union {
     private void setV_ForAllNodes(Double V) {
         for (Node node : nodeList) {
             node.V = V;
+        }
+    }
+
+    public Node parentUnion() {
+        return parentUnion;
+    }
+
+    public void setParentUnion(Node pUnion) {
+        parentUnion = pUnion;
+    }
+
+    public ArrayList<Node> getNodeList() {
+        return nodeList;
+    }
+
+    public void addNode(Node node) {
+        this.nodeList.add(node);
+    }
+
+    public void addNodeList(ArrayList<Node> nList) {
+        for (Node nNode : nList) {
+            if (!nodeList.contains(nNode)) {
+                nodeList.add(nNode);
+            }
         }
     }
 }
