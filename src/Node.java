@@ -21,8 +21,11 @@ public class Node {
         voltage = 0;
     }
 
-    public double getVoltage() {
-        return (voltageList.get(voltageList.size() - 1));
+    Node() {
     }
+
+    // public double getVoltage() {
+    // return (voltageList.get(voltageList.size() - 1));
+    // }
 
 }
