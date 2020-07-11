@@ -14,7 +14,7 @@ public class Node {
     public List<Double> voltageList = new ArrayList<Double>();
 
     public String name;
-    // A property containing the Union they belong to
+    public Union belongUnion;
 
     Node(String givenName) {
         name = givenName;

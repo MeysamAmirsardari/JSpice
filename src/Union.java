@@ -10,7 +10,6 @@ public class Union {
     public double I_total1;
     public double I_total2;
     public double delta;
-    public String name;
     public Node parentUnion;
 
     public static void setElementListForAllUnions() {
