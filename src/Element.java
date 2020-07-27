@@ -5,16 +5,30 @@ public abstract class Element {
     List<Double> currentList = new ArrayList<Double>();
     List<Double> voltageList = new ArrayList<Double>();
     String name;
-    double deltaV;
-    double current;
+    protected int unionIndex;
+    protected double deltaV;
     Node positiveNode;
     Node negativeNode;
+
+    public Element() {
+    }
+
+    public double getDeltaV() {
+        return deltaV;
+    }
+
+    public void setDeltaV(double dv) {
+        deltaV = dv;
+    }
+
+    public void setUnionIndex(int index) {
+        unionIndex = index;
+    }
 
     Element(String elemName, Node pN, Node nN) {
         name = elemName;
         positiveNode = pN;
         negativeNode = nN;
-        current = 0;
     }
 
     public double getCurrent(double time) {
@@ -23,7 +37,6 @@ public abstract class Element {
     }
 
     public double getVoltage(double time) {
-        return positiveNode.voltage - negativeNode.voltage;
+        return positiveNode.getVoltage() - negativeNode.getVoltage();
     }
-
 }

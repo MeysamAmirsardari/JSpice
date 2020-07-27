@@ -7,29 +7,31 @@ public abstract class CirSim {
     public static void simulate() {
         int n = (int) (timeDomain / Dt);
         for (int i = 0; i < n; i++) {
-            calculator(n * Dt);
+            solver(n * Dt);
         }
     }
 
-    public static void calculator(double time) {
-        int j = 0;
-        while (checkAllDelta()) {
-            for (Union union : Circuit.unionList) {
-                union.doStep(time);
-            }
-            j++;
-        }
+    private static void solver(double time) {
         for (Union union : Circuit.unionList) {
+            union.doStep(time);
             for (Node node : union.nodeList) {
-                node.voltage.add(node.V);
+                node.voltageList.add(node.getV());
             }
+        }
+        updateElementsDetails(time);
+    }
+
+    private static void updateElementsDetails(double time) {
+        for (Element element : Circuit.elementList) {
+            element.voltageList.add(element.getVoltage(time));
+            element.currentList.add(element.getCurrent(time));
         }
     }
 
-    public static boolean checkAllDelta() {
+    private static boolean checkAllDeltas() {
         boolean isSet = true;
         for (Union union : Circuit.unionList) {
-            if (union.delta > 0.01)
+            if (union.delta > 0.1)
                 isSet = false;
         }
         return isSet;

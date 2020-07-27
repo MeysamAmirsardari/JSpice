@@ -17,6 +17,7 @@ public class CreateUnion {
     setAllNodeNotAdded();
     ArrayList<Node> tempNodeList = new ArrayList<Node>(Circuit.nodeList);
     // unionAdd(tempNodeList); TODO: method implementation
+    return true;
   }
 
   void setAllNodeNotAdded() {
@@ -25,17 +26,17 @@ public class CreateUnion {
     }
   }
 
-  // void dependantNodeInquiry(Node inNode) {
-  // if (inNode.parentNode == null) {
-  // inNode.parentNode = inNode;
-  // }
-  // ArrayList<Node> notAddedAdjacentNodeList = new ArrayList<>;
-  // for(Node adjacentNode: inNode.adjacentNodes){
-  // if(!adjacentNode.isAdded){
-  // notAddedAdjacentNodeList.add(adjacentNode);
-  // for()
-  // }
-  // }
-  // }
+  void dependantNodeInquiry(Node inNode) {
+    // if (inNode.parentNode == null) {
+    // inNode.parentNode = inNode;
+    // }
+    // ArrayList<Node> notAddedAdjacentNodeList = new ArrayList<>;
+    // for(Node adjacentNode: inNode.adjacentNodes){
+    // if(!adjacentNode.isAdded){
+    // notAddedAdjacentNodeList.add(adjacentNode);
+    // for()
+    // }
+    // }
+  }
 
 }

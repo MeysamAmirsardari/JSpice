@@ -5,8 +5,8 @@ public class Node {
     public static Node ground;
     public boolean isAdded = false;
     public Node parentNode = null;
-    public double voltage;
     public int union;
+    protected double V;
     boolean internal = true;
 
     public List<Element> elementList = new ArrayList<Element>();
@@ -18,14 +18,21 @@ public class Node {
 
     Node(String givenName) {
         name = givenName;
-        voltage = 0;
     }
 
     Node() {
     }
 
-    // public double getVoltage() {
-    // return (voltageList.get(voltageList.size() - 1));
-    // }
+    public double getV() {
+        return V;
+    }
+
+    public void setV(double inputV) {
+        this.V = inputV;
+    }
+
+    public double getVoltage() {
+        return (voltageList.get(voltageList.size() - 1));
+    }
 
 }

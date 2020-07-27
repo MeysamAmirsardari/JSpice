@@ -61,6 +61,7 @@ public class Initialize {
                     if (type==1){
                         IdealDiode diode = new IdealDiode(inLine);
                         Circuit.elementList.add(diode);
+                        //Circuit.diodeList.add(diode);
                     }else if (type==2){
                         NonlinearDiode diode = new NonlinearDiode(inLine);
                         Circuit.elementList.add(diode);

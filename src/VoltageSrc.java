@@ -4,10 +4,14 @@ public class VoltageSrc extends Element {
     double phase;
     double frequency;
 
+    public VoltageSrc() {
+        super();
+    }
+
     public VoltageSrc(String[] details) {
         name = details[0].trim();
-        node1 = Integer.parseInt(details[1].trim());
-        node2 = Integer.parseInt(details[2].trim());
+        //TODO: node1 = Integer.parseInt(details[1].trim());
+        //node2 = Integer.parseInt(details[2].trim());
         Vdc = Double.parseDouble(details[3].trim());
         Vpk = Double.parseDouble(details[4].trim());
         frequency = Double.parseDouble(details[5].trim());

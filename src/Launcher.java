@@ -10,6 +10,7 @@ public class Launcher {
         //TODO: unionharo koo pas?
         Union.setElementListForAllUnions();
         //TODO: getting Inputs from user.
+        CirSim.simulate();
     }
 
     public static double stringToDouble(String input) { //TODO: code1
