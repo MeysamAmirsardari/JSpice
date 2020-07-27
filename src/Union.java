@@ -28,7 +28,6 @@ public class Union {
     public ArrayList<Node> getNodeList() {
         return nodeList;
     }
-
     public Node getParentUnion() {
         return parentUnion;
     }

@@ -6,7 +6,10 @@ public abstract class CirSim {
 
     public static void simulate() {
         int n = (int) (timeDomain / Dt);
-        for (int i = 0; i < n; i++) {
+        while (checkAllDeltas()) {       //DC analyze
+            solver(0);
+        }
+        for (int i = 1; i < n; i++) {
             solver(n * Dt);
         }
     }
@@ -35,5 +38,25 @@ public abstract class CirSim {
                 isSet = false;
         }
         return isSet;
+    }
+
+    public static void printResults() {
+        int j = 1;
+        System.out.println("******          Nodes voltages:         ******");
+        for (Node node : Circuit.nodeList) {
+            System.out.printf("%d", j++);
+            for (Double voltage : node.voltageList) {
+                System.out.printf(" %f ", voltage);
+            }
+            System.out.printf("\n");
+        }
+        System.out.println("******          Nodes voltages:         ******");
+        j = 0;
+        for (Element element : Circuit.elementList) {
+            System.out.printf(element.name + " ");
+            System.out.printf("(%f , %f ,", element.voltageList.get(j), element.currentList.get(j));
+            System.out.printf(" %f) \n", element.voltageList.get(j) * element.currentList.get(j));
+            j++;
+        }
     }
 }

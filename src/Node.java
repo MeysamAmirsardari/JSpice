@@ -8,13 +8,12 @@ public class Node {
     public int union;
     protected double V;
     boolean internal = true;
+    public String name;
+    public Union belongUnion;
 
     public List<Element> elementList = new ArrayList<Element>();
     public List<Node> adjacentNodes = new ArrayList<Node>();
     public List<Double> voltageList = new ArrayList<Double>();
-
-    public String name;
-    public Union belongUnion;
 
     Node(String givenName) {
         name = givenName;
@@ -26,13 +25,10 @@ public class Node {
     public double getV() {
         return V;
     }
-
     public void setV(double inputV) {
         this.V = inputV;
     }
-
     public double getVoltage() {
         return (voltageList.get(voltageList.size() - 1));
     }
-
 }

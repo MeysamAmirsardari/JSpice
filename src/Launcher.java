@@ -11,6 +11,7 @@ public class Launcher {
         Union.setElementListForAllUnions();
         //TODO: getting Inputs from user.
         CirSim.simulate();
+        CirSim.printResults();
     }
 
     public static double stringToDouble(String input) { //TODO: code1

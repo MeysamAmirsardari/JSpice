@@ -21,4 +21,28 @@ public class VoltageDepVoltageSrc extends Element {
         double refVoltage = Circuit.nodeList.get(refNode1).getVoltage() - Circuit.nodeList.get(refNode2).getVoltage();
         return (R * refVoltage);
     }
+
+    @Override
+    public double getCurrent(double time) {
+        double totalCurrent = 0;
+        boolean isItOk = true;
+        for (Element element : negativeNode.elementList) {
+            if (element.getClass().equals(VoltageSrc.class))
+                isItOk = false;
+            else if (element.getClass().equals(VoltageDepVoltageSrc.class))
+                isItOk = false;
+            else if (element.getClass().equals(CurrentDepVoltageSrc.class))
+                isItOk = false;
+        }
+        if (isItOk) {
+            for (Element element : negativeNode.elementList) {
+                totalCurrent += element.getCurrent(time);
+            }
+        } else {
+            for (Element element : positiveNode.elementList) {
+                totalCurrent += element.getCurrent(time);
+            }
+        }
+        return -1 * totalCurrent;
+    }
 }
