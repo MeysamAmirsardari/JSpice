@@ -1,3 +1,7 @@
+package Kernel;
+
+import Kernel.Circuit;
+
 public class CurrentDepCurrentSrc extends Element {
     Element refElm;
     double R;

@@ -1,3 +1,7 @@
+package Kernel;
+
+import Kernel.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -8,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class Initialize {
     public static List<Union> unionList = new ArrayList<Union>();
-    public static HashMap<Union,Union> unionMap = new HashMap<>();
+    public static HashMap<Union, Union> unionMap = new HashMap<>();
 
     public static void fileReader() {
         File file = new File("Input.txt");
@@ -61,7 +65,7 @@ public class Initialize {
                     if (type==1){
                         IdealDiode diode = new IdealDiode(inLine);
                         Circuit.elementList.add(diode);
-                        //Circuit.diodeList.add(diode);
+                        //Kernel.Circuit.diodeList.add(diode);
                     }else if (type==2){
                         NonlinearDiode diode = new NonlinearDiode(inLine);
                         Circuit.elementList.add(diode);

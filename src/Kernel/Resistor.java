@@ -1,3 +1,8 @@
+package Kernel;
+
+import Kernel.Element;
+import Kernel.Launcher;
+
 public class Resistor extends Element {
     double res;
 

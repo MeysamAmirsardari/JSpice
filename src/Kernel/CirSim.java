@@ -1,3 +1,7 @@
+package Kernel;
+
+import Kernel.Circuit;
+
 public abstract class CirSim {
     public static double Dv;
     public static double Di;

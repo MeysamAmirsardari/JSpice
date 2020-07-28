@@ -1,8 +1,11 @@
-/*
+package Kernel;/*
  *   In the name of God
  *   JSpice Electrical circuit simulator
  *   <<<    Summer 1399/2020   >>>
  */
+
+import Kernel.CirSim;
+import Kernel.Initialize;
 
 public class Launcher {
     public static void main(String[] args) {

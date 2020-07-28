@@ -1,29 +1,27 @@
-public class VoltageSrc extends Element {
-    double Vpk;
-    double Vdc;
-    double phase;
-    double frequency;
+package Kernel;
 
-    public VoltageSrc() {
+public class VoltageDepVoltageSrc extends Element {
+    int refNode1;
+    int refNode2;
+    double R;
+
+    public VoltageDepVoltageSrc() {
         super();
     }
 
-    public VoltageSrc(String[] details) {
+    public VoltageDepVoltageSrc(String[] details) {
         name = details[0].trim();
         positiveNodeIndex = Integer.parseInt(details[1].trim());
         negativeNodeIndex = Integer.parseInt(details[2].trim());
-        Vdc = Double.parseDouble(details[3].trim());
-        Vpk = Double.parseDouble(details[4].trim());
-        frequency = Double.parseDouble(details[5].trim()); //TODO: code1
-        phase = Double.parseDouble(details[6].trim());
+        refNode1 = Integer.parseInt(details[3].trim());
+        refNode2 = Integer.parseInt(details[4].trim());  //TODO: code1
+        R = Integer.parseInt(details[5].trim());
     }
 
     @Override
     public double getVoltage(double time) {
-        if (Vpk != 0.0)
-            return (Vdc + (Vpk * Math.sin((time * frequency * (2 * Math.PI)) + phase)));
-        else
-            return Vdc;
+        double refVoltage = Circuit.nodeList.get(refNode1).getVoltage() - Circuit.nodeList.get(refNode2).getVoltage();
+        return (R * refVoltage);
     }
 
     @Override

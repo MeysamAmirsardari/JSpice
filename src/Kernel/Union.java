@@ -1,5 +1,6 @@
+package Kernel;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class Union {
     public ArrayList<Node> nodeList = new ArrayList<Node>();
@@ -28,6 +29,7 @@ public class Union {
     public ArrayList<Node> getNodeList() {
         return nodeList;
     }
+
     public Node getParentUnion() {
         return parentUnion;
     }

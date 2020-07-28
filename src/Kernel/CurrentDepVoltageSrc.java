@@ -1,3 +1,5 @@
+package Kernel;
+
 public class CurrentDepVoltageSrc extends Element {
     Element refElm;
     double R;

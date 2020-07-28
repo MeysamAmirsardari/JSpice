@@ -1,3 +1,9 @@
+package Kernel;
+
+import Kernel.CirSim;
+import Kernel.Element;
+import Kernel.Launcher;
+
 public class Capacitor extends Element {
     double capacity;
     double IC = 0;

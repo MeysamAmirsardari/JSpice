@@ -1,3 +1,5 @@
+package Kernel;
+
 public class CurrentSrc extends Element {
     double Ipk;
     double Idc;
