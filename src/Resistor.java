@@ -7,9 +7,9 @@ public class Resistor extends Element {
 
     public Resistor(String[] details) {
         name = details[0].trim();
-        //TODO: node1 = Integer.parseInt(details[1].trim());
-        //node2 = Integer.parseInt(details[2].trim());
-        res = Launcher.stringToDouble(details[3].trim());
+        positiveNodeIndex = Integer.parseInt(details[1].trim());
+        negativeNodeIndex = Integer.parseInt(details[2].trim());
+        res = Launcher.stringToDouble(details[3].trim());  //TODO: code1
     }
 
 

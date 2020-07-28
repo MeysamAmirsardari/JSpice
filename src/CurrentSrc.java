@@ -10,12 +10,12 @@ public class CurrentSrc extends Element {
 
     public CurrentSrc(String[] details) {
         name = details[0].trim();
-        //node1 = Integer.parseInt(details[1].trim());
-        //node2 = Integer.parseInt(details[2].trim());
+        positiveNodeIndex = Integer.parseInt(details[1].trim());
+        negativeNodeIndex = Integer.parseInt(details[2].trim());
         Idc = Double.parseDouble(details[3].trim());
         Ipk = Double.parseDouble(details[4].trim());
         frequency = Double.parseDouble(details[5].trim());
-        phase = Double.parseDouble(details[6].trim());
+        phase = Double.parseDouble(details[6].trim()); //TODO: code1
     }
 
     @Override

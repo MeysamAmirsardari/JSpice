@@ -7,6 +7,7 @@
 public class Launcher {
     public static void main(String[] args) {
         Initialize.fileReader();
+        Node.setNodesForAllElements();
         //TODO: unionharo koo pas?
         Union.setElementListForAllUnions();
         //TODO: getting Inputs from user.
@@ -50,7 +51,7 @@ public class Launcher {
         return a;
     }
 
-    public static double divideByTenForNTimes(double num, int n) {
+    protected static double divideByTenForNTimes(double num, int n) {
         if (n > 0) {
             for (int i = 0; i < n; i++)
                 num *= 10.0;

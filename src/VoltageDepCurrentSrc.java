@@ -9,10 +9,10 @@ public class VoltageDepCurrentSrc extends Element {
 
     public VoltageDepCurrentSrc(String[] details) {
         name = details[0].trim();
-        //TODO: node1 = Integer.parseInt(details[1].trim());
-        //node2 = Integer.parseInt(details[2].trim());
+        positiveNodeIndex = Integer.parseInt(details[1].trim());
+        negativeNodeIndex = Integer.parseInt(details[2].trim());
         refNode1 = Integer.parseInt(details[3].trim());
-        refNode2 = Integer.parseInt(details[4].trim());
+        refNode2 = Integer.parseInt(details[4].trim());  //TODO: code1
         R = Integer.parseInt(details[5].trim());
     }
 

@@ -8,8 +8,8 @@ public class Capacitor extends Element {
 
     public Capacitor(String[] details) {
         name = details[0].trim();
-        //node1 = Integer.parseInt(details[1].trim());
-        //node2 = Integer.parseInt(details[2].trim());
+        positiveNodeIndex = Integer.parseInt(details[1].trim());
+        negativeNodeIndex = Integer.parseInt(details[2].trim());
         capacity = Launcher.stringToDouble(details[3].trim()); //TODO: code1
     }
 

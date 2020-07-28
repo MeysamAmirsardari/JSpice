@@ -6,19 +6,12 @@ public abstract class Element {
     List<Double> voltageList = new ArrayList<Double>();
     String name;
     protected int unionIndex;
-    protected double deltaV;
     Node positiveNode;
     Node negativeNode;
+    int positiveNodeIndex = 0;
+    int negativeNodeIndex = 0;
 
     public Element() {
-    }
-
-    public double getDeltaV() {
-        return deltaV;
-    }
-
-    public void setDeltaV(double dv) {
-        deltaV = dv;
     }
 
     public void setUnionIndex(int index) {
@@ -33,7 +26,6 @@ public abstract class Element {
 
     public double getCurrent(double time) {
         return 0;
-        // TODO: overRiding for Elements (Based on the value of V not voltageList!)
     }
 
     public double getVoltage(double time) {

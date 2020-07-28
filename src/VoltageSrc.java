@@ -10,11 +10,11 @@ public class VoltageSrc extends Element {
 
     public VoltageSrc(String[] details) {
         name = details[0].trim();
-        //TODO: node1 = Integer.parseInt(details[1].trim());
-        //node2 = Integer.parseInt(details[2].trim());
+        positiveNodeIndex = Integer.parseInt(details[1].trim());
+        negativeNodeIndex = Integer.parseInt(details[2].trim());
         Vdc = Double.parseDouble(details[3].trim());
         Vpk = Double.parseDouble(details[4].trim());
-        frequency = Double.parseDouble(details[5].trim());
+        frequency = Double.parseDouble(details[5].trim()); //TODO: code1
         phase = Double.parseDouble(details[6].trim());
     }
 
