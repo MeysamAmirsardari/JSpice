@@ -26,11 +26,19 @@ public abstract class Element {
         negativeNode = nN;
     }
 
+    public double getVoltage(double time) {
+        return positiveNode.getVoltage() - negativeNode.getVoltage();
+    }
+
     public double getCurrent(double time) {
         return 0;
     }
 
-    public double getVoltage(double time) {
-        return positiveNode.getVoltage() - negativeNode.getVoltage();
+    public double getCurrentFromNegativeNode(double time) {
+        return this.getCurrent(time);
+    }
+
+    public double getCurrentFromPositiveNode(double time) {
+        return this.getCurrent(time);
     }
 }

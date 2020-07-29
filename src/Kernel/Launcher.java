@@ -6,6 +6,7 @@ package Kernel;/*
 
 import Kernel.CirSim;
 import Kernel.Initialize;
+import UI.DrawEnvironment;
 
 public class Launcher {
     public static void main(String[] args) {
@@ -16,6 +17,7 @@ public class Launcher {
         //TODO: getting Inputs from user.
         CirSim.simulate();
         CirSim.printResults();
+        //DrawEnvironment.drawEnvironment();
     }
 
     public static double stringToDouble(String input) { //TODO: code1

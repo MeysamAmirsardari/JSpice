@@ -17,9 +17,18 @@ public class Resistor extends Element {
         res = Launcher.stringToDouble(details[3].trim());  //TODO: code1
     }
 
-
     @Override
     public double getCurrent(double time) {
         return (this.getVoltage(time) / res);
+    }
+
+    @Override
+    public double getCurrentFromNegativeNode(double time) {
+        return ((positiveNode.getLastVoltage() - negativeNode.tempV) / res);
+    }
+
+    @Override
+    public double getCurrentFromPositiveNode(double time) {
+        return ((positiveNode.tempV - negativeNode.getLastVoltage()) / res);
     }
 }

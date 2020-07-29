@@ -14,22 +14,10 @@ public class Union {
     public int index;
     public Node parentUnion;
 
-    public static void setElementListForAllUnions() {
-        for (Union union : Circuit.unionList) {
-            for (Node node : union.nodeList) {
-                for (Element element : node.elementList) {
-                    union.elementList.add(element);
-                    element.unionIndex = union.index;
-                }
-            }
-        }
-    }
-
     /***************** getter ***************/
     public ArrayList<Node> getNodeList() {
         return nodeList;
     }
-
     public Node getParentUnion() {
         return parentUnion;
     }
@@ -43,35 +31,52 @@ public class Union {
         this.nodeList.add(node);
     }
 
+    public static void setElementListForAllUnions() {
+        for (Union union : Circuit.unionList) {
+            for (Node node : union.nodeList) {
+                for (Element element : node.elementList) {
+                    union.elementList.add(element);
+                    element.unionIndex = union.index;
+                }
+            }
+        }
+    }
+
+    public void doStep(double time) {
+        this.setTempV_ForAllNodes_FromList();
+        double Dv = CirSim.Dv;
+        double Di = CirSim.Di;
+        I_total1 = this.getTotalCurrent(time);
+        this.addToTempV_ForAllNodes(Dv);
+        I_total2 = this.getTotalCurrent(time);
+        delta = ((Math.abs(I_total1) - Math.abs(I_total2)) * Dv) / Di;
+        this.addToTempV_ForAllNodes(delta);
+    }
+
     public double getTotalCurrent(double time) {
         double i = 0;
-        for (Element element : elementList) {
-            if (element.unionIndex != index)
-                i += element.getCurrent(time);
+        for (Node node : nodeList) {
+            for (Element element : node.negativeElementList) {
+                if (element.unionIndex != index)
+                    i += element.getCurrentFromNegativeNode(time);
+            }
+            for (Element element : node.positiveElementList) {
+                if (element.unionIndex != index)
+                    i -= element.getCurrentFromPositiveNode(time);
+            }
         }
         return i;
     }
 
-    public void doStep(double time) {
-        this.setV_ForAllNodes_FromList();
-        double Dv = CirSim.Dv;
-        double Di = CirSim.Di;
-        I_total1 = this.getTotalCurrent(time);
-        this.addToV_ForAllNodes(Dv);
-        I_total2 = this.getTotalCurrent(time);
-        delta = ((Math.abs(I_total1) - Math.abs(I_total2)) * Dv) / Di;
-        this.addToV_ForAllNodes(Dv);
-    }
-
-    private void setV_ForAllNodes_FromList() {
+    private void setTempV_ForAllNodes_FromList() {
         for (Node node : Circuit.nodeList) {
-            node.V = node.voltageList.get(node.voltageList.size() - 1);
+            node.tempV = node.voltageList.get(node.voltageList.size() - 1);
         }
     }
 
-    private void addToV_ForAllNodes(Double Dv) {
+    private void addToTempV_ForAllNodes(Double Dv) {
         for (Node node : nodeList) {
-            node.V += Dv;
+            node.tempV += Dv;
         }
     }
 

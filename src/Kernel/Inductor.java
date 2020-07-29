@@ -20,11 +20,23 @@ public class Inductor extends Element {
 
     @Override
     public double getCurrent(double time) {
-        double sum = this.integratorFrom0();
+        double sum = this.voltageIntegratorFrom0();
         return (IC + (1 / ind) * sum);
     }
 
-    public double integratorFrom0() {
+    @Override
+    public double getCurrentFromNegativeNode(double time) {
+        double sum = this.voltageIntegratorFrom0() + ((positiveNode.getLastVoltage() - negativeNode.tempV) * CirSim.Dt);
+        return (IC + (1 / ind) * sum);
+    }
+
+    @Override
+    public double getCurrentFromPositiveNode(double time) {
+        double sum = this.voltageIntegratorFrom0() + ((positiveNode.tempV - negativeNode.getLastVoltage()) * CirSim.Dt);
+        return (IC + (1 / ind) * sum);
+    }
+
+    public double voltageIntegratorFrom0() {
         double sum = 0;
         for (Double volt : voltageList) {
             sum += (volt * CirSim.Dt);

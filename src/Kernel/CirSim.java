@@ -1,7 +1,5 @@
 package Kernel;
 
-import Kernel.Circuit;
-
 public abstract class CirSim {
     public static double Dv;
     public static double Di;
@@ -9,6 +7,8 @@ public abstract class CirSim {
     public static double timeDomain;
 
     public static void simulate() {
+        setUnionIndexForAllElements();
+        setTempVForAllNodes(0);
         int n = (int) (timeDomain / Dt);
         while (checkAllDeltas()) {       //DC analyze
             solver(0);
@@ -22,7 +22,7 @@ public abstract class CirSim {
         for (Union union : Circuit.unionList) {
             union.doStep(time);
             for (Node node : union.nodeList) {
-                node.voltageList.add(node.getV());
+                node.voltageList.add(node.getTempV());
             }
         }
         updateElementsDetails(time);
@@ -42,6 +42,27 @@ public abstract class CirSim {
                 isSet = false;
         }
         return isSet;
+    }
+
+    private static void setTempVForAllNodes(double tempVoltage) {
+        for (Node node : Circuit.nodeList) {
+            node.tempV = tempVoltage;
+        }
+    }
+
+    private static void setUnionIndexForAllElements() {
+        int i = 0;
+        for (Union union : Circuit.unionList) {
+            union.index = i;
+            i++;
+        }
+        for (Union union : Circuit.unionList) {
+            for (Node node : union.nodeList) {
+                for (Element element : node.elementList) {
+                    element.unionIndex = union.index;
+                }
+            }
+        }
     }
 
     public static void printResults() {

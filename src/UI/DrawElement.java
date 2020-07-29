@@ -1,6 +1,6 @@
 package UI;
 
-import Kernel.Capacitor;
+import Kernel.*;
 
 import javax.swing.*;
 

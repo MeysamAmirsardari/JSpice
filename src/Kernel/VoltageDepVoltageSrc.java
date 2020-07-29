@@ -37,11 +37,17 @@ public class VoltageDepVoltageSrc extends Element {
                 isItOk = false;
         }
         if (isItOk) {
-            for (Element element : negativeNode.elementList) {
+            for (Element element : negativeNode.positiveElementList) {
+                totalCurrent -= element.getCurrent(time);
+            }
+            for (Element element : negativeNode.negativeElementList) {
                 totalCurrent += element.getCurrent(time);
             }
         } else {
-            for (Element element : positiveNode.elementList) {
+            for (Element element : positiveNode.positiveElementList) {
+                totalCurrent -= element.getCurrent(time);
+            }
+            for (Element element : positiveNode.negativeElementList) {
                 totalCurrent += element.getCurrent(time);
             }
         }
