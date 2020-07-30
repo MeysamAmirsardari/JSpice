@@ -14,14 +14,14 @@ public class Initialize {
     public static List<Union> unionList = new ArrayList<Union>();
     public static HashMap<Union, Union> unionMap = new HashMap<>();
 
-    public static void fileReader() {
-        File file = new File("Input.txt");
+    public static void fileReader(String filePath) {
+        File file = new File(filePath);
         Scanner inScanner;
         List<String> inputLines = new ArrayList<String>();
 
         try {
             inScanner = new Scanner(file);
-            while (inScanner.hasNextLine()){
+            while (inScanner.hasNextLine()) {
                 inputLines.add(inScanner.nextLine());
             }
         } catch (FileNotFoundException e) {

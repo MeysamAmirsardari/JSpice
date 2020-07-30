@@ -14,12 +14,10 @@ public class Node {
     public int index;
     public String name;
     public Union belongUnion;
-
     public List<Element> elementList = new ArrayList<Element>();
     public List<Node> adjacentNodes = new ArrayList<Node>();
     public List<Double> voltageList = new ArrayList<Double>();
     protected double tempV;
-    protected double V_minus;
 
     Node(String givenName) {
         name = givenName;

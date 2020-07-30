@@ -8,16 +8,23 @@ import Kernel.CirSim;
 import Kernel.Initialize;
 import UI.DrawEnvironment;
 
+import java.io.File;
+
 public class Launcher {
     public static void main(String[] args) {
-        Initialize.fileReader();
+        String filePath = "Input.txt";
+        launch(filePath);
+        CirSim.printResults();
+        //DrawEnvironment.drawEnvironment();
+    }
+
+    public static void launch(String filePath) {
+        Initialize.fileReader(filePath);
         Node.setNodesForAllElements();
         //TODO: unionharo koo pas?
         Union.setElementListForAllUnions();
         //TODO: getting Inputs from user.
         CirSim.simulate();
-        CirSim.printResults();
-        //DrawEnvironment.drawEnvironment();
     }
 
     public static double stringToDouble(String input) { //TODO: code1
