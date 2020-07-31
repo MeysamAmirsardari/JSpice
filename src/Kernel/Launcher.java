@@ -4,15 +4,9 @@ package Kernel;/*
  *   <<<    Summer 1399/2020   >>>
  */
 
-import Kernel.CirSim;
-import Kernel.Initialize;
-import UI.DrawEnvironment;
-
-import java.io.File;
-
 public class Launcher {
     public static void main(String[] args) {
-        String filePath = "Input.txt";
+        String filePath = "D:\\test1.txt";
         launch(filePath);
         CirSim.printResults();
         //DrawEnvironment.drawEnvironment();

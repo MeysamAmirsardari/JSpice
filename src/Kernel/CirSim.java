@@ -78,7 +78,7 @@ public abstract class CirSim {
         System.out.println("******          Nodes voltages:         ******");
         j = 0;
         for (Element element : Circuit.elementList) {
-            System.out.printf(element.name + " ");
+            System.out.printf(element.getName() + " ");
             System.out.printf("(%f , %f ,", element.voltageList.get(j), element.currentList.get(j));
             System.out.printf(" %f) \n", element.voltageList.get(j) * element.currentList.get(j));
             j++;

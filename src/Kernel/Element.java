@@ -4,30 +4,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Element {
-    ArrayList<Double> currentList = new ArrayList<Double>();
-    ArrayList<Double> voltageList = new ArrayList<Double>();
-    final String name; // Element cannot alter its type after initialization
+    private final double resCurrent;
+    //private final String name;
+    public List<Double> currentList = new ArrayList<Double>();
+    public List<Double> voltageList = new ArrayList<Double>();
+    //final String name; // Element cannot alter its type after initialization
     Node positiveNode;
     Node negativeNode;
     // Declare variable current to hold the latest element of currentList
     double current;
+    String name;
 
     protected int unionIndex;
     int positiveNodeIndex = 0;
     int negativeNodeIndex = 0;
 
+    Element(){
+        resCurrent = 0;
+        name = null;
+    }
     // Element Constructor
     public Element(String elemName, Node pN, Node nN) {
         name = elemName;
         positiveNode = pN;
         negativeNode = nN;
         this.current = 0;
-        
-        // Initialize currentList and voltageList
+        this.resCurrent = 0;
+
+        // Initialize currentList
         currentList = new ArrayList<Double>();
-        voltageList = new ArrayList<Double>();
+        currentList.add(0.00);
     }
 
+
+    public String getName(){
+        return this.name;
+    }
 
     public void setUnionIndex(int index) {
         unionIndex = index;
@@ -37,7 +49,7 @@ public abstract class Element {
     public double getVoltage(double time) {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
     }
-    
+
     // Current related methods
     public double getCurrent(Node node){
         if(positiveNode.name.equals(node.name)){
@@ -58,11 +70,11 @@ public abstract class Element {
     }
 
     public ArrayList<Double> getCurrentList(){
-        return currentList;
+        return (ArrayList<Double>) currentList;
     }
 
     public double getCurrentFromNegativeNode(double time) {
-        return this.getCurrent(time) * -1;
+        return this.getCurrent(time);
     }
 
     public double getCurrentFromPositiveNode(double time) {

@@ -1,6 +1,7 @@
 package Kernel;
 
 public class CurrentSrc extends Source {
+    //private final String name;
     double Ipk;
     double Idc;
     double phase;

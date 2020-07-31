@@ -1,18 +1,18 @@
 package UI;
 
 
+import Kernel.Circuit;
+import Kernel.Element;
 import Kernel.Launcher;
+import javafx.scene.control.TextArea;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URL;
-import java.util.Scanner;
-import java.awt.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+
 
 public class DrawEnvironment {
     JFrame frame2;
@@ -46,7 +46,7 @@ public class DrawEnvironment {
         frame2.setLayout(null);
 
         JScrollPane scroll;
-        JTextArea editorField = new JTextArea(10, 20); //Rows and cols to be displayed
+        JTextArea editorField = new JTextArea(10, 20);
         editorField.setBounds(10, 50, 600, 650);
         editorField.setBorder(border);
         scroll = new JScrollPane(editorField);
@@ -127,7 +127,10 @@ public class DrawEnvironment {
         plotButton.addActionListener(new ActionListener() {
                                          @Override
                                          public void actionPerformed(ActionEvent e) {
-                                             //DrawResults.drawResult();
+                                             DrawResults result = new DrawResults();
+                                             String elementName = JOptionPane.showInputDialog(frame2,"Enter Name");
+                                             Element element = findElement(elementName);
+                                             result.drawResult(element);
                                          }
                                      }
         );
@@ -155,15 +158,38 @@ public class DrawEnvironment {
         JFrame frame;
         JTextArea textArea;
         frame = new JFrame("ScrollPane to TextArea");
-        JPanel panel = new JPanel();
-        panel.setBounds(10, 10, 500, 500);
+        frame.setLayout(null);
+        //JPanel panel = new JPanel();
+        //panel.setBounds(10, 10, 500, 500);
         textArea = new JTextArea(); //Rows and cols to be displayed
-        scroll = new JScrollPane(panel);
-        panel.add(textArea);
-        frame.add(panel); //We add the scroll, since the scroll already contains the textArea
+        textArea.setEditable(true);
+        textArea.setSize(100, 100);
+
+        textArea.setBounds(10,10,100,100);
+        //scroll = new JScrollPane(textArea);
+        //JScrollPane scrollableTextArea = new JScrollPane(textArea);
+
+        //scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        TextArea textArea1 = new TextArea();
+
+
+        //frame.getContentPane().add(scrollableTextArea);
+
+        //panel.add(textArea);
+        //frame.add(scroll); //We add the scroll, since the scroll already contains the textArea
         frame.pack();
         frame.setBounds(0, 0, 1100, 700);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private static Element findElement(String elementName){
+        for (Element element : Circuit.elementList) {
+            if (element.getName().equalsIgnoreCase(elementName))
+                return element;
+        }
+        return null;
     }
 }

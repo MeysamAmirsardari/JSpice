@@ -2,7 +2,6 @@ package Kernel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class Circuit {
     public static ArrayList<Element> elementList = new ArrayList<Element>();
@@ -35,7 +34,7 @@ public abstract class Circuit {
 
     public static Element searchInElementList(String name) {
         for (Element element : elementList) {
-            if (element.name.equals(name))
+            if (element.getName().equals(name))
                 return element;
         }
         return null;

@@ -19,6 +19,7 @@ public class Node {
     public ArrayList<Element> negativeElementList = new ArrayList<Element>();
     public ArrayList<Element> positiveElementList = new ArrayList<Element>();
 
+    Node(){}
     Node(String givenName) {
         name = givenName;
         voltage = 0;

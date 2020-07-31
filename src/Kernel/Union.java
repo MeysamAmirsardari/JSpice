@@ -53,14 +53,14 @@ public class Union {
     public ArrayList<Node> getNodeList() {
         return nodeList;
     }
-    public Node getParentUnion() {
-        return parentUnion;
-    }
+    //public Node getParentUnion() {
+    //    return parentUnion;
+    //}
 
     /***************** setter ***************/
-    public void setParentUnion(Node pUnion) {
-        parentUnion = pUnion;
-    }
+    //public void setParentUnion(Node pUnion) {
+    //    parentUnion = pUnion;
+    //}
 
     public static void setElementListForAllUnions() {
         for (Union union : Circuit.unionList) {
