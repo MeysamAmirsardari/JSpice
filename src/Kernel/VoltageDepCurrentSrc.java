@@ -3,7 +3,7 @@ package Kernel;
 import Kernel.Circuit;
 import Kernel.Element;
 
-public class VoltageDepCurrentSrc extends Element {
+public class VoltageDepCurrentSrc extends VoltageSrc {
     int refNode1;
     int refNode2;
     double R;

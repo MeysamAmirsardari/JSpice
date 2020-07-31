@@ -1,6 +1,6 @@
 package Kernel;
 
-public class CurrentDepVoltageSrc extends Element {
+public class CurrentDepVoltageSrc extends CurrentSrc {
     Element refElm;
     double R;
 

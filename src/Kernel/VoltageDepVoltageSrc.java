@@ -1,6 +1,6 @@
 package Kernel;
 
-public class VoltageDepVoltageSrc extends Element {
+public class VoltageDepVoltageSrc extends VoltageSrc {
     int refNode1;
     int refNode2;
     double R;

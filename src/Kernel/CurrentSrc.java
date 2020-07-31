@@ -1,6 +1,6 @@
 package Kernel;
 
-public class CurrentSrc extends Element {
+public class CurrentSrc extends Source {
     double Ipk;
     double Idc;
     double phase;

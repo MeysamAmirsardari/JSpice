@@ -25,6 +25,14 @@ public abstract class Circuit {
     public static ArrayList<VoltageSrc> volList = new ArrayList<VoltageSrc>();
 
 
+    public static Node returnNode(String name){
+        for(Node node:nodeList){
+            if(node.name.equals(name))
+                return node;
+        }
+        return null;
+    }
+
     public static Element searchInElementList(String name) {
         for (Element element : elementList) {
             if (element.name.equals(name))

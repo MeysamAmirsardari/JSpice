@@ -1,6 +1,6 @@
 package Kernel;
 
-public class VoltageSrc extends Element {
+public class VoltageSrc extends Source {
     double Vpk;
     double Vdc;
     double phase;
