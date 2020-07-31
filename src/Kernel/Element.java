@@ -7,25 +7,32 @@ public abstract class Element {
     List<Double> currentList = new ArrayList<Double>();
     List<Double> voltageList = new ArrayList<Double>();
     String name;
-    protected int unionIndex;
     Node positiveNode;
     Node negativeNode;
+    double current;
+    double resCurrent;
+
+    protected int unionIndex;
     int positiveNodeIndex = 0;
     int negativeNodeIndex = 0;
 
-    public Element() {
+    public Element(String elemName, Node pN, Node nN) {
+        name = elemName;
+        positiveNode = pN;
+        negativeNode = nN;
+        this.current = 0;
+        this.resCurrent = 0;
+
+        // Initialize currentList
+        currentList = new ArrayList<Double>();
+        currentList.add(0.00);
     }
+
 
     public void setUnionIndex(int index) {
         unionIndex = index;
     }
-
-    Element(String elemName, Node pN, Node nN) {
-        name = elemName;
-        positiveNode = pN;
-        negativeNode = nN;
-    }
-
+    
     public double getVoltage(double time) {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
     }

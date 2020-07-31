@@ -13,14 +13,14 @@ public class CreateUnion {
             }
         }
         if (groundNode == null) {
-            System.out.println("No ground in circuit!");
+            System.out.println("No ground found in circuit!!");
             return false;
         }
 
-        dependantNodeInquiry(groundNode);
         setAllNodeNotAdded();
+        dependantNodeInquiry(groundNode);
         ArrayList<Node> tempNodeList = new ArrayList<Node>(Circuit.nodeList);
-        // unionAdd(tempNodeList); TODO: method implementation
+        unionAdd(tempNodeList);
         return true;
     }
 
@@ -30,17 +30,83 @@ public class CreateUnion {
         }
     }
 
+    void unionAdd(ArrayList<Node> nodeList){
+        ArrayList<Node> unionStarters = new ArrayList<Node>();
+
+        for(Node node:nodeList){
+            if(!isCollection(node) && node.parentNode == node){
+                makeUnion(node);
+                nodeList.remove(node);
+            }
+        }
+        for(Node node:nodeList){
+            if(node.parentNode == node){
+                unionStarters.add(node);
+            }
+        }
+        for(Node unionStarter: unionStarters){
+            ArrayList<Node> addedNodes = new ArrayList<Node>();
+            adjacentSearch(unionStarter,addedNodes, nodeList);
+            makeUnion(unionStarter,addedNodes);
+        }
+    }
+
+    void adjacentSearch(Node node, ArrayList<Node> addedNodes, ArrayList<Node> nodeList){
+        for(Node tNode:nodeList){
+            if(node.parentNode == node){
+                ArrayList<Node> subNodeList = new ArrayList<Node>(nodeList);
+                addedNodes.add(tNode);
+                subNodeList.remove(tNode);
+                adjacentSearch(tNode, addedNodes, subNodeList);
+            }
+        }
+    }
+
+    void makeUnion(Node node){
+        Union union = new Union(node);
+        Circuit.unionList.add(union);
+    }
+
+    void makeUnion(Node unionStarter, ArrayList<Node> addedNodes){
+        Union union = new Union(unionStarter, addedNodes);
+        Circuit.unionList.add(union);
+    }
+
+    boolean isCollection(Node node){
+        ArrayList<Node> nodeList = new ArrayList<Node>(Circuit.nodeList);
+        nodeList.remove(node);
+        for(Node tNode: nodeList){
+            if(tNode.parentNode == node)
+                return true;
+        }
+        return false;
+    }
+
     void dependantNodeInquiry(Node inNode) {
-        // if (inNode.parentNode == null) {
-        // inNode.parentNode = inNode;
-        // }
-        // ArrayList<Kernel.Node> notAddedAdjacentNodeList = new ArrayList<>;
-        // for(Kernel.Node adjacentNode: inNode.adjacentNodes){
-        // if(!adjacentNode.isAdded){
-        // notAddedAdjacentNodeList.add(adjacentNode);
-        // for()
-        // }
-        // }
+        if (inNode.parentNode == null) {
+            inNode.parentNode = inNode;
+        }
+        ArrayList<Node> notAddedAdjacentNodeList = new ArrayList<Node>();
+        for(Node adjacentNode: inNode.adjacentNodes){
+        if(!adjacentNode.isAdded){
+        notAddedAdjacentNodeList.add(adjacentNode);
+        for(VoltageSrc vSrc : Circuit.volList){
+            if((vSrc.positiveNode == inNode && vSrc.negativeNode == adjacentNode) || 
+            (vSrc.negativeNode == inNode && vSrc.positiveNode == adjacentNode)){
+                if(adjacentNode.parentNode == null){
+                    adjacentNode.parentNode = inNode;
+                }
+                else{
+                    inNode.parentNode = adjacentNode;
+                }
+            }
+        }
+        }
+        }
+        inNode.isAdded = true;
+        for(Node node: notAddedAdjacentNodeList){
+            dependantNodeInquiry(node);
+        }
     }
 
 }

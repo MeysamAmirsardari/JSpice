@@ -8,8 +8,6 @@ public class Node {
     public boolean isAdded = false;
     public Node parentNode = null;
     public int union;
-    public List<Element> negativeElementList = new ArrayList<Element>();
-    public List<Element> positiveElementList = new ArrayList<Element>();
     boolean internal = true;
     public int index;
     public String name;
@@ -18,12 +16,11 @@ public class Node {
     public List<Node> adjacentNodes = new ArrayList<Node>();
     public List<Double> voltageList = new ArrayList<Double>();
     protected double tempV;
+    public List<Element> negativeElementList = new ArrayList<Element>();
+    public List<Element> positiveElementList = new ArrayList<Element>();
 
     Node(String givenName) {
         name = givenName;
-    }
-
-    Node() {
     }
 
     protected static void setNodesForAllElements() {

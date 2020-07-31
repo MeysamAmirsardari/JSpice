@@ -4,15 +4,50 @@ import java.util.ArrayList;
 
 public class Union {
     public ArrayList<Node> nodeList = new ArrayList<Node>();
-    public ArrayList<Element> elementList = new ArrayList<Element>();
-    public boolean visited = false;
-    public ArrayList<Double> voltage = new ArrayList<Double>();
+    public Node unionStarter;
+    public String type = new String();
+    public String name;
+
     public double V;
     public double I_total1;
     public double I_total2;
     public double delta;
     public int index;
-    public Node parentUnion;
+    public ArrayList<Double> voltage = new ArrayList<Double>();
+    public boolean visited = false;
+    public ArrayList<Element> elementList = new ArrayList<Element>();
+
+    // Constructors
+    public Union(Node parentU){
+        addNode(parentU);
+        this.unionStarter.belongUnion = this;
+        this.name = parentU.name;
+        this.unionStarter = parentU;
+    }
+
+    public Union(Node parentU, ArrayList<Node> nodeList){
+        addNode(parentU);
+        addNode(nodeList);
+        for(Node node: this.nodeList){
+            node.belongUnion = this;
+        }
+        this.name = parentU.name;
+        this.unionStarter = parentU;
+    }
+
+    // Adds a give node or array of nodes to union list
+    public void addNode(Node node){
+        this.nodeList.add(node);
+    }
+
+    public void addNode(ArrayList<Node> nodes){
+        for(Node node : nodes){
+            if(!this.nodeList.contains(node)){
+                this.nodeList.add(node);
+            }
+        }
+    }
+
 
     /***************** getter ***************/
     public ArrayList<Node> getNodeList() {
@@ -25,10 +60,6 @@ public class Union {
     /***************** setter ***************/
     public void setParentUnion(Node pUnion) {
         parentUnion = pUnion;
-    }
-
-    public void addNode(Node node) {
-        this.nodeList.add(node);
     }
 
     public static void setElementListForAllUnions() {
@@ -87,4 +118,6 @@ public class Union {
             }
         }
     }
+
+
 }
