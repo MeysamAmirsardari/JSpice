@@ -5,15 +5,10 @@ Capacitor extends Element {
     double capacity;
     double IC = 0;
 
-    public Capacitor() {
-        super();
-    }
 
-    public Capacitor(String[] details) {
-        name = details[0].trim();
-        positiveNodeIndex = Integer.parseInt(details[1].trim());
-        negativeNodeIndex = Integer.parseInt(details[2].trim());
-        capacity = Launcher.stringToDouble(details[3].trim()); //TODO: code1
+    public Capacitor(String name, double val, Node pNode, Node nNode) {
+        super(name,pNode,nNode);
+        capacity = val;
     }
 
     @Override

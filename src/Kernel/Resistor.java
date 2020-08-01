@@ -6,15 +6,9 @@ import Kernel.Launcher;
 public class Resistor extends Element {
     double res;
 
-    public Resistor() {
-        super();
-    }
-
-    public Resistor(String[] details) {
-        name = details[0].trim();
-        positiveNodeIndex = Integer.parseInt(details[1].trim());
-        negativeNodeIndex = Integer.parseInt(details[2].trim());
-        res = Launcher.stringToDouble(details[3].trim());  //TODO: code1
+    public Resistor(String name, double val, Node pNode, Node nNode) {
+        super(name,pNode,nNode);
+        res = val;
     }
 
     @Override

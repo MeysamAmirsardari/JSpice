@@ -7,15 +7,9 @@ public class Inductor extends Element {
     double ind;
     double IC = 0;
 
-    public Inductor() {
-        super();
-    }
-
-    public Inductor(String[] details) {
-        name = details[0].trim();
-        positiveNodeIndex = Integer.parseInt(details[1].trim());
-        negativeNodeIndex = Integer.parseInt(details[2].trim());
-        ind = Launcher.stringToDouble(details[3].trim()); //TODO: code1
+    public Inductor(String name, double val, Node pNode, Node nNode) {
+        super(name,pNode,nNode);
+        ind = val;
     }
 
     @Override
