@@ -19,7 +19,7 @@ public class DrawEnvironment {
     JTextArea editorField;
     JScrollPane scroll;
 
-    public static void main(String[] args) throws IOException {
+    public static void makeEnvironment(String[] args) throws IOException {
         DrawEnvironment environment = new DrawEnvironment();
         /*SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -27,10 +27,10 @@ public class DrawEnvironment {
                 environment.createAndShowGui();
             }
         });*/
-        environment.drawEnvironment();
+        environment.draw(args);
     }
 
-    public void drawEnvironment() {
+    public void draw(String[] args) {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 3, true);
         Border border1 = BorderFactory.createLineBorder(Color.BLACK, 3, true);
 
@@ -127,10 +127,9 @@ public class DrawEnvironment {
         plotButton.addActionListener(new ActionListener() {
                                          @Override
                                          public void actionPerformed(ActionEvent e) {
-                                             DrawResults result = new DrawResults();
                                              String elementName = JOptionPane.showInputDialog(frame2,"Enter Name");
                                              Element element = findElement(elementName);
-                                             result.drawResult(element);
+                                             PlotResult.plot(args);
                                          }
                                      }
         );

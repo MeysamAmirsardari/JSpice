@@ -4,12 +4,15 @@ package Kernel;/*
  *   <<<    Summer 1399/2020   >>>
  */
 
+import UI.DrawEnvironment;
+import java.io.IOException;
+
 public class Launcher {
-    public static void main(String[] args) {
-        String filePath = "D:\\test1.txt";
-        launch(filePath);
+    public static void main(String[] args) throws IOException {
+        //String filePath = "D:\\test1.txt";
+        //launch(filePath);
         CirSim.printResults();
-        //DrawEnvironment.drawEnvironment();
+        DrawEnvironment.makeEnvironment(args);
     }
 
     public static void launch(String filePath) {
