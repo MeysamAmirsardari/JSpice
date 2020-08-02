@@ -1,7 +1,6 @@
 package UI;
 
 import Kernel.CirSim;
-import Kernel.Circuit;
 import Kernel.Element;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -45,16 +44,24 @@ public class PlotResult extends Application {
 
 
         //Preparing the data points for the lines:
-        int index=0;
+        Element element = DrawEnvironment.element;
         double time=0;
         double Dt = CirSim.Dt;
-        for (Element element : Circuit.elementList) {
-            voltageSeries.getData().add(new XYChart.Data(String.format("%.2f", time), element.voltageList.get(index)));
+
+        for (Double voltage : element.voltageList) {
+            voltageSeries.getData().add(new XYChart.Data(String.format("%.2f", time), voltage));
+            time+=Dt;
+        }
+
+        int index=0;
+        time=0;
+
+        for (Double current : element.currentList) {
             currentSeries.getData().add(new XYChart.Data(String.format("%.2f", time), element.currentList.get(index)));
             powerSeries.getData().add(new XYChart.Data(
                     String.format("%.2f", time),(element.currentList.get(index)*element.voltageList.get(index))));
-            time+=Dt;
             index++;
+            time+=Dt;
         }
 
 

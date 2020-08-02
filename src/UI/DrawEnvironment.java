@@ -1,35 +1,31 @@
 package UI;
 
+import Kernel.Circuit;
+import Kernel.Element;
+import Kernel.Launcher;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.*;
 
 public class DrawEnvironment extends Application {
     public static File selectedFile=null;
+    public static String[] Args;
+    public static Element element;
 
     @Override
     public void start(Stage stage) throws Exception {
-        // TODO Auto-generated method stub
-        //Pane root = new Pane();
+        Preview.showFirstPage(Args);
         DropShadow shadow = new DropShadow();
 
-        //Creating a pagination
         TextArea editorArea = new TextArea();
         editorArea.setPrefColumnCount(15);
         editorArea.setPrefSize(660,720);
@@ -98,25 +94,36 @@ public class DrawEnvironment extends Application {
         runButton.setLayoutY(20);
 
         runButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent arg0) {
-                if (!(selectedFile.equals(null))) {
-                    try {
-                        FileWriter fileWriter = new FileWriter(selectedFile);
-                        String inputText = editorArea.getText();
-                        fileWriter.write(inputText);
-                        fileWriter.close();
-                    } catch (FileNotFoundException notFoundException) {
-                        notFoundException.printStackTrace();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                if (selectedFile!=null) {
+                    if (!editorArea.getText().isEmpty()) {
+                        try {
+                            FileWriter fileWriter = new FileWriter(selectedFile);
+                            String inputText = editorArea.getText();
+                            fileWriter.write("");
+                            fileWriter.write(inputText);
+                            fileWriter.close();
+                        } catch(FileNotFoundException notFoundException){
+                            notFoundException.printStackTrace();
+                        } catch(IOException ioException){
+                            ioException.printStackTrace();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error!");
+                        alert.setHeaderText("Error!");
+                        alert.setContentText("No command entered!");
+                        alert.showAndWait();
                     }
-                    //Launcher.launch(selectedFile.getPath());
+                    Launcher.launch(selectedFile.getPath());
                 } else {
-                    //TODO: Error!
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("Error!");
+                    alert.setContentText("The elected file is not available!");
+                    alert.showAndWait();
                 }
-                System.out.println("RunButton clicked");
             }
         } );
 
@@ -130,14 +137,22 @@ public class DrawEnvironment extends Application {
         plotButton.setLayoutY(20);
 
         plotButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent arg0) {
-                //String elementName = JOptionPane.showInputDialog(frame2,"Enter Name");
-                //Element element = findElement(elementName);
-                //PlotResult.plot(args);
-
-                System.out.println("Button clicked");
+                TextInputDialog textDialog = new TextInputDialog("");
+                textDialog.setHeaderText("Please enter the name of the element:");
+                textDialog.showAndWait();
+                String elementName = textDialog.getResult();
+                element = findElement(elementName);
+                if (element!=null)
+                    PlotResult.plot(Args);
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("Error!");
+                    alert.setContentText("Element not found!");
+                    alert.showAndWait();
+                }
             }
         } );
 
@@ -150,15 +165,23 @@ public class DrawEnvironment extends Application {
         Scene scene=new Scene(rootPane,1000,800);
         //root.getChildren().add(loadButton);
         stage.setScene(scene);
-        stage.setTitle("Button Class Example");
+        stage.setTitle("JSpice");
         stage.show();
     }
     public static void makeEnvironment(String[] args) {
+        Args = args;
         launch(args);
     }
 
     private static void writeDetails(TextField field){
+    }
 
+    private static Element findElement(String elementName){
+        for (Element element1 : Circuit.elementList) {
+            if (element1.getName().equals(elementName))
+                return element1;
+        }
+        return null;
     }
 }
 
