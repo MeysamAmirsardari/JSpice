@@ -4,7 +4,7 @@ import Kernel.Circuit;
 
 public class CurrentDepCurrentSrc extends CurrentSrc {
     Element refElm;
-    double R;
+    double gain;
 
     public CurrentDepCurrentSrc() {
         super();
@@ -15,7 +15,7 @@ public class CurrentDepCurrentSrc extends CurrentSrc {
         positiveNodeIndex = Integer.parseInt(details[1].trim());
         negativeNodeIndex = Integer.parseInt(details[2].trim());
         String refElmName = details[3].trim();
-        R = Double.parseDouble(details[4].trim()); //TODO: code1
+        gain = Double.parseDouble(details[4].trim()); //TODO: code1
         refElm = Circuit.searchInElementList(refElmName);
         if (refElm.equals(null)) {
             //TODO: Error!
@@ -24,6 +24,6 @@ public class CurrentDepCurrentSrc extends CurrentSrc {
 
     @Override
     public double getCurrent(double time) {
-        return (refElm.getCurrent(time) * R);
+        return (refElm.getCurrent(time) * gain);
     }
 }

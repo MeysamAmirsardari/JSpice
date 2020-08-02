@@ -8,7 +8,6 @@ public abstract class Element {
     //private final String name;
     public List<Double> currentList = new ArrayList<Double>();
     public List<Double> voltageList = new ArrayList<Double>();
-    //final String name; // Element cannot alter its type after initialization
     Node positiveNode;
     Node negativeNode;
     // Declare variable current to hold the latest element of currentList

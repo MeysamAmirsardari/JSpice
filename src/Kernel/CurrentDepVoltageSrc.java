@@ -2,7 +2,7 @@ package Kernel;
 
 public class CurrentDepVoltageSrc extends CurrentSrc {
     Element refElm;
-    double R;
+    double gain;
 
     public CurrentDepVoltageSrc() {
         super();
@@ -13,7 +13,7 @@ public class CurrentDepVoltageSrc extends CurrentSrc {
         positiveNodeIndex = Integer.parseInt(details[1].trim());
         negativeNodeIndex = Integer.parseInt(details[2].trim());
         String refElmName = details[3].trim();
-        R = Double.parseDouble(details[4].trim()); //TODO: code1
+        gain = Double.parseDouble(details[4].trim()); //TODO: code1
         refElm = Circuit.searchInElementList(refElmName);
         if (refElm.equals(null)) {
             //TODO: Error!
@@ -23,7 +23,7 @@ public class CurrentDepVoltageSrc extends CurrentSrc {
 
     @Override
     public double getVoltage(double time) {
-        return (R * refElm.getCurrent(time));
+        return (gain * refElm.getCurrent(time));
     }
 
     @Override

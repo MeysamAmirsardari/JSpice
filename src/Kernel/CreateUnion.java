@@ -5,6 +5,11 @@ import Kernel.Circuit;
 import java.util.ArrayList;
 
 public class CreateUnion {
+    Circuit circuit;
+    public CreateUnion(Circuit circuit){
+        this.circuit = circuit;
+    }
+
     public boolean create() {
         Node groundNode = null;
         for (Node node : Circuit.nodeList) {
@@ -90,7 +95,7 @@ public class CreateUnion {
         for(Node adjacentNode: inNode.adjacentNodes){
         if(!adjacentNode.isAdded){
         notAddedAdjacentNodeList.add(adjacentNode);
-        for(VoltageSrc vSrc : Circuit.volList){
+        for(VoltageSrc vSrc : circuit.volSrcList){
             if((vSrc.positiveNode == inNode && vSrc.negativeNode == adjacentNode) || 
             (vSrc.negativeNode == inNode && vSrc.positiveNode == adjacentNode)){
                 if(adjacentNode.parentNode == null){

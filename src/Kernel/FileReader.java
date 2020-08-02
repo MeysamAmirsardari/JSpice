@@ -8,20 +8,32 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileReader {
-    // The interval values of time, voltage and current
+    // The values of time, voltage and current
     public double dt = 0;
     public double t = 0;
     public double dv = 0;
     public double di = 0;
 
     // Arrays of elements and nodes
-    public ArrayList<VoltageSrc> VSrcList = new ArrayList<VoltageSrc>();
     public ArrayList<Element> elemList = new ArrayList<Element>();
     public ArrayList<Node> nodeList = new ArrayList<Node>();
 
+    // Element Specific arrayLists
+    public ArrayList<Resistor> resList = new ArrayList<Resistor>();
+    public ArrayList<Capacitor> capList = new ArrayList<Capacitor>();
+    public ArrayList<Inductor> indList = new ArrayList<Inductor>();
+    public ArrayList<IdealDiode> diodeList = new ArrayList<>();
+    public ArrayList<CurrentSrc> curSrcList = new ArrayList <CurrentSrc>();
+    public ArrayList<VoltageSrc> volSrcList = new ArrayList<VoltageSrc>();
+    public ArrayList<CurrentDepCurrentSrc> CCCSList = new ArrayList<>();
+    public ArrayList<VoltageDepCurrentSrc> VCCSList = new ArrayList<>();
+    public ArrayList<CurrentDepVoltageSrc> CCVSList = new ArrayList<>();
+    public ArrayList<VoltageDepVoltageSrc> VCVSList = new ArrayList<>();
+
     // Constructor of FileReader
     Scanner sc;
-    public FileReader(File file) throws FileNotFoundException{
+    public FileReader(String fileName) throws FileNotFoundException{
+        File file = new File(fileName);
         sc = new Scanner(file);
     }
 
@@ -65,7 +77,7 @@ public class FileReader {
         return value;
     }
 
-    public void reader(){
+    public boolean reader(){
         double val;
         boolean readEnd = false;
         String line;
@@ -188,6 +200,6 @@ public class FileReader {
                 }
             }
         }
+        return true;
     }
-
 }
