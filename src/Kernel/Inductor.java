@@ -1,8 +1,5 @@
 package Kernel;
 
-import Kernel.CirSim;
-import Kernel.Element;
-
 public class Inductor extends Element {
     double ind;
     double IC = 0;
@@ -10,6 +7,9 @@ public class Inductor extends Element {
     public Inductor(String name, double val, Node pNode, Node nNode) {
         super(name,pNode,nNode);
         ind = val;
+    }
+
+    public Inductor(String[] inLine) {
     }
 
     @Override

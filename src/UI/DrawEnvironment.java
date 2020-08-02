@@ -1,194 +1,164 @@
 package UI;
 
-
-import Kernel.Circuit;
-import Kernel.Element;
-import Kernel.Launcher;
+import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 
+public class DrawEnvironment extends Application {
+    public static File selectedFile=null;
 
-public class DrawEnvironment {
-    JFrame frame2;
-    JTextArea editorField;
-    JScrollPane scroll;
+    @Override
+    public void start(Stage stage) throws Exception {
+        // TODO Auto-generated method stub
+        //Pane root = new Pane();
+        DropShadow shadow = new DropShadow();
 
-    public static void makeEnvironment(String[] args) throws IOException {
-        DrawEnvironment environment = new DrawEnvironment();
-        /*SwingUtilities.invokeLater(new Runnable() {
+        //Creating a pagination
+        TextArea editorArea = new TextArea();
+        editorArea.setPrefColumnCount(15);
+        editorArea.setPrefSize(660,720);
+        editorArea.setLayoutX(10);
+        editorArea.setLayoutY(70);
+        editorArea.setEffect(shadow);
+
+        TextField dataField = new TextField();
+        dataField.setEditable(false);
+        dataField.setPrefSize(300,410);
+        dataField.setLayoutX(690);
+        dataField.setLayoutY(380);
+        writeDetails(dataField);
+        dataField.setEffect(shadow);
+
+        Pane schematicPane = new Pane();
+        schematicPane.setPrefSize(300,300);
+        schematicPane.setLayoutX(690);
+        schematicPane.setLayoutY(70);
+        schematicPane.setVisible(true);
+        //drawElements(schematicPane);
+        schematicPane.setEffect(shadow);
+
+        Button loadButton = new Button();
+        loadButton.setPrefSize(60,25);
+        loadButton.setWrapText(true);
+        loadButton.setEffect(shadow);
+        loadButton.setText("Load");
+        loadButton.setLayoutX(70);
+        loadButton.setLayoutY(20);
+
+        // create a File chooser
+        FileChooser fil_chooser = new FileChooser();
+        fil_chooser.setTitle("Select File");
+        fil_chooser.setInitialDirectory(new File("D:\\"));
+
+        loadButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void run() {
-                environment.createAndShowGui();
+            public void handle(ActionEvent arg0) {
+                File file = fil_chooser.showOpenDialog(stage);
+                if (file != null) {
+                    selectedFile = new File(file.getAbsolutePath());
+                    String filepath = selectedFile.getPath();
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader(filepath));
+                        String step = "", input = "";
+                        while ((step = br.readLine()) != null) {
+                            input += step + "\n";
+                        }
+                        editorArea.setText(input);
+                        br.close();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
-        });*/
-        environment.draw(args);
+        } );
+
+
+        Button runButton =new Button();
+        runButton.setPrefSize(60,25);
+        runButton.setWrapText(true);
+        runButton.setEffect(shadow);
+        runButton.setText("Run");
+        runButton.setLayoutX(160);
+        runButton.setLayoutY(20);
+
+        runButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                if (!(selectedFile.equals(null))) {
+                    try {
+                        FileWriter fileWriter = new FileWriter(selectedFile);
+                        String inputText = editorArea.getText();
+                        fileWriter.write(inputText);
+                        fileWriter.close();
+                    } catch (FileNotFoundException notFoundException) {
+                        notFoundException.printStackTrace();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    //Launcher.launch(selectedFile.getPath());
+                } else {
+                    //TODO: Error!
+                }
+                System.out.println("RunButton clicked");
+            }
+        } );
+
+
+        Button plotButton =new Button();
+        plotButton.setPrefSize(60,25);
+        plotButton.setWrapText(true);
+        plotButton.setEffect(shadow);
+        plotButton.setText("Plot");
+        plotButton.setLayoutX(250);
+        plotButton.setLayoutY(20);
+
+        plotButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                //String elementName = JOptionPane.showInputDialog(frame2,"Enter Name");
+                //Element element = findElement(elementName);
+                //PlotResult.plot(args);
+
+                System.out.println("Button clicked");
+            }
+        } );
+
+
+        //Group root = new Group();
+        Pane rootPane = new Pane();
+        ObservableList list = rootPane.getChildren();
+        rootPane.setStyle("-fx-background-color: azure");
+        list.addAll(loadButton,runButton,plotButton,editorArea,dataField,schematicPane);
+        Scene scene=new Scene(rootPane,1000,800);
+        //root.getChildren().add(loadButton);
+        stage.setScene(scene);
+        stage.setTitle("Button Class Example");
+        stage.show();
+    }
+    public static void makeEnvironment(String[] args) {
+        launch(args);
     }
 
-    public void draw(String[] args) {
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 3, true);
-        Border border1 = BorderFactory.createLineBorder(Color.BLACK, 3, true);
+    private static void writeDetails(TextField field){
 
-        // frame setting:
-        frame2 = new JFrame("JSpice");
-        frame2.setBounds(100, 50, 1200, 750);
-        frame2.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        Container container = frame2.getContentPane();
-        container.setBackground(Color.LIGHT_GRAY);
-        JRootPane rootPane = frame2.getRootPane();
-        rootPane.setBorder(border);
-        LayoutManager mgr = new GroupLayout(container);
-        frame2.setLayout(null);
-
-        JScrollPane scroll;
-        JTextArea editorField = new JTextArea(10, 20);
-        editorField.setBounds(10, 50, 600, 650);
-        editorField.setBorder(border);
-        scroll = new JScrollPane(editorField);
-
-
-        // Button setting:
-        JButton loadButton = new JButton("Load");
-        loadButton.setBounds(60, 10, 60, 25);
-        loadButton.setBackground(Color.GRAY);
-        loadButton.setForeground(Color.WHITE);
-        border1 = BorderFactory.createLineBorder(Color.cyan, 3, true);
-        loadButton.setBorder(border1);
-        frame2.add(loadButton);
-        //frame2.add(scroll);
-        frame2.add(editorField);
-        File selectedFile = null;
-
-        loadButton.addActionListener(new ActionListener() {
-                                         @Override
-                                         public void actionPerformed(ActionEvent e) {
-                                             JFileChooser fileChooser = new JFileChooser();
-                                             int in = fileChooser.showOpenDialog(frame2);
-                                             if (in == JFileChooser.APPROVE_OPTION) {
-                                                 File selectedFile = fileChooser.getSelectedFile();
-                                                 String filepath = selectedFile.getPath();
-                                                 try {
-                                                     BufferedReader br = new BufferedReader(new FileReader(filepath));
-                                                     String step = "", input = "";
-                                                     while ((step = br.readLine()) != null) {
-                                                         input += step + "\n";
-                                                     }
-                                                     editorField.setText(input);
-                                                     br.close();
-                                                 } catch (Exception ex) {
-                                                     ex.printStackTrace();
-                                                 }
-                                             }
-                                         }
-                                     }
-        );
-
-        JButton runButton = new JButton("Run");
-        runButton.setBounds(160, 10, 60, 25);
-        runButton.setBackground(Color.GRAY);
-        runButton.setForeground(Color.WHITE);
-        runButton.setBorder(border1);
-        frame2.add(runButton);
-
-        runButton.addActionListener(new ActionListener() {
-                                        @Override
-                                        public void actionPerformed(ActionEvent e) {
-                                            if (!(selectedFile.equals(null))) {
-                                                try {
-                                                    FileWriter fileWriter = new FileWriter(selectedFile);
-                                                    String inputText = editorField.getText();
-                                                    fileWriter.write(inputText);
-                                                    fileWriter.close();
-                                                } catch (FileNotFoundException notFoundException) {
-                                                    notFoundException.printStackTrace();
-                                                } catch (IOException ioException) {
-                                                    ioException.printStackTrace();
-                                                }
-                                                Launcher.launch(selectedFile.getPath());
-                                            } else {
-                                                //TODO: Error!
-                                            }
-                                        }
-                                    }
-        );
-
-        JButton plotButton = new JButton("Plot");
-        plotButton.setBounds(260, 10, 60, 25);
-        plotButton.setBackground(Color.GRAY);
-        plotButton.setForeground(Color.WHITE);
-        plotButton.setBorder(border1);
-        frame2.add(plotButton);
-
-        plotButton.addActionListener(new ActionListener() {
-                                         @Override
-                                         public void actionPerformed(ActionEvent e) {
-                                             String elementName = JOptionPane.showInputDialog(frame2,"Enter Name");
-                                             Element element = findElement(elementName);
-                                             PlotResult.plot(args);
-                                         }
-                                     }
-        );
-
-        JPanel schematicPanel = new JPanel();
-        schematicPanel.setBounds(620, 50, 300, 300);
-        schematicPanel.setBackground(Color.WHITE);
-        schematicPanel.setBorder(border);
-        frame2.add(schematicPanel);
-
-        JTextArea elementsDetails = new JTextArea();
-        elementsDetails.setBounds(620, 365, 300, 335);
-        elementsDetails.setBackground(Color.WHITE);
-        elementsDetails.setBorder(border);
-        elementsDetails.setEditable(false);
-        frame2.add(elementsDetails);
-
-
-        frame2.pack();
-        frame2.setBounds(100, 100, 1200, 700);
-        frame2.setVisible(true);
-    }
-
-    public void createAndShowGui() {
-        JFrame frame;
-        JTextArea textArea;
-        frame = new JFrame("ScrollPane to TextArea");
-        frame.setLayout(null);
-        //JPanel panel = new JPanel();
-        //panel.setBounds(10, 10, 500, 500);
-        textArea = new JTextArea(); //Rows and cols to be displayed
-        textArea.setEditable(true);
-        textArea.setSize(100, 100);
-
-        textArea.setBounds(10,10,100,100);
-        //scroll = new JScrollPane(textArea);
-        //JScrollPane scrollableTextArea = new JScrollPane(textArea);
-
-        //scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        //scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-        TextArea textArea1 = new TextArea();
-
-
-        //frame.getContentPane().add(scrollableTextArea);
-
-        //panel.add(textArea);
-        //frame.add(scroll); //We add the scroll, since the scroll already contains the textArea
-        frame.pack();
-        frame.setBounds(0, 0, 1100, 700);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    private static Element findElement(String elementName){
-        for (Element element : Circuit.elementList) {
-            if (element.getName().equalsIgnoreCase(elementName))
-                return element;
-        }
-        return null;
     }
 }
+

@@ -1,9 +1,11 @@
 package Kernel;
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
-import java.util.regex.Pattern.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileReader {
     // The interval values of time, voltage and current
@@ -80,7 +82,7 @@ public class FileReader {
                     // READING EXCEPTION
                 }
                 else if(num == 2){
-                    double val = numProcess(input[1], line);
+                    val = numProcess(input[1], line);
                     if(val >= 0){
                         if(input[0].equals("dt") || input[0].equals("dT")){
                             dt = val;
