@@ -17,6 +17,7 @@ public class FileReader {
     // Arrays of elements and nodes
     public ArrayList<Element> elemList = new ArrayList<Element>();
     public ArrayList<Node> nodeList = new ArrayList<Node>();
+    public int[][] linkMat = new int[31][31];
 
     // Element Specific arrayLists
     public ArrayList<Resistor> resList = new ArrayList<Resistor>();

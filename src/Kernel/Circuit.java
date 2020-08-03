@@ -7,6 +7,7 @@ public class Circuit {
     public static ArrayList<Element> elementList = new ArrayList<Element>();
     public static ArrayList<Node> nodeList = new ArrayList<Node>();
     public static ArrayList<Union> unionList = new ArrayList<Union>();
+    public static int[][] linkMat = new int[31][31];
 
     // Simulation determining factors
     public double timeD = 0;
@@ -57,6 +58,7 @@ public class Circuit {
         elementList = fileReader.elemList;
         nodeList = fileReader.nodeList;
         unionList = new ArrayList<Union>();
+        linkMat = fileReader.linkMat;
 
         // Element specific arrayLists
         resList = fileReader.resList;

@@ -9,6 +9,7 @@ public class Resistor extends Element {
     public Resistor(String name, double val, Node pNode, Node nNode) {
         super(name,pNode,nNode);
         resistance = val;
+        type = "RES";
     }
 
     @Override

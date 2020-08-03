@@ -9,6 +9,7 @@ Capacitor extends Element {
     public Capacitor(String name, double val, Node pNode, Node nNode) {
         super(name,pNode,nNode);
         capacity = val;
+        type = "CAP";
     }
 
     @Override

@@ -8,11 +8,12 @@ public abstract class Element {
     //private final String name;
     public List<Double> currentList = new ArrayList<Double>();
     public List<Double> voltageList = new ArrayList<Double>();
-    Node positiveNode;
-    Node negativeNode;
+    public Node positiveNode;
+    public Node negativeNode;
     // Declare variable current to hold the latest element of currentList
     double current;
-    String name;
+    public String name;
+    public String type;
 
     protected int unionIndex;
     int positiveNodeIndex = 0;

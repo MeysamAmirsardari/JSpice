@@ -3,34 +3,38 @@ package UI;
 import Kernel.Element;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Line;
 
 public class DrawElement {
-    public static void draw(String type,Pane pane, Dot pDot, Dot nDot){
+    public static void draw(String type,Pane pane, Dot pDot, Dot nDot, Paint color){
         switch(type){
             case "capacitor":
-                drawCap(pane, pDot, nDot);
+                drawCap(pane, pDot, nDot,color);
                 break;
             case "resistor":
-                drawRes(pane, pDot, nDot);
+                drawRes(pane, pDot, nDot,color);
                 break;
             case "inductor":
-                drawInd(pane, pDot, nDot);
+                drawInd(pane, pDot, nDot,color);
                 break;
             case "diode":
-                drawDiode(pane,pDot,nDot);
+                drawDiode(pane,pDot,nDot,color);
                 break;
             case "VolSrc":
-                drawVolSrc(pane,pDot,nDot);
+                drawVolSrc(pane,pDot,nDot,color);
                 break;
             case "CurSrc":
-                drawCurSrc(pane,pDot,nDot);
+                drawCurSrc(pane,pDot,nDot,color);
+                break;
+            case "wire":
+                drawWire(pane,pDot,nDot,color);
                 break;
         }
     }
 
-    public static void drawCap(Pane pane, Dot pDot, Dot nDot){
+    public static void drawCap(Pane pane, Dot pDot, Dot nDot, Paint color){
         Line l1,l2,l3,l4;
         if(pDot.x != nDot.x){
             int x = Math.min(pDot.x,nDot.x);
@@ -48,7 +52,7 @@ public class DrawElement {
         pane.getChildren().addAll(l1,l2,l3,l4);
     }
 
-    public static void drawRes(Pane pane, Dot pDot, Dot nDot){
+    public static void drawRes(Pane pane, Dot pDot, Dot nDot, Paint color){
         Line l1,l2,l3,l4,l5,l6,l7,l8,l9;
         if(pDot.x != nDot.x){
             int x = Math.min(pDot.x,nDot.x);
@@ -79,7 +83,7 @@ public class DrawElement {
         pane.getChildren().addAll(l1,l2,l3,l4,l5,l6,l7,l8,l9);
     }
 
-    public static void drawInd(Pane pane, Dot pDot, Dot nDot){
+    public static void drawInd(Pane pane, Dot pDot, Dot nDot, Paint color){
         Line l1,l2;
         Arc a1,a2,a3;
         if(pDot.x!=nDot.x){
@@ -103,13 +107,13 @@ public class DrawElement {
         a1.setFill(Color.TRANSPARENT);
         a2.setFill(Color.TRANSPARENT);
         a3.setFill(Color.TRANSPARENT);
-        a1.setStroke(Color.BLACK);
-        a2.setStroke(Color.BLACK);
-        a3.setStroke(Color.BLACK);
+        a1.setStroke(color);
+        a2.setStroke(color);
+        a3.setStroke(color);
         pane.getChildren().addAll(l1,l2,a1,a2,a3);
     }
 
-    public static void drawDiode(Pane pane, Dot pDot, Dot nDot){
+    public static void drawDiode(Pane pane, Dot pDot, Dot nDot, Paint color){
         Line l1,l2,l3,l4,l5,l6;
         if(pDot.x!=nDot.x){
             int x = Math.min(pDot.x,nDot.x);
@@ -144,7 +148,7 @@ public class DrawElement {
         pane.getChildren().addAll(l1,l2,l3,l4,l5,l6);
     }
 
-    public static void drawVolSrc(Pane pane, Dot pDot, Dot nDot){
+    public static void drawVolSrc(Pane pane, Dot pDot, Dot nDot, Paint color){
         Line l1,l2,l3,l4;
         Arc a1;
         if(pDot.x != nDot.x){
@@ -166,11 +170,11 @@ public class DrawElement {
             l4 = new Line(x,y+35,x,y+50);
         }
         a1.setFill(Color.TRANSPARENT);
-        a1.setStroke(Color.BLACK);
+        a1.setStroke(color);
         pane.getChildren().addAll(l1,l2,l3,l4,a1);
     }
 
-    public static void drawCurSrc(Pane pane, Dot pDot, Dot nDot){
+    public static void drawCurSrc(Pane pane, Dot pDot, Dot nDot, Paint color){
         Line l1,l2,l3,l4,l5;
         Arc a1;
         if(pDot.x != nDot.x){
@@ -195,7 +199,14 @@ public class DrawElement {
 
         }
         a1.setFill(Color.TRANSPARENT);
-        a1.setStroke(Color.BLACK);
+        a1.setStroke(color);
         pane.getChildren().addAll(l1,l2,l3,l4,l5,a1);
+    }
+
+    public static void drawWire(Pane pane, Dot pDot, Dot nDot, Paint color){
+        Line l;
+        l = new Line(pDot.x,pDot.y,nDot.x,nDot.y);
+        l.setStroke(color);
+        pane.getChildren().add(l);
     }
 }

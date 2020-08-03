@@ -7,6 +7,7 @@ public class Inductor extends Element {
     public Inductor(String name, double val, Node pNode, Node nNode) {
         super(name,pNode,nNode);
         inductance = val;
+        type = "IND";
     }
 
     public Inductor(String[] inLine) {
