@@ -32,9 +32,10 @@ public class FileReader {
 
     // Constructor of FileReader
     Scanner sc;
-    public FileReader(String fileName) throws FileNotFoundException{
-        File file = new File(fileName);
+    public FileReader(String filePath) throws FileNotFoundException{
+        File file = new File(filePath);
         sc = new Scanner(file);
+        System.out.println(sc.nextLine());
     }
 
     public double numProcess(String string, String line){

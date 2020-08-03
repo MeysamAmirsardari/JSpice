@@ -116,7 +116,11 @@ public class DrawEnvironment extends Application {
                         alert.setContentText("No command entered!");
                         alert.showAndWait();
                     }
-                    Launcher.launch(selectedFile.getPath());
+                    try {
+                        Launcher.launch(selectedFile.getPath());
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!");

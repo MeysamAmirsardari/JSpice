@@ -5,20 +5,28 @@ package Kernel;/*
  */
 
 import UI.DrawEnvironment;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
         DrawEnvironment.Args = args;
-        String filePath = "test.txt"; // Using relative address
+        String filePath = "D:\\test1.txt"; // Using relative address
         launch(filePath);
         CirSim.printResults();
 
         //DrawEnvironment.makeEnvironment(args);
     }
 
-    public static void launch(String filePath) {
-
+    public static void launch(String filePath) throws FileNotFoundException {
+        FileReader reader = new FileReader(filePath);
+        CirSim.Dt = reader.dt;
+        CirSim.Dv = reader.dv;
+        CirSim.Di = reader.di;
+        CirSim.timeDomain = reader.t;
+        Circuit.elementList = reader.elemList;
+        Circuit.nodeList = reader.nodeList;
         Circuit circuit = new Circuit(filePath);
         circuit.printCircuit();
         circuit.makeUnions();
@@ -32,15 +40,4 @@ public class Launcher {
         CirSim.simulate();
     }
 
-    protected static double divideByTenForNTimes(double num, int n) {
-        if (n > 0) {
-            for (int i = 0; i < n; i++)
-                num *= 10.0;
-        } else if (n < 0) {
-            for (int i = n; i < 0; i++) {
-                num /= 10.0;
-            }
-        }
-        return num;
-    }
 }

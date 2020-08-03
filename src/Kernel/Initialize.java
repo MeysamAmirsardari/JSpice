@@ -1,14 +1,11 @@
 package Kernel;
 
-import Kernel.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Initialize {
     public static List<Union> unionList = new ArrayList<Union>();
@@ -28,7 +25,7 @@ public class Initialize {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < inputLines.size() ; i++) {
+        /*for (int i = 0; i < inputLines.size() ; i++) {
             if (!(inputLines.get(i).startsWith("*")&&(inputLines.get(i).equalsIgnoreCase("END")))){
                 String line = inputLines.get(i).replaceAll("\\s+"," ").trim();
                 String[] inLine = line.split(" ");
@@ -78,7 +75,7 @@ public class Initialize {
 
             }
 
-        }
+        }*/
 
     }
 }
