@@ -31,14 +31,6 @@ public class Preview extends Application {
         startButton.setLayoutX(400);
         startButton.setLayoutY(650);
 
-        startButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                stage.close();
-            }
-        }
-        );
-
         java.net.URL url = getClass().getResource("LaunchIcon.gif");
         Image image = new Image(new FileInputStream(url.getPath()));
         ImageView imageView = new ImageView(image);
@@ -56,8 +48,18 @@ public class Preview extends Application {
         stage.setTitle("Loading JSpice...");
         stage.setScene(scene);
         stage.show();
+
+        startButton.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent arg0) {
+                                        //stage.close();
+                                        root.setVisible(false);
+                                        DrawEnvironment.showEnvironment(stage);
+                                    }
+                                }
+        );
     }
-    public static void showFirstPage(String args[]) {
+    public static void main(String args[]) {
         launch(args);
     }
 }

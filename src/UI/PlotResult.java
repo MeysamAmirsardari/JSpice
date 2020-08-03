@@ -2,21 +2,24 @@ package UI;
 
 import Kernel.CirSim;
 import Kernel.Element;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class PlotResult extends Application {
+public class PlotResult {
 
-    @Override
-    public void start(Stage stage) {
+    //@Override
+    //public void start(Stage stage) {
+    public static void plotResult (Stage stage){
         //Defining the x an y axes
         CategoryAxis timeAxis = new CategoryAxis();
         NumberAxis VIP_Axis = new NumberAxis();
@@ -114,6 +117,13 @@ public class PlotResult extends Application {
         I_pane.setStyle("-fx-background-color: azure");
         P_pane.setStyle("-fx-background-color: BEIGE");
 
+        Button backButton =new Button();
+        backButton.setPrefSize(60,25);
+        backButton.setWrapText(true);
+        backButton.setText("Back");
+        backButton.setLayoutX(250);
+        backButton.setLayoutY(20);
+
         //Setting the Scene
         Group root = new Group();
         ObservableList list = root.getChildren();
@@ -123,9 +133,17 @@ public class PlotResult extends Application {
         stage.setTitle("Simulation Result");
         stage.setScene(scene);
         stage.show();
+
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                root.setVisible(false);
+                DrawEnvironment.rootPane.setVisible(true);
+            }
+        } );
     }
 
-    public static void plot(String args[]){
-        launch(args);
-    }
+    //public static void plot(String args[]){
+    //    launch(args);
+    //}
 }

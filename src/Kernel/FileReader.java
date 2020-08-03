@@ -35,46 +35,48 @@ public class FileReader {
     public FileReader(String filePath) throws FileNotFoundException{
         File file = new File(filePath);
         sc = new Scanner(file);
-        System.out.println(sc.nextLine());
     }
 
-    public double numProcess(String string, String line){
+    public double numProcess(String string){
 
-        Pattern num = Pattern.compile("[+-]?\\d(\\.\\d+)?");
+        Pattern num = Pattern.compile("[+-]?\\d*(\\.\\d+)?");
         Matcher numVal = num.matcher(string);
         Pattern error = Pattern.compile("[a-zA-z]");
         Matcher errVal = error.matcher(string);
         Pattern suffix = Pattern.compile("[GMkmunp]");
         Matcher sufVal = suffix.matcher(string);
+        //String st = numVal.group();
+        System.out.println(Double.parseDouble(string.replaceAll("[A-Z]|[a-z]","")));
 
-        double value = Double.parseDouble(numVal.group());
-        String sufStr = sufVal.group();
-        if(!sufStr.equals(errVal.group())){
+        double value = Double.parseDouble(string.replaceAll("[A-Z]|[a-z]",""));
+        //String sufStr = sufVal.group();
+        String sufStr = string.replaceAll("[^a-zA-Z]","");
+        //if(!sufStr.equals(errVal.group())){
             // READING EXCEPTION
-        }
-        else{
-            if(sufVal.equals("G")){
+        //}
+        //else{
+            if(sufStr.equals("G")){
                 value *= Math.pow(10,9);
             }
-            else if(sufVal.equals("M")){
+            else if(sufStr.equals("M")){
                 value *= Math.pow(10,6);
             }
-            else if(sufVal.equals("k")){
+            else if(sufStr.equalsIgnoreCase("k")){
                 value *= Math.pow(10,3);
             }
-            else if(sufVal.equals("m")){
+            else if(sufStr.equals("m")){
                 value *= Math.pow(10,-3);
             }
-            else if(sufVal.equals("u")){
+            else if(sufStr.equals("u")){
                 value *= Math.pow(10,-6);
             }
-            else if(sufVal.equals("n")){
+            else if(sufStr.equals("n")){
                 value *= Math.pow(10,-9);
             }
-            else if(sufVal.equals("p")){
+            else if(sufStr.equals("p")){
                 value *= Math.pow(10,-12);
             }
-        }
+        //}
         return value;
     }
 
@@ -95,19 +97,23 @@ public class FileReader {
                     // READING EXCEPTION
                 }
                 else if(num == 2){
-                    val = numProcess(input[1], line);
+                    val = numProcess(input[1]);
                     if(val >= 0){
                         if(input[0].equals("dt") || input[0].equals("dT")){
                             dt = val;
+                            CirSim.Dt = val;
                         }
                         else if(input[0].equals("dv") || input[0].equals("dV")){
                             dv = val;
+                            CirSim.Dv = val;
                         }
                         else if(input[0].equals("di") || input[0].equals("dI")){
                             di = val;
+                            CirSim.Di = val;
                         }
                         else if(input[0].equals(".tran")){
                             t = val;
+                            CirSim.timeDomain = val;
                             readEnd = true;
                             break;
                         }
@@ -161,7 +167,7 @@ public class FileReader {
 
                     // The condition for passive elements
                     if(num == 4){
-                        val = numProcess(input[3],line);
+                        val = numProcess(input[3]);
                         if(input[0].startsWith("r") || input[0].startsWith("R")){
                             if(val<0){
                                 // READING EXCEPTION
@@ -180,7 +186,7 @@ public class FileReader {
                             pN.elementList.add(capacitor);
                             nN.elementList.add(capacitor);
                         }
-                        else if(input[0].startsWith("i") || input[0].startsWith("I")){
+                        else if(input[0].startsWith("l") || input[0].startsWith("L")){
                             if(val<0){
                                 // READING EXCEPTION
                             }

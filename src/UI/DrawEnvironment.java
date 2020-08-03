@@ -3,7 +3,6 @@ package UI;
 import Kernel.Circuit;
 import Kernel.Element;
 import Kernel.Launcher;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,14 +15,16 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
-public class DrawEnvironment extends Application {
+public class DrawEnvironment {
     public static File selectedFile=null;
-    public static String[] Args;
+    public static Pane rootPane = new Pane();
     public static Element element;
+    public static boolean isSimulated = false;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Preview.showFirstPage(Args);
+    //@Override
+    //public void start(Stage stage) throws Exception {
+    public static void showEnvironment(Stage stage){
+        //Preview.showFirstPage(Args);
         DropShadow shadow = new DropShadow();
 
         TextArea editorArea = new TextArea();
@@ -50,11 +51,11 @@ public class DrawEnvironment extends Application {
         schematicPane.setEffect(shadow);
 
         Button loadButton = new Button();
-        loadButton.setPrefSize(60,25);
+        loadButton.setPrefSize(100,25);
         loadButton.setWrapText(true);
         loadButton.setEffect(shadow);
         loadButton.setText("Load");
-        loadButton.setLayoutX(70);
+        loadButton.setLayoutX(150);
         loadButton.setLayoutY(20);
 
         // create a File chooser
@@ -86,11 +87,11 @@ public class DrawEnvironment extends Application {
 
 
         Button runButton =new Button();
-        runButton.setPrefSize(60,25);
+        runButton.setPrefSize(100,25);
         runButton.setWrapText(true);
         runButton.setEffect(shadow);
         runButton.setText("Run");
-        runButton.setLayoutX(160);
+        runButton.setLayoutX(280);
         runButton.setLayoutY(20);
 
         runButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -117,6 +118,7 @@ public class DrawEnvironment extends Application {
                         alert.showAndWait();
                     }
                     try {
+                        isSimulated = true;
                         Launcher.launch(selectedFile.getPath());
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -133,51 +135,64 @@ public class DrawEnvironment extends Application {
 
 
         Button plotButton =new Button();
-        plotButton.setPrefSize(60,25);
+        plotButton.setPrefSize(100,25);
         plotButton.setWrapText(true);
         plotButton.setEffect(shadow);
         plotButton.setText("Plot");
-        plotButton.setLayoutX(250);
+        plotButton.setLayoutX(410);
         plotButton.setLayoutY(20);
-
-        plotButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                TextInputDialog textDialog = new TextInputDialog("");
-                textDialog.setHeaderText("Please enter the name of the element:");
-                textDialog.showAndWait();
-                String elementName = textDialog.getResult();
-                element = findElement(elementName);
-                if (element!=null)
-                    PlotResult.plot(Args);
-                else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error!");
-                    alert.setHeaderText("Error!");
-                    alert.setContentText("Element not found!");
-                    alert.showAndWait();
-                }
-            }
-        } );
 
 
         //Group root = new Group();
-        Pane rootPane = new Pane();
         ObservableList list = rootPane.getChildren();
         rootPane.setStyle("-fx-background-color: azure");
         list.addAll(loadButton,runButton,plotButton,editorArea,dataField,schematicPane);
         Scene scene=new Scene(rootPane,1000,800);
         //root.getChildren().add(loadButton);
         stage.setScene(scene);
-        stage.setTitle("JSpice");
+        stage.setTitle("JSpice!");
         stage.show();
+
+        plotButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                if (isSimulated) {
+                    TextInputDialog textDialog = new TextInputDialog("");
+                    textDialog.setHeaderText("Please enter the name of the element:");
+                    textDialog.showAndWait();
+                    String elementName = textDialog.getResult();
+                    element = findElement(elementName);
+                    if (element != null) {
+                        rootPane.setVisible(false);
+                        PlotResult.plotResult(stage);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error!");
+                        alert.setHeaderText("Error!");
+                        alert.setContentText("Element not found!");
+                        alert.showAndWait();
+                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error!");
+                    alert.setHeaderText("Error!");
+                    alert.setContentText("Please Run the simulator before plotting!");
+                    alert.showAndWait();
+                }
+            }
+        } );
+
     }
-    public static void makeEnvironment(String[] args) {
-        Args = args;
-        launch(args);
-    }
+    //public static void makeEnvironment(String[] args) {
+    //    Args = args;
+    //    launch(args);
+    //}
 
     private static void writeDetails(TextField field){
+        String text = "Found Elements Names:\n";
+        for (Element element1 : Circuit.elementList) {
+            text += element1.getName() + "\n";
+        }
     }
 
     private static Element findElement(String elementName){

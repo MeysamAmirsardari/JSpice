@@ -1,6 +1,5 @@
 package Kernel;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -74,6 +73,7 @@ public class Circuit {
 
     public void makeUnions(){
         CreateUnion union = new CreateUnion(this);
+        //union.create();
     }
 
     public void printUnion(){
