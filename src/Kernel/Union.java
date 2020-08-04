@@ -85,11 +85,12 @@ public class Union {
         double i = 0;
         for (Node node : nodeList) {
             for (Element element : node.negativeElementList) {
-                if (element.unionIndex != index)
+                //if (element.unionIndex != index)
+
                     i += element.getCurrentFromNegativeNode(time);
             }
             for (Element element : node.positiveElementList) {
-                if (element.unionIndex != index)
+                //if (element.unionIndex != index)
                     i -= element.getCurrentFromPositiveNode(time);
             }
         }

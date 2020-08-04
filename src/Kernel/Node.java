@@ -1,7 +1,6 @@
 package Kernel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Node {
     public String name;
@@ -29,15 +28,27 @@ public class Node {
         voltageList.add(0.00);
     }
 
-    protected static void setNodesForAllElements() {
+    public static void setNodesForAllElements() {
         creatNodeList();
         for (Element element : Circuit.elementList) {
-            element.negativeNode = Circuit.nodeList.get(element.negativeNodeIndex);
-            Circuit.nodeList.get(element.negativeNodeIndex).negativeElementList.add(element);
-            Circuit.nodeList.get(element.negativeNodeIndex).elementList.add(element);
-            element.positiveNode = Circuit.nodeList.get(element.positiveNodeIndex);
-            Circuit.nodeList.get(element.positiveNodeIndex).positiveElementList.add(element);
-            Circuit.nodeList.get(element.positiveNodeIndex).elementList.add(element);
+            //negative Node:
+            //element.negativeNode = Circuit.nodeList.get(element.negativeNodeIndex);
+            element.negativeNode.negativeElementList.add(element);
+            element.negativeNode.elementList.add(element);
+            //positive Node:
+            //element.positiveNode = Circuit.nodeList.get(element.positiveNodeIndex);
+            element.positiveNode.positiveElementList.add(element);
+            element.positiveNode.elementList.add(element);
+        }
+    }
+
+    public static void setElementListForNodes(){
+        for (Node node : Circuit.nodeList) {
+            node.elementList.clear();
+        }
+        for (Element element : Circuit.elementList) {
+            Circuit.nodeList.get(Circuit.nodeList.indexOf(element.negativeNode)).elementList.add(element);
+            Circuit.nodeList.get(Circuit.nodeList.indexOf(element.positiveNode)).elementList.add(element);
         }
     }
 

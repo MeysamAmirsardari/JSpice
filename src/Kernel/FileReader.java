@@ -337,7 +337,7 @@ public class FileReader {
                         double frequency = numProcess(input[5], line);
                         double phase = numProcess(input[6], line);
                         if (elemName.startsWith("v") || elemName.startsWith("V")) {
-                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, pN, nN);
+                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, nN, pN);
                             elemList.add(volSrc);
                             volSrcList.add(volSrc);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
@@ -347,7 +347,7 @@ public class FileReader {
                             nN.elementList.add(volSrc);
                             nN.adjacentSources.add(volSrc);
                         } else if (elemName.startsWith("i") || elemName.startsWith("I")) {
-                            CurrentSrc curSrc = new CurrentSrc(elemName, offset, amplitude, frequency, phase, pN, nN);
+                            CurrentSrc curSrc = new CurrentSrc(elemName, offset, amplitude, frequency, phase, nN, pN);
                             elemList.add(curSrc);
                             curSrcList.add(curSrc);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;

@@ -12,9 +12,9 @@ public class Launcher {
         //Preview.main(args);
 
         //just for test:
-        String filePath = "D:\\test5.txt";
+        String filePath = "D:\\test1.txt";
         launch(filePath);
-        Test.main(args);
+        //Test.main(args);
     }
 
     public static void launch(String filePath) throws FileNotFoundException {
@@ -22,14 +22,16 @@ public class Launcher {
         Circuit.elementList.clear();
         Circuit.nodeList.clear();
         Circuit circuit = new Circuit(filePath);
+        CirSim.setNodesIndexesForElements();
+        Node.setNodesForAllElements();
+        Node.setElementListForNodes();
+        Union.setElementListForAllUnions();
         circuit.printCircuit();
         circuit.makeUnions();
         circuit.printUnion();
 
-//        Node.setNodesForAllElements();
-//        Union.setElementListForAllUnions();
-//        CirSim.simulate();
-//        CirSim.printResults();
+        CirSim.simulate();
+        CirSim.printResults();
     }
 
 }

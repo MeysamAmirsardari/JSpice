@@ -47,7 +47,7 @@ public abstract class Element {
     
     // Voltage related methods
     public double getVoltage(double time) {
-        return positiveNode.getVoltage() - negativeNode.getVoltage();
+        return positiveNode.getLastVoltage() - negativeNode.getLastVoltage();
     }
 
     // Current related methods

@@ -10,6 +10,15 @@ public abstract class CirSim {
 
     public static void simulate() {
         reArrangeElementListForNodes();
+
+        ArrayList<Node> temp = Circuit.nodeList;
+        Circuit.nodeList = new ArrayList<Node>();
+
+        for (Node node : temp) {
+            if (!node.name.equals("0"))
+                Circuit.nodeList.add(node);
+        }
+
         setTempVForAllNodes(0);
         setUnionIndexForAllElements();
         for (Element element : Circuit.elementList) {
@@ -25,14 +34,12 @@ public abstract class CirSim {
         //    solver(0);
         //}
         for (int i = 1; i < n; i++) {
-
-
             solver(i * Dt);
         }
     }
 
     private static void reArrangeElementListForNodes(){
-        boolean found=false;
+        boolean found;
         for (Node node : Circuit.nodeList) {
             ArrayList<Element> temp = node.elementList;
             node.elementList = new ArrayList<Element>();
@@ -96,7 +103,7 @@ public abstract class CirSim {
         }
     }
 
-    public static void setIndexesForElements(){
+    public static void setNodesIndexesForElements(){
         for (Element element : Circuit.elementList) {
             element.negativeNodeIndex = Integer.parseInt(element.negativeNode.name);
             element.positiveNodeIndex = Integer.parseInt(element.positiveNode.name);
@@ -106,20 +113,27 @@ public abstract class CirSim {
     public static void printResults() {
         int j = 1;
         System.out.println("******          Nodes voltages:         ******");
-        for (Node node : Circuit.nodeList) {
-            System.out.printf("%d", j++);
-            for (Double voltage : node.voltageList) {
-                System.out.printf(" %f ", voltage);
-            }
-            System.out.printf("\n");
+        //for (Node node : Circuit.nodeList) {
+        //    System.out.printf("%d", j++);
+        //    for (Double voltage : node.voltageList) {
+        //        System.out.printf(" %f ", voltage);
+        //    }
+        //    System.out.printf("\n");
+        //}
+        for (Node element : Circuit.nodeList) {
+            Double b = element.voltageList.get(element.voltageList.size()-1);
+            System.out.printf("( %f ) \n",b);
         }
         System.out.println("******          Elements voltages:         ******");
-        j = 0;
+
         for (Element element : Circuit.elementList) {
+            Double a = element.currentList.get(element.currentList.size()-1);
+            Double b = element.voltageList.get(element.voltageList.size()-1);
             System.out.printf(element.getName() + " ");
-            System.out.printf("(%f , %f ,", element.voltageList.get(j), element.currentList.get(j));
-            System.out.printf(" %f) \n", element.voltageList.get(j) * element.currentList.get(j));
-            j++;
+            System.out.printf("(%f , %f ,", element.voltageList.get(element.voltageList.size()-1),
+                    element.currentList.get(element.currentList.size()-1));
+            System.out.printf(" %f) \n",
+                    element.voltageList.get(element.voltageList.size()-1) * element.currentList.get(element.currentList.size()-1));
         }
     }
 }
