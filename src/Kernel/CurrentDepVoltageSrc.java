@@ -1,6 +1,6 @@
 package Kernel;
 
-public class CurrentDepVoltageSrc extends CurrentSrc {
+public class CurrentDepVoltageSrc extends VoltageSrc {
     Element refElm;
     double gain;
 
@@ -8,16 +8,11 @@ public class CurrentDepVoltageSrc extends CurrentSrc {
         super();
     }
 
-    public CurrentDepVoltageSrc(String[] details) {
-        name = details[0].trim();
-        positiveNodeIndex = Integer.parseInt(details[1].trim());
-        negativeNodeIndex = Integer.parseInt(details[2].trim());
-        String refElmName = details[3].trim();
-        gain = Double.parseDouble(details[4].trim()); //TODO: code1
-        refElm = Circuit.searchInElementList(refElmName);
-        if (refElm.equals(null)) {
-            //TODO: Error!
-        }
+    public CurrentDepVoltageSrc(String name, double gain, Node pN, Node nN, Element refElm) {
+        super(name, pN, nN);
+        this.gain = gain;
+        this.refElm = refElm;
+        isDependent = true;
     }
 
 

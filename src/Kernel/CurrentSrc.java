@@ -7,9 +7,14 @@ public class CurrentSrc extends Source {
     double phase;
     double frequency;
     boolean isDirect = false;
+    boolean isDependent = false;
 
     public CurrentSrc() {
         super();
+    }
+
+    public CurrentSrc(String name, Node pN, Node nN) {
+        super(name, pN, nN);
     }
 
     public CurrentSrc(String name, double Idc, double Ipk, double frequency, double phase, Node pN, Node nN) {
@@ -22,6 +27,7 @@ public class CurrentSrc extends Source {
         if (Ipk == 0.0) {
             isDirect = true;
         }
+        isDependent = false;
     }
 
     @Override

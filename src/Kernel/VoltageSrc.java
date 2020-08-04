@@ -6,9 +6,14 @@ public class VoltageSrc extends Source {
     double phase;
     double frequency;
     boolean isDirect = false;
+    boolean isDependent = false;
 
     public VoltageSrc() {
         super();
+    }
+
+    public VoltageSrc(String name, Node pN, Node nN) {
+        super(name, pN, nN);
     }
 
     public VoltageSrc(String name, double Vdc, double Vpk, double frequency, double phase, Node pN, Node nN) {
@@ -21,6 +26,7 @@ public class VoltageSrc extends Source {
         if (Vpk == 0.0) {
             isDirect = true;
         }
+        isDependent = false;
     }
 
     @Override
