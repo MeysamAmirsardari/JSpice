@@ -12,8 +12,8 @@ public class Launcher {
         //Preview.main(args);
 
         //just for test:
-            String filePath = "D:\\test5.txt";
-            launch(filePath);
+        String filePath = "D:\\test10.txt";
+        launch(filePath);
     }
 
     public static void launch(String filePath) throws FileNotFoundException {

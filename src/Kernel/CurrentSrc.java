@@ -6,19 +6,22 @@ public class CurrentSrc extends Source {
     double Idc;
     double phase;
     double frequency;
+    boolean isDirect = false;
 
     public CurrentSrc() {
         super();
     }
 
-    public CurrentSrc(String[] details) {
-        name = details[0].trim();
-        positiveNodeIndex = Integer.parseInt(details[1].trim());
-        negativeNodeIndex = Integer.parseInt(details[2].trim());
-        Idc = Double.parseDouble(details[3].trim());
-        Ipk = Double.parseDouble(details[4].trim());
-        frequency = Double.parseDouble(details[5].trim());
-        phase = Double.parseDouble(details[6].trim()); //TODO: code1
+    public CurrentSrc(String name, double Idc, double Ipk, double frequency, double phase, Node pN, Node nN) {
+        super(name, pN, nN);
+        this.Ipk = Ipk;
+        this.Idc = Idc;
+        this.frequency = frequency;
+        this.phase = phase;
+        type = "CurSrc";
+        if (Ipk == 0.0) {
+            isDirect = true;
+        }
     }
 
     @Override

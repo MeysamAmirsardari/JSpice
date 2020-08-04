@@ -5,19 +5,22 @@ public class VoltageSrc extends Source {
     double Vdc;
     double phase;
     double frequency;
+    boolean isDirect = false;
 
     public VoltageSrc() {
         super();
     }
 
-    public VoltageSrc(String[] details) {
-        name = details[0].trim();
-        positiveNodeIndex = Integer.parseInt(details[1].trim());
-        negativeNodeIndex = Integer.parseInt(details[2].trim());
-        Vdc = Double.parseDouble(details[3].trim());
-        Vpk = Double.parseDouble(details[4].trim());
-        frequency = Double.parseDouble(details[5].trim()); //TODO: code1
-        phase = Double.parseDouble(details[6].trim());
+    public VoltageSrc(String name, double Vdc, double Vpk, double frequency, double phase, Node pN, Node nN) {
+        super(name, pN, nN);
+        this.Vpk = Vpk;
+        this.Vdc = Vdc;
+        this.frequency = frequency;
+        this.phase = phase;
+        type = "VolSrc";
+        if (Vpk == 0.0) {
+            isDirect = true;
+        }
     }
 
     @Override
