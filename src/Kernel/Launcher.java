@@ -12,7 +12,7 @@ public class Launcher {
         //Preview.main(args);
 
         //just for test:
-        String filePath = "D:\\test9.txt";
+        String filePath = "D:\\test2.txt";
         launch(filePath);
     }
 
@@ -21,14 +21,19 @@ public class Launcher {
         Circuit.elementList.clear();
         Circuit.nodeList.clear();
         Circuit circuit = new Circuit(filePath);
+
+        CirSim.setIndexesForElements();
+        Node.setNodesForAllElements();
+        Union.setElementListForAllUnions();
+
         circuit.printCircuit();
         circuit.makeUnions();
         circuit.printUnion();
 
-        Node.setNodesForAllElements();
-        Union.setElementListForAllUnions();
         CirSim.simulate();
         CirSim.printResults();
     }
+
+
 
 }

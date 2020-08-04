@@ -1,5 +1,7 @@
 package Kernel;
 
+import java.util.ArrayList;
+
 public abstract class CirSim {
     public static double Dv;
     public static double Di;
@@ -7,14 +9,43 @@ public abstract class CirSim {
     public static double timeDomain;
 
     public static void simulate() {
-        setUnionIndexForAllElements();
+        reArrangeElementListForNodes();
         setTempVForAllNodes(0);
-        int n = (int) (timeDomain / Dt);
-        while (checkAllDeltas()) {       //DC analyze
-            solver(0);
+        setUnionIndexForAllElements();
+        for (Element element : Circuit.elementList) {
+            if (element.voltageList.size()==0)
+                element.voltageList.add(0.0);
         }
+        for (Node node : Circuit.nodeList) {
+            if (node.voltageList.size()==0)
+                node.voltageList.add(0.0);
+        }
+        int n = (int) (timeDomain / Dt);
+        //while (checkAllDeltas()) {       //DC analyze
+        //    solver(0);
+        //}
         for (int i = 1; i < n; i++) {
-            solver(n * Dt);
+
+
+            solver(i * Dt);
+        }
+    }
+
+    private static void reArrangeElementListForNodes(){
+        boolean found=false;
+        for (Node node : Circuit.nodeList) {
+            ArrayList<Element> temp = node.elementList;
+            node.elementList = new ArrayList<Element>();
+            for (Element element : temp) {
+                found = false;
+                for (Element addedElm : node.elementList) {
+                    if (addedElm.name.equals(element.name))
+                        found=true;
+                }
+                if (!found){
+                    node.elementList.add(element);
+                }
+            }
         }
     }
 
@@ -65,6 +96,13 @@ public abstract class CirSim {
         }
     }
 
+    public static void setIndexesForElements(){
+        for (Element element : Circuit.elementList) {
+            element.negativeNodeIndex = Integer.parseInt(element.negativeNode.name);
+            element.positiveNodeIndex = Integer.parseInt(element.positiveNode.name);
+        }
+    }
+
     public static void printResults() {
         int j = 1;
         System.out.println("******          Nodes voltages:         ******");
@@ -75,7 +113,7 @@ public abstract class CirSim {
             }
             System.out.printf("\n");
         }
-        System.out.println("******          Nodes voltages:         ******");
+        System.out.println("******          Elements voltages:         ******");
         j = 0;
         for (Element element : Circuit.elementList) {
             System.out.printf(element.getName() + " ");

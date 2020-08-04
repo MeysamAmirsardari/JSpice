@@ -1,7 +1,5 @@
 package Kernel;
 
-import Kernel.Circuit;
-
 import java.util.ArrayList;
 
 public class CreateUnion {

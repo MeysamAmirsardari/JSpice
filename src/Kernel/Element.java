@@ -66,7 +66,6 @@ public abstract class Element {
 
     public double getCurrent(double time) {
         return 0;
-        // TODO: getCurrent Implementation (I THINK!!)
     }
 
     public ArrayList<Double> getCurrentList(){

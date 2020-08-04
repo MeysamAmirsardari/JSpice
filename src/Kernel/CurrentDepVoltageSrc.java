@@ -20,7 +20,7 @@ public class CurrentDepVoltageSrc extends VoltageSrc {
     public double getVoltage(double time) {
         return (gain * refElm.getCurrent(time));
     }
-
+/*
     @Override
     public double getCurrent(double time) {
         double totalCurrent = 0;
@@ -50,4 +50,5 @@ public class CurrentDepVoltageSrc extends VoltageSrc {
         }
         return -1 * totalCurrent;
     }
+ */
 }

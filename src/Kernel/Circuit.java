@@ -72,8 +72,33 @@ public class Circuit {
     }
 
     public void makeUnions() {
+        reArrangeNodeList();
         CreateUnion union = new CreateUnion(this);
         union.create();
+    }
+
+    private static void reArrangeNodeList(){
+        ArrayList<Node> temp = Circuit.nodeList;
+        Circuit.nodeList=new ArrayList<Node>();
+
+        int maxIndex=0;
+        for (Node node : temp) {
+            if (node!=null){
+                if (node.name!=null)
+                    if (Integer.parseInt(node.name)>maxIndex)
+                        maxIndex = Integer.parseInt(node.name);
+            }
+        }
+        for (int i = 0; i <= maxIndex; i++) {
+            for (Node node : temp) {
+                if (node!=null){
+                    if (node.name!=null)
+                        if (Integer.parseInt(node.name)==i){
+                            Circuit.nodeList.add(node);
+                        }
+                }
+            }
+        }
     }
 
     public void printUnion() {

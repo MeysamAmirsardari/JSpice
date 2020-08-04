@@ -26,7 +26,7 @@ public class VoltageDepVoltageSrc extends VoltageSrc {
         double refVoltage = Circuit.nodeList.get(refNode1).getVoltage() - Circuit.nodeList.get(refNode2).getVoltage();
         return (gain * refVoltage);
     }
-
+/*
     @Override
     public double getCurrent(double time) {
         double totalCurrent = 0;
@@ -56,4 +56,5 @@ public class VoltageDepVoltageSrc extends VoltageSrc {
         }
         return -1 * totalCurrent;
     }
+ */
 }
