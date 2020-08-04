@@ -19,6 +19,7 @@ public class VoltageDepVoltageSrc extends VoltageSrc {
         node1 = pN;
         node2 = nN;
         isDependent = true;
+        type = "CVS";
     }
 
     @Override

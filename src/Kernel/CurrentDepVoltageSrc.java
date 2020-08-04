@@ -13,6 +13,7 @@ public class CurrentDepVoltageSrc extends VoltageSrc {
         this.gain = gain;
         this.refElm = refElm;
         isDependent = true;
+        type = "CVS";
     }
 
 

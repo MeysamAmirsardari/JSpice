@@ -22,6 +22,7 @@ public class VoltageDepCurrentSrc extends CurrentSrc {
         node1 = pN;
         node2 = nN;
         isDependent = true;
+        type = "CCS";
     }
 
     @Override

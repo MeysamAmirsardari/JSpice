@@ -22,7 +22,7 @@ public class VoltageSrc extends Source {
         this.Vdc = Vdc;
         this.frequency = frequency;
         this.phase = phase;
-        type = "VolSrc";
+        type = "VOLSRC";
         if (Vpk == 0.0) {
             isDirect = true;
         }

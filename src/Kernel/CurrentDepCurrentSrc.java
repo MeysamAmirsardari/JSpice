@@ -15,6 +15,7 @@ public class CurrentDepCurrentSrc extends CurrentSrc {
         this.gain = gain;
         this.refElm = refElm;
         isDependent = true;
+        type = "CCS";
     }
 
     @Override
