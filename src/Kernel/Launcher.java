@@ -4,16 +4,18 @@ package Kernel;/*
  *   <<<    Summer 1399/2020   >>>
  */
 
+import UI.Preview;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        //Preview.main(args);
+        Preview.main(args);
 
         //just for test:
-        String filePath = "D:\\test1.txt";
-        launch(filePath);
+        //String filePath = "D:\\RIdc.txt";
+        //launch(filePath);
         //Test.main(args);
     }
 

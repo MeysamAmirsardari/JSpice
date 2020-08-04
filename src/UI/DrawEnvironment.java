@@ -3,6 +3,7 @@ package UI;
 import Kernel.Circuit;
 import Kernel.Element;
 import Kernel.Launcher;
+import Kernel.Node;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -18,6 +21,7 @@ import java.io.*;
 public class DrawEnvironment {
     public static File selectedFile=null;
     public static Pane rootPane = new Pane();
+    public static Scene scene;
     public static Element element;
     public static boolean isSimulated = false;
 
@@ -25,21 +29,24 @@ public class DrawEnvironment {
     //public void start(Stage stage) throws Exception {
     public static void showEnvironment(Stage stage){
         //Preview.showFirstPage(Args);
+        Font font = Font.font("Verdana", FontWeight.EXTRA_BOLD, 13);
+        Font editorFont = Font.font("Verdana", FontWeight.EXTRA_BOLD, 12);
         DropShadow shadow = new DropShadow();
 
         TextArea editorArea = new TextArea();
         editorArea.setPrefColumnCount(15);
+        editorArea.setFont(editorFont);
         editorArea.setPrefSize(660,720);
         editorArea.setLayoutX(10);
         editorArea.setLayoutY(70);
         editorArea.setEffect(shadow);
 
-        TextField dataField = new TextField();
+        TextArea dataField = new TextArea();
         dataField.setEditable(false);
         dataField.setPrefSize(300,410);
         dataField.setLayoutX(690);
         dataField.setLayoutY(380);
-        writeDetails(dataField);
+        dataField.setFont(font);
         dataField.setEffect(shadow);
 
         Pane schematicPane = new Pane();
@@ -120,6 +127,7 @@ public class DrawEnvironment {
                     try {
                         isSimulated = true;
                         Launcher.launch(selectedFile.getPath());
+                        writeDetails(dataField);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -147,7 +155,7 @@ public class DrawEnvironment {
         ObservableList list = rootPane.getChildren();
         rootPane.setStyle("-fx-background-color: azure");
         list.addAll(loadButton,runButton,plotButton,editorArea,dataField,schematicPane);
-        Scene scene=new Scene(rootPane,1000,800);
+        scene=new Scene(rootPane,1000,800);
         //root.getChildren().add(loadButton);
         stage.setScene(scene);
         stage.setTitle("JSpice!");
@@ -188,11 +196,25 @@ public class DrawEnvironment {
     //    launch(args);
     //}
 
-    private static void writeDetails(TextField field){
-        String text = "Found Elements Names:\n";
+    private static void writeDetails(TextArea field){
+        String text = "Found Elements Names:\n\n";
         for (Element element1 : Circuit.elementList) {
-            text += element1.getName() + "\n";
+            Double v = element1.currentList.get(element1.currentList.size()-1);
+            Double i = element1.voltageList.get(element1.voltageList.size()-1);
+            text += element1.getName()+" final Voltage:" + "       "+ String.format("%.6f", v)+"\n";
+            text += element1.getName()+" final Current:" + "       "+ String.format("%.6f", i)+"\n";
+            text += element1.getName()+" final Power:" + "       "+ String.format("%.6f", i*v)+"\n";
+            text += "------------------------\n";
         }
+        text += "Found Nodes number:\n\n";
+        text += "0\n";
+        text += "------------------------\n";
+        for (Node node1 : Circuit.nodeList) {
+            text += node1.name+" final Voltage:\n";
+            text += "       "+String.format("%.6f", node1.voltageList.get(node1.voltageList.size()-1))+"\n";
+            text += "------------------------\n";
+        }
+        field.setText(text);
     }
 
     private static Element findElement(String elementName){

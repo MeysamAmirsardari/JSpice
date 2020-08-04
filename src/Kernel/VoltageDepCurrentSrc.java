@@ -1,8 +1,5 @@
 package Kernel;
 
-import Kernel.Circuit;
-import Kernel.Element;
-
 public class VoltageDepCurrentSrc extends CurrentSrc {
     int refNode1;
     int refNode2;
