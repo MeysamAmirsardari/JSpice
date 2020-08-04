@@ -7,7 +7,7 @@ public class Node {
     public String name;
     public boolean isAdded = false;
     public Node parentNode = null;
-    public Union belongUnion;
+    public Union belongUnion = null;
     public ArrayList<Element> elementList = new ArrayList<Element>();
     public ArrayList<Node> adjacentNodes = new ArrayList<Node>();
     public ArrayList<Double> voltageList = new ArrayList<Double>();
@@ -19,7 +19,9 @@ public class Node {
     public ArrayList<Element> negativeElementList = new ArrayList<Element>();
     public ArrayList<Element> positiveElementList = new ArrayList<Element>();
 
-    Node(){}
+    Node() {
+    }
+
     Node(String givenName) {
         name = givenName;
         voltage = 0;
@@ -38,7 +40,7 @@ public class Node {
             Circuit.nodeList.get(element.positiveNodeIndex).elementList.add(element);
         }
     }
-    
+
     protected static void creatNodeList() {
         int maxIndex = 0;
         for (Element element : Circuit.elementList) {
@@ -54,9 +56,9 @@ public class Node {
     // Current related methods
 
     // According to KCL this value must be equal to 0, this function is merely for simulation purposes
-    public double getCurrent(){
+    public double getCurrent() {
         double current = 0;
-        for(Element element:elementList){
+        for (Element element : elementList) {
             current += element.getCurrent(Circuit.returnNode(name));
         }
         return current;
@@ -66,7 +68,7 @@ public class Node {
     public double getTempV() {
         return tempV;
     }
-    
+
     public void setTempV(double inputV) {
         this.tempV = inputV;
     }
@@ -74,18 +76,17 @@ public class Node {
     public double getVoltage() {
         return voltage;
     }
-    
+
     public double getLastVoltage() {
         int lastIndex = voltageList.size() - 1;
         return (voltageList.get(lastIndex));
     } // Isn't this the same as getVoltage()??!
 
-    public void setVoltage(double voltage){
-        if(name.equals("0")){
+    public void setVoltage(double voltage) {
+        if (name.equals("0")) {
             System.out.println("Trying to set voltage for ground node!!");
-        }
-        else{
+        } else {
             this.voltage = voltage;
         }
-    }     
+    }
 }

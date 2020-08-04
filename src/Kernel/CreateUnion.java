@@ -6,85 +6,60 @@ import java.util.ArrayList;
 
 public class CreateUnion {
     Circuit circuit;
-    public CreateUnion(Circuit circuit){
+
+    public CreateUnion(Circuit circuit) {
         this.circuit = circuit;
     }
 
-    public boolean create() {
+    public void create() {
         Node groundNode = null;
         for (Node node : Circuit.nodeList) {
-            if (node.name.equals("0")) {
+            if (Integer.parseInt(node.name) == 0) {
                 groundNode = node;
             }
         }
         if (groundNode == null) {
             System.out.println("No ground found in circuit!!");
-            return false;
+            System.out.println("Terminating the simulation...");
+            System.exit(0);
         }
 
         setAllNodeNotAdded();
         dependantNodeInquiry(groundNode);
-        ArrayList<Node> tempNodeList = new ArrayList<Node>(Circuit.nodeList);
-        unionAdd(tempNodeList);
-        return true;
+        int i = 0;
+        for (Node node : Circuit.nodeList) {
+            boolean found = false;
+            for (Union union : Circuit.unionList) {
+                if (union.unionStarter.name.equals(node.parentNode.name)) {
+                    union.addNode(node);
+                    node.belongUnion = union;
+                    found = true;
+                }
+            }
+            if (found == false) {
+                Union union = new Union(node.parentNode, i);
+                i++;
+                node.belongUnion = union;
+                union.addNode(node);
+                Circuit.unionList.add(union);
+            }
+        }
+        addElement();
     }
 
     void setAllNodeNotAdded() {
         for (Node node : Circuit.nodeList) {
             node.isAdded = false;
+            node.parentNode = null;
         }
     }
 
-    void unionAdd(ArrayList<Node> nodeList){
-        ArrayList<Node> unionStarters = new ArrayList<Node>();
-
-        for(Node node:nodeList){
-            if(!isCollection(node) && node.parentNode == node){
-                makeUnion(node);
-                nodeList.remove(node);
+    void addElement() {
+        for (Element elem : Circuit.elementList) {
+            if (elem.positiveNode.belongUnion.index == elem.negativeNode.belongUnion.index) {
+                elem.positiveNode.belongUnion.elementList.add(elem);
             }
         }
-        for(Node node:nodeList){
-            if(node.parentNode == node){
-                unionStarters.add(node);
-            }
-        }
-        for(Node unionStarter: unionStarters){
-            ArrayList<Node> addedNodes = new ArrayList<Node>();
-            adjacentSearch(unionStarter,addedNodes, nodeList);
-            makeUnion(unionStarter,addedNodes);
-        }
-    }
-
-    void adjacentSearch(Node node, ArrayList<Node> addedNodes, ArrayList<Node> nodeList){
-        for(Node tNode:nodeList){
-            if(node.parentNode == node){
-                ArrayList<Node> subNodeList = new ArrayList<Node>(nodeList);
-                addedNodes.add(tNode);
-                subNodeList.remove(tNode);
-                adjacentSearch(tNode, addedNodes, subNodeList);
-            }
-        }
-    }
-
-    void makeUnion(Node node){
-        Union union = new Union(node);
-        Circuit.unionList.add(union);
-    }
-
-    void makeUnion(Node unionStarter, ArrayList<Node> addedNodes){
-        Union union = new Union(unionStarter, addedNodes);
-        Circuit.unionList.add(union);
-    }
-
-    boolean isCollection(Node node){
-        ArrayList<Node> nodeList = new ArrayList<Node>(Circuit.nodeList);
-        nodeList.remove(node);
-        for(Node tNode: nodeList){
-            if(tNode.parentNode == node)
-                return true;
-        }
-        return false;
     }
 
     void dependantNodeInquiry(Node inNode) {
@@ -92,25 +67,23 @@ public class CreateUnion {
             inNode.parentNode = inNode;
         }
         ArrayList<Node> notAddedAdjacentNodeList = new ArrayList<Node>();
-        for(Node adjacentNode: inNode.adjacentNodes){
-        if(!adjacentNode.isAdded){
-        notAddedAdjacentNodeList.add(adjacentNode);
-        for(VoltageSrc vSrc : circuit.volSrcList){
-            if((vSrc.positiveNode == inNode && vSrc.negativeNode == adjacentNode) || 
-            (vSrc.negativeNode == inNode && vSrc.positiveNode == adjacentNode)){
-                if(adjacentNode.parentNode == null){
-                    adjacentNode.parentNode = inNode;
-                }
-                else{
-                    inNode.parentNode = adjacentNode;
+        for (Node adjacentNode : inNode.adjacentNodes) {
+            for (VoltageSrc vSrc : circuit.volSrcList) {
+                if ((vSrc.positiveNode.name.equals(inNode.name) && vSrc.negativeNode.name.equals(adjacentNode.name)) ||
+                        (vSrc.negativeNode.name.equals(inNode.name) && vSrc.positiveNode.name.equals(adjacentNode.name))) {
+                    if (adjacentNode.parentNode == null) {
+                        adjacentNode.parentNode = inNode;
+                    } else {
+                        inNode.parentNode = adjacentNode;
+                    }
                 }
             }
         }
-        }
-        }
         inNode.isAdded = true;
-        for(Node node: notAddedAdjacentNodeList){
-            dependantNodeInquiry(node);
+        for (Node node : inNode.adjacentNodes) {
+            if (!node.isAdded) {
+                dependantNodeInquiry(node);
+            }
         }
     }
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Union {
     public ArrayList<Node> nodeList = new ArrayList<Node>();
     public Node unionStarter;
-    public String type = new String();
     public String name;
 
     public double V;
@@ -18,17 +17,16 @@ public class Union {
     public ArrayList<Element> elementList = new ArrayList<Element>();
 
     // Constructors
-    public Union(Node parentU){
-        addNode(parentU);
-        this.unionStarter.belongUnion = this;
+    public Union(Node parentU, int index) {
         this.name = parentU.name;
         this.unionStarter = parentU;
+        this.index = index;
     }
 
-    public Union(Node parentU, ArrayList<Node> nodeList){
+    public Union(Node parentU, ArrayList<Node> nodeList) {
         addNode(parentU);
         addNode(nodeList);
-        for(Node node: this.nodeList){
+        for (Node node : this.nodeList) {
             node.belongUnion = this;
         }
         this.name = parentU.name;
@@ -36,13 +34,13 @@ public class Union {
     }
 
     // Adds a give node or array of nodes to union list
-    public void addNode(Node node){
+    public void addNode(Node node) {
         this.nodeList.add(node);
     }
 
-    public void addNode(ArrayList<Node> nodes){
-        for(Node node : nodes){
-            if(!this.nodeList.contains(node)){
+    public void addNode(ArrayList<Node> nodes) {
+        for (Node node : nodes) {
+            if (!this.nodeList.contains(node)) {
                 this.nodeList.add(node);
             }
         }
@@ -61,7 +59,6 @@ public class Union {
     //public void setParentUnion(Node pUnion) {
     //    parentUnion = pUnion;
     //}
-
     public static void setElementListForAllUnions() {
         for (Union union : Circuit.unionList) {
             for (Node node : union.nodeList) {
