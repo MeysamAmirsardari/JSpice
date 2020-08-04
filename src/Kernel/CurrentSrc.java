@@ -23,7 +23,7 @@ public class CurrentSrc extends Source {
         this.Idc = Idc;
         this.frequency = frequency;
         this.phase = phase;
-        type = "CurSrc";
+        type = "CURSRC";
         if (Ipk == 0.0) {
             isDirect = true;
         }
