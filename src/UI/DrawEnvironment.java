@@ -31,6 +31,7 @@ public class DrawEnvironment {
         //Preview.showFirstPage(Args);
         Font font = Font.font("Verdana", FontWeight.EXTRA_BOLD, 13);
         Font editorFont = Font.font("Verdana", FontWeight.EXTRA_BOLD, 12);
+        Font buttonFont = Font.font("Verdana", FontWeight.EXTRA_BOLD, 11);
         DropShadow shadow = new DropShadow();
 
         TextArea editorArea = new TextArea();
@@ -62,6 +63,7 @@ public class DrawEnvironment {
         loadButton.setPrefSize(100,25);
         loadButton.setWrapText(true);
         loadButton.setEffect(shadow);
+        loadButton.setFont(buttonFont);
         loadButton.setText("Load");
         loadButton.setLayoutX(80);
         loadButton.setLayoutY(20);
@@ -99,6 +101,7 @@ public class DrawEnvironment {
         runButton.setWrapText(true);
         runButton.setEffect(shadow);
         runButton.setText("Run");
+        runButton.setFont(buttonFont);
         runButton.setLayoutX(210);
         runButton.setLayoutY(20);
 
@@ -148,6 +151,7 @@ public class DrawEnvironment {
         plotButton.setPrefSize(100,25);
         plotButton.setWrapText(true);
         plotButton.setEffect(shadow);
+        plotButton.setFont(buttonFont);
         plotButton.setText("Plot");
         plotButton.setLayoutX(340);
         plotButton.setLayoutY(20);

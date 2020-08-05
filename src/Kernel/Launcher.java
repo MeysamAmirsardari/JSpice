@@ -11,12 +11,11 @@ import java.io.IOException;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        Preview.main(args);
+        Preview.show(args);
 
         //just for test:
         //String filePath = "D:\\RIdc.txt";
         //launch(filePath);
-        //Test.main(args);
     }
 
     public static void launch(String filePath) throws FileNotFoundException {

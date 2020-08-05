@@ -10,7 +10,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class PlotResult {
@@ -52,71 +57,109 @@ public class PlotResult {
         XYChart.Series I_Series = new XYChart.Series();
         XYChart.Series P_Series = new XYChart.Series();
 
+        double timeDomain = CirSim.timeDomain;
 
-        //Preparing the data points for the lines:
+        Slider slider = new Slider();
+        slider.setMax(timeDomain);
+        slider.setMin(0);
+        slider.setValue(timeDomain);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setPrefSize(200,25);
+        slider.setLayoutX(700);
+        slider.setLayoutY(10);
 
-        Element element = DrawEnvironment.element;
-        double time=0;
-        double Dt = CirSim.Dt;
-        int step = (element.voltageList.size()-1)/200;
+        Font buttonFont = Font.font("Verdana", FontWeight.EXTRA_BOLD, 11);
+        DropShadow shadow = new DropShadow();
 
-        for (int i=1 ; i< element.voltageList.size() ; i+=step ) {
-            voltageSeries.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
-            V_Series.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
-            time+=Dt*step;
-        }
+        Button printButton =new Button();
+        printButton.setPrefSize(180,25);
+        printButton.setWrapText(true);
+        printButton.setFont(buttonFont);
+        printButton.setEffect(shadow);
+        printButton.setText("Print simulation result");
+        printButton.setLayoutX(200);
+        printButton.setLayoutY(10);
 
-        time=0;
-        step = (element.currentList.size()-1)/200;
+        Font font = Font.font("Verdana", FontWeight.BLACK, 11);
 
-        for (int i = 0; i <= element.currentList.size(); i+=step) {
-            currentSeries.getData().add(new XYChart.Data(time, element.currentList.get(i)));
-            powerSeries.getData().add(new XYChart.Data(
-                    time,(element.currentList.get(i)*element.voltageList.get(i))));
-            I_Series.getData().add(new XYChart.Data(time, element.currentList.get(i)));
-            P_Series.getData().add(new XYChart.Data(
-                    time,(element.currentList.get(i)*element.voltageList.get(i))));
-            time+=Dt*step;
-        }
+        Label label = new Label("time domain");
+        label.setLayoutX(610);
+        label.setLayoutY(5);
+        label.setFont(font);
+        label.setPrefSize(100,25);
 
 
-        // just for test!!
-        /*ArrayList<Double> testList = new ArrayList<Double>();
-        for (int i = 0; i < 10; i++)
-            testList.add(-1*i/10.0+0.5);
+        printButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
 
-        double time=0;
-        double Dt= 0.1;
-        for (Double aDouble : testList) {
-            voltageSeries.getData().add(new XYChart.Data(String.format("%.2f", time), aDouble));
-            currentSeries.getData().add(new XYChart.Data(String.format("%.2f", time), 1-aDouble));
-            powerSeries.getData().add(
-                    new XYChart.Data(String.format("%.2f", time), 0.2));
-            V_Series.getData().add(new XYChart.Data(String.format("%.2f", time), aDouble));
-            I_Series.getData().add(new XYChart.Data(String.format("%.2f", time), 1-aDouble));
-            P_Series.getData().add(
-                    new XYChart.Data(String.format("%.2f", time), 0.2));
-            time+=Dt;
-        }*/
+                //Preparing the data points for the lines:
+                double r = slider.getValue()/timeDomain;
+                Element element = DrawEnvironment.element;
+                double time=0;
+                double Dt = CirSim.Dt;
+                int step = (int) ((element.voltageList.size()-1)*r/150);
 
-        //Setting the name to the line (series)
-        voltageSeries.setName("Voltage");
-        currentSeries.setName("Current");
-        powerSeries.setName("Power");
-        V_Series.setName("Voltage");
-        I_Series.setName("Current");
-        P_Series.setName("Power");
+                for (int i=1 ; i< (int)(element.voltageList.size()*r) ; i+=step ) {
+                    voltageSeries.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
+                    V_Series.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
+                    time+=Dt*step;
+                }
 
-        //Setting the data to Line chart
-        vipChart.getData().addAll(V_Series,I_Series,P_Series);
-        voltageChart.getData().addAll(voltageSeries);
-        currentChart.getData().addAll(currentSeries);
-        powerChart.getData().addAll(powerSeries);
+                time=0;
+                step = (int) ((element.currentList.size()-1)*r/150);
 
-        vipChart.autosize();
-        voltageChart.autosize();
-        currentChart.autosize();
-        powerChart.autosize();
+                for (int i = 0; i <= (int)(element.currentList.size()*r) ; i+=step) {
+                    currentSeries.getData().add(new XYChart.Data(time, element.currentList.get(i)));
+                    powerSeries.getData().add(new XYChart.Data(
+                            time,(element.currentList.get(i)*element.voltageList.get(i))));
+                    I_Series.getData().add(new XYChart.Data(time, element.currentList.get(i)));
+                    P_Series.getData().add(new XYChart.Data(
+                            time,(element.currentList.get(i)*element.voltageList.get(i))));
+                    time+=Dt*step;
+                }
+
+
+                // just for test!!
+                /*ArrayList<Double> testList = new ArrayList<Double>();
+                for (int i = 0; i < 10; i++)
+                    testList.add(-1*i/10.0+0.5);
+
+                double time=0;
+                double Dt= 0.1;
+                for (Double aDouble : testList) {
+                    voltageSeries.getData().add(new XYChart.Data(String.format("%.2f", time), aDouble));
+                    currentSeries.getData().add(new XYChart.Data(String.format("%.2f", time), 1-aDouble));
+                    powerSeries.getData().add(
+                            new XYChart.Data(String.format("%.2f", time), 0.2));
+                    V_Series.getData().add(new XYChart.Data(String.format("%.2f", time), aDouble));
+                    I_Series.getData().add(new XYChart.Data(String.format("%.2f", time), 1-aDouble));
+                    P_Series.getData().add(
+                            new XYChart.Data(String.format("%.2f", time), 0.2));
+                    time+=Dt;
+                }*/
+
+                //Setting the name to the line (series)
+                voltageSeries.setName("Voltage");
+                currentSeries.setName("Current");
+                powerSeries.setName("Power");
+                V_Series.setName("Voltage");
+                I_Series.setName("Current");
+                P_Series.setName("Power");
+
+                //Setting the data to Line chart
+                vipChart.getData().addAll(V_Series,I_Series,P_Series);
+                voltageChart.getData().addAll(voltageSeries);
+                currentChart.getData().addAll(currentSeries);
+                powerChart.getData().addAll(powerSeries);
+
+                vipChart.autosize();
+                voltageChart.autosize();
+                currentChart.autosize();
+                powerChart.autosize();
+            }
+        } );
 
         //Creating a stack pane to hold the chart
         StackPane VIP_pane = new StackPane(vipChart);
@@ -124,14 +167,19 @@ public class PlotResult {
         StackPane I_pane = new StackPane(currentChart);
         StackPane P_pane = new StackPane(powerChart);
 
-        //set Locations:
-        VIP_pane.setLayoutY(0);
+        //set Locations and size:
+        VIP_pane.setPrefSize(500,380);
+        V_pane.setPrefSize(500,380);
+        I_pane.setPrefSize(500,380);
+        P_pane.setPrefSize(500,380);
+
+        VIP_pane.setLayoutY(50);
         VIP_pane.setLayoutX(0);
-        V_pane.setLayoutY(0);
+        V_pane.setLayoutY(50);
         V_pane.setLayoutX(500);
-        I_pane.setLayoutY(400);
+        I_pane.setLayoutY(430);
         I_pane.setLayoutX(0);
-        P_pane.setLayoutY(400);
+        P_pane.setLayoutY(430);
         P_pane.setLayoutX(500);
 
         //pane.setPadding(new Insets(15, 15, 15, 15));
@@ -141,16 +189,18 @@ public class PlotResult {
         P_pane.setStyle("-fx-background-color: BEIGE");
 
         Button backButton =new Button();
-        backButton.setPrefSize(100,25);
+        backButton.setPrefSize(50,25);
         backButton.setWrapText(true);
+        backButton.setFont(buttonFont);
+        backButton.setEffect(shadow);
         backButton.setText("Back");
-        backButton.setLayoutX(10);
+        backButton.setLayoutX(25);
         backButton.setLayoutY(10);
 
         //Setting the Scene
         Group root = new Group();
         ObservableList list = root.getChildren();
-        list.addAll(V_pane,I_pane,P_pane,VIP_pane,backButton);
+        list.addAll(V_pane,I_pane,P_pane,VIP_pane,backButton,slider,printButton,label);
 
         Scene scene = new Scene(root, 1000, 800);
         stage.setTitle("Simulation Result");
