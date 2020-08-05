@@ -33,7 +33,7 @@ public class Preview extends Application {
 
         Image image = null;
         try {
-            java.net.URL url = getClass().getResource("src/LaunchIcon.gif");
+            java.net.URL url = getClass().getResource("LaunchIcon.gif");
             image = new Image(new FileInputStream(url.getPath()));
         } catch (Exception e) {
 

@@ -68,6 +68,8 @@ public abstract class Element {
         return 0;
     }
 
+    public double getLastVoltage(){ return (voltageList.get(voltageList.size()-1)); }
+
     public ArrayList<Double> getCurrentList(){
         return (ArrayList<Double>) currentList;
     }

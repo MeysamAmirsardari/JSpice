@@ -9,9 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -20,6 +18,7 @@ import javafx.stage.Stage;
 
 public class PlotResult {
 
+    static int checkPointNum = 150;
     //@Override
     //public void start(Stage stage) {
     public static void plotResult (Stage stage){
@@ -61,30 +60,47 @@ public class PlotResult {
 
         Slider slider = new Slider();
         slider.setMax(timeDomain);
-        slider.setMin(0);
-        slider.setValue(timeDomain);
+        slider.setMin(0.0);
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
-        slider.setPrefSize(200,25);
-        slider.setLayoutX(700);
+        slider.setValueChanging(true);
+        slider.setPrefSize(150,25);
+        slider.setLayoutX(470);
         slider.setLayoutY(10);
+        slider.setValue(timeDomain);
 
         Font buttonFont = Font.font("Verdana", FontWeight.EXTRA_BOLD, 11);
+        Font font = Font.font("Verdana", FontWeight.BLACK, 11);
         DropShadow shadow = new DropShadow();
 
+        Slider pointNumSlider = new Slider();
+        pointNumSlider.setMax(300);
+        pointNumSlider.setMin(50);
+        pointNumSlider.setValueChanging(true);
+        pointNumSlider.setShowTickLabels(true);
+        pointNumSlider.setShowTickMarks(true);
+        pointNumSlider.setPrefSize(150,25);
+        pointNumSlider.setLayoutX(800);
+        pointNumSlider.setLayoutY(10);
+        pointNumSlider.setValue(150);
+
+        Label label2 = new Label("Check points number:");
+        label2.setLayoutX(660);
+        label2.setLayoutY(5);
+        label2.setFont(font);
+        label2.setPrefSize(180,25);
+
         Button printButton =new Button();
-        printButton.setPrefSize(180,25);
+        printButton.setPrefSize(200,25);
         printButton.setWrapText(true);
         printButton.setFont(buttonFont);
         printButton.setEffect(shadow);
         printButton.setText("Print simulation result");
-        printButton.setLayoutX(200);
+        printButton.setLayoutX(130);
         printButton.setLayoutY(10);
 
-        Font font = Font.font("Verdana", FontWeight.BLACK, 11);
-
-        Label label = new Label("time domain");
-        label.setLayoutX(610);
+        Label label = new Label("time domain:");
+        label.setLayoutX(380);
         label.setLayoutY(5);
         label.setFont(font);
         label.setPrefSize(100,25);
@@ -93,24 +109,36 @@ public class PlotResult {
         printButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
+                voltageSeries.getData().clear();
+                currentSeries.getData().clear();
+                powerSeries.getData().clear();
+                V_Series.getData().clear();
+                I_Series.getData().clear();
+                P_Series.getData().clear();
+                //vipChart.getData().clear();
+                //voltageChart.getData().clear();
+                //currentChart.getData().clear();
+                //powerChart.getData().clear();
 
                 //Preparing the data points for the lines:
+                checkPointNum = (int) (pointNumSlider.getValue());
+
                 double r = slider.getValue()/timeDomain;
                 Element element = DrawEnvironment.element;
                 double time=0;
                 double Dt = CirSim.Dt;
-                int step = (int) ((element.voltageList.size()-1)*r/150);
+                int step = (int) ((element.voltageList.size()-1)*r/checkPointNum);
 
-                for (int i=1 ; i< (int)(element.voltageList.size()*r) ; i+=step ) {
+                for (int i=1 ; i< (int)(element.voltageList.size()*r)-step ; i+=step ) {
                     voltageSeries.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
                     V_Series.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
                     time+=Dt*step;
                 }
 
                 time=0;
-                step = (int) ((element.currentList.size()-1)*r/150);
+                step = (int) ((element.currentList.size()-1)*r/checkPointNum);
 
-                for (int i = 0; i <= (int)(element.currentList.size()*r) ; i+=step) {
+                for (int i = 0; i <= (int)(element.currentList.size()*r)-step ; i+=step) {
                     currentSeries.getData().add(new XYChart.Data(time, element.currentList.get(i)));
                     powerSeries.getData().add(new XYChart.Data(
                             time,(element.currentList.get(i)*element.voltageList.get(i))));
@@ -119,7 +147,6 @@ public class PlotResult {
                             time,(element.currentList.get(i)*element.voltageList.get(i))));
                     time+=Dt*step;
                 }
-
 
                 // just for test!!
                 /*ArrayList<Double> testList = new ArrayList<Double>();
@@ -200,7 +227,7 @@ public class PlotResult {
         //Setting the Scene
         Group root = new Group();
         ObservableList list = root.getChildren();
-        list.addAll(V_pane,I_pane,P_pane,VIP_pane,backButton,slider,printButton,label);
+        list.addAll(V_pane,I_pane,P_pane,VIP_pane,backButton,slider,printButton,label,pointNumSlider,label2);
 
         Scene scene = new Scene(root, 1000, 800);
         stage.setTitle("Simulation Result");

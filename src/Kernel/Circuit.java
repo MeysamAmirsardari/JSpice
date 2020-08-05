@@ -7,6 +7,7 @@ public class Circuit {
     public static ArrayList<Element> elementList = new ArrayList<Element>();
     public static ArrayList<Node> nodeList = new ArrayList<Node>();
     public static ArrayList<Union> unionList = new ArrayList<Union>();
+    public static ArrayList<IdealDiode> diodeList = new ArrayList<>();
     public static int[][] linkMat = new int[31][31];
 
     // Simulation determining factors
@@ -19,7 +20,6 @@ public class Circuit {
     public ArrayList<Resistor> resList = new ArrayList<Resistor>();
     public ArrayList<Capacitor> capList = new ArrayList<Capacitor>();
     public ArrayList<Inductor> indList = new ArrayList<Inductor>();
-    public ArrayList<IdealDiode> diodeList = new ArrayList<>();
     public ArrayList<CurrentSrc> curSrcList = new ArrayList<CurrentSrc>();
     public ArrayList<VoltageSrc> volSrcList = new ArrayList<VoltageSrc>();
     public ArrayList<CurrentDepCurrentSrc> CCCSList = new ArrayList<>();

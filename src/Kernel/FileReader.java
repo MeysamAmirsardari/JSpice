@@ -237,8 +237,8 @@ public class FileReader {
                             diodeList.add(idealDiode);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
                             linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
-                            pN.elementList.add(idealDiode);
-                            nN.elementList.add(idealDiode);
+                            //pN.elementList.add(idealDiode);
+                            //nN.elementList.add(idealDiode);
                         } else if (elemName.startsWith("v") || elemName.startsWith("V")) {
                             VoltageSrc volSrc = new VoltageSrc(elemName, val, 0, 0, 0, pN, nN);
                             elemList.add(volSrc);

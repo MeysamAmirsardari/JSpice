@@ -8,33 +8,109 @@ public abstract class CirSim {
     public static double Dt;
     public static double timeDomain;
 
-    public static void simulate() {
-        reArrangeElementListForNodes();
+    public static void simulate(Circuit circuit) {
+        int diodeNum = Circuit.diodeList.size();
+        if (diodeNum>0) {
+            boolean isItOk = false;
 
-        ArrayList<Node> temp = Circuit.nodeList;
-        Circuit.nodeList = new ArrayList<Node>();
+            for (int j = 0 ; (j <Math.pow(2,diodeNum))&&(!isItOk) ; j++) {
+                for (int k = 0; k <= j%Circuit.diodeList.size() ; k++) {
+                    IdealDiode diode = Circuit.diodeList.get(k);
+                    diode.isON = !diode.isON;
+                }
 
-        for (Node node : temp) {
-            if (!node.name.equals("0"))
-                Circuit.nodeList.add(node);
-        }
+                ArrayList<Element> tempElm =  Circuit.elementList;
+                Circuit.elementList = new ArrayList<Element>();
+                for (Element element : tempElm) {
+                    if (element!=null){
+                        if (element.type!=null){
+                            if (element.type.equals("DIODE")){
+                                IdealDiode diode = (IdealDiode) element;
+                                if (diode.isON){
+                                    Circuit.elementList.add(element);
+                                }
+                            } else {
+                                Circuit.elementList.add(element);
+                            }
+                        }
+                    }
+                }
 
-        setTempVForAllNodes(0);
-        setUnionIndexForAllElements();
-        for (Element element : Circuit.elementList) {
-            if (element.voltageList.size()==0)
-                element.voltageList.add(0.0);
-        }
-        for (Node node : Circuit.nodeList) {
-            if (node.voltageList.size()==0)
-                node.voltageList.add(0.0);
-        }
-        int n = (int) (timeDomain / Dt);
-        //while (checkAllDeltas()) {       //DC analyze
-        //    solver(0);
-        //}
-        for (int i = 1; i < n; i++) {
-            solver(i * Dt);
+                CirSim.setNodesIndexesForElements();
+                Node.setNodesForAllElements();
+                Node.setElementListForAllNodes();
+                Union.setElementListForAllUnions();
+                circuit.makeUnions();
+
+                reArrangeElementListForNodes();
+                ArrayList<Node> temp = Circuit.nodeList;
+                Circuit.nodeList = new ArrayList<Node>();
+                for (Node node : temp) {
+                    if (!node.name.equals("0"))
+                        Circuit.nodeList.add(node);
+                }
+
+                setTempVForAllNodes(0);
+                setUnionIndexForAllElements();
+                for (Element element : Circuit.elementList) {
+                    if (element.voltageList.size() == 0)
+                        element.voltageList.add(0.0);
+                }
+                for (Node node : Circuit.nodeList) {
+                    if (node.voltageList.size() == 0)
+                        node.voltageList.add(0.0);
+                }
+                int n = (int) (timeDomain / Dt);
+                //while (checkAllDeltas()) {       //DC analyze
+                //    solver(0);
+                //}
+                for (int i = 1; i < n; i++) {
+                    solver(i * Dt);
+
+                    isItOk = true;
+                    for (IdealDiode diode : Circuit.diodeList) {
+                        if (diode.isON) {
+                            if (diode.getLastVoltage() < 0)
+                                isItOk = false;
+                        } else {
+                            if (diode.getVoltage(i*Dt) > 0)
+                                isItOk = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            CirSim.setNodesIndexesForElements();
+            Node.setNodesForAllElements();
+            Node.setElementListForAllNodes();
+            Union.setElementListForAllUnions();
+            circuit.makeUnions();
+
+            reArrangeElementListForNodes();
+            ArrayList<Node> temp = Circuit.nodeList;
+            Circuit.nodeList = new ArrayList<Node>();
+            for (Node node : temp) {
+                if (!node.name.equals("0"))
+                    Circuit.nodeList.add(node);
+            }
+
+            setTempVForAllNodes(0);
+            setUnionIndexForAllElements();
+            for (Element element : Circuit.elementList) {
+                if (element.voltageList.size() == 0)
+                    element.voltageList.add(0.0);
+            }
+            for (Node node : Circuit.nodeList) {
+                if (node.voltageList.size() == 0)
+                    node.voltageList.add(0.0);
+            }
+            int n = (int) (timeDomain / Dt);
+            //while (checkAllDeltas()) {       //DC analyze
+            //    solver(0);
+            //}
+            for (int i = 1; i < n; i++) {
+                solver(i * Dt);
+            }
         }
     }
 
@@ -103,6 +179,16 @@ public abstract class CirSim {
         }
     }
 
+    public static void arrange(){
+        ArrayList<Element> tempElm =  Circuit.elementList;
+        Circuit.elementList = new ArrayList<Element>();
+        for (Element element : tempElm) {
+            if (!element.type.equals("DIODE")){
+                Circuit.elementList.add(element);
+            }
+        }
+    }
+
     public static void setNodesIndexesForElements(){
         for (Element element : Circuit.elementList) {
             element.negativeNodeIndex = Integer.parseInt(element.negativeNode.name);
@@ -125,10 +211,10 @@ public abstract class CirSim {
             System.out.printf("( %f ) \n",b);
         }
         System.out.println("******          Elements voltages:         ******");
-
+        for (IdealDiode diode : Circuit.diodeList) {
+            System.out.printf(diode.getName());
+        }
         for (Element element : Circuit.elementList) {
-            Double a = element.currentList.get(element.currentList.size()-1);
-            Double b = element.voltageList.get(element.voltageList.size()-1);
             System.out.printf(element.getName() + " ");
             System.out.printf("(%f , %f ,", element.voltageList.get(element.voltageList.size()-1),
                     element.currentList.get(element.currentList.size()-1));

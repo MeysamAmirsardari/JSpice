@@ -2,6 +2,7 @@ package Kernel;/*
  *   In the name of God
  *   JSpice Electrical circuit simulator
  *   <<<    Summer 1399/2020   >>>
+ *   Meysam Amirsardari + Amirmahdi Soleimanifar
  */
 
 import UI.Preview;
@@ -14,7 +15,7 @@ public class Launcher {
         Preview.show(args);
 
         //just for test:
-        //String filePath = "D:\\RIdc.txt";
+        //String filePath = "D:\\Diode_circuit.txt";
         //launch(filePath);
     }
 
@@ -22,16 +23,12 @@ public class Launcher {
         Circuit.nodeList.clear();
         Circuit.elementList.clear();
         Circuit.nodeList.clear();
+        Circuit.diodeList.clear();
         Circuit circuit = new Circuit(filePath);
-        CirSim.setNodesIndexesForElements();
-        Node.setNodesForAllElements();
-        Node.setElementListForNodes();
-        Union.setElementListForAllUnions();
         circuit.printCircuit();
-        circuit.makeUnions();
+        CirSim.simulate(circuit);
         circuit.printUnion();
-
-        CirSim.simulate();
+        CirSim.arrange();
         CirSim.printResults();
     }
 

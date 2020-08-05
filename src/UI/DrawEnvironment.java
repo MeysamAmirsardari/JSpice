@@ -1,9 +1,6 @@
 package UI;
 
-import Kernel.Circuit;
-import Kernel.Element;
-import Kernel.Launcher;
-import Kernel.Node;
+import Kernel.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.io.FileReader;
 
 public class DrawEnvironment {
     public static File selectedFile = null;
@@ -68,6 +66,12 @@ public class DrawEnvironment {
         loadButton.setLayoutX(80);
         loadButton.setLayoutY(20);
 
+        ProgressIndicator pi = new ProgressIndicator();
+        pi.setPrefSize(50,50);
+        pi.setVisible(false);
+        pi.setLayoutX(750);
+        pi.setLayoutY(10);
+
         // create a File chooser
         FileChooser fil_chooser = new FileChooser();
         fil_chooser.setTitle("Select File");
@@ -87,13 +91,14 @@ public class DrawEnvironment {
                             input += step + "\n";
                         }
                         editorArea.setText(input);
+                        pi.setVisible(true);
                         br.close();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
             }
-        });
+        } );
 
 
         Button runButton = new Button();
@@ -111,10 +116,12 @@ public class DrawEnvironment {
                 if (selectedFile != null) {
                     if (!editorArea.getText().isEmpty()) {
                         try {
+                            pi.setProgress(0.2f);
                             FileWriter fileWriter = new FileWriter(selectedFile);
                             String inputText = editorArea.getText();
                             fileWriter.write("");
                             fileWriter.write(inputText);
+                            pi.setProgress(0.4f);
                             fileWriter.close();
                         } catch (FileNotFoundException notFoundException) {
                             notFoundException.printStackTrace();
@@ -130,9 +137,12 @@ public class DrawEnvironment {
                     }
                     try {
                         isSimulated = true;
+                        pi.setProgress(0.6f);
                         Launcher.launch(selectedFile.getPath());
+                        pi.setProgress(0.8f);
                         writeDetails(dataField);
                         PlotCircuit.plot(schematicPane);
+                        pi.setProgress(1.0f);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -160,8 +170,8 @@ public class DrawEnvironment {
         //Group root = new Group();
         ObservableList list = rootPane.getChildren();
         rootPane.setStyle("-fx-background-color: azure");
-        list.addAll(loadButton, runButton, plotButton, editorArea, dataField, schematicPane);
-        scene = new Scene(rootPane, 1000, 800);
+        list.addAll(loadButton,runButton,plotButton,editorArea,dataField,schematicPane,pi);
+        scene=new Scene(rootPane,1000,800);
         //root.getChildren().add(loadButton);
         stage.setScene(scene);
         stage.setTitle("JSpice!");
@@ -205,25 +215,32 @@ public class DrawEnvironment {
     private static void writeDetails(TextArea field) {
         String text = "Found Elements Names:\n\n";
         for (Element element1 : Circuit.elementList) {
-            Double v = element1.currentList.get(element1.currentList.size() - 1);
-            Double i = element1.voltageList.get(element1.voltageList.size() - 1);
-            text += element1.getName() + " final Voltage:" + "       " + String.format("%.6f", v) + "\n";
-            text += element1.getName() + " final Current:" + "       " + String.format("%.6f", i) + "\n";
-            text += element1.getName() + " final Power:" + "       " + String.format("%.6f", i * v) + "\n";
+            Double v = element1.currentList.get(element1.currentList.size()-1);
+            Double i = element1.voltageList.get(element1.voltageList.size()-1);
+            text += element1.getName()+" final Voltage:" + "       "+ String.format("%.6f", v)+"\n";
+            text += element1.getName()+" final Current:" + "       "+ String.format("%.6f", i)+"\n";
+            text += element1.getName()+" final Power:" + "       "+ String.format("%.6f", i*v)+"\n";
+            text += "------------------------\n";
+        }
+        if (Circuit.diodeList.size()>0){
+            text += "Diodes Names:\n";
+            for (IdealDiode diode : Circuit.diodeList) {
+                text += diode.getName() + "\n";
+            }
             text += "------------------------\n";
         }
         text += "Found Nodes number:\n\n";
         text += "0\n";
         text += "------------------------\n";
         for (Node node1 : Circuit.nodeList) {
-            text += node1.name + ") " + " final Voltage:\n";
-            text += "       " + String.format("%.6f", node1.voltageList.get(node1.voltageList.size() - 1)) + "\n";
+            text += node1.name + ") " +" final Voltage:\n";
+            text += "       "+String.format("%.6f", node1.voltageList.get(node1.voltageList.size()-1))+"\n";
             text += "------------------------\n";
         }
         field.setText(text);
     }
 
-    private static Element findElement(String elementName) {
+    private static Element findElement(String elementName){
         for (Element element1 : Circuit.elementList) {
             if (element1.getName().equals(elementName))
                 return element1;

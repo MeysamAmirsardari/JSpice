@@ -1,8 +1,8 @@
 package Kernel;
 
 public class VoltageDepCurrentSrc extends CurrentSrc {
-    int refNode1;
-    int refNode2;
+    Node refNode1;
+    Node refNode2;
     Node node1;
     Node node2;
     double gain;
@@ -14,8 +14,9 @@ public class VoltageDepCurrentSrc extends CurrentSrc {
     public VoltageDepCurrentSrc(String name, double gain, Node pN, Node nN, Node pDepNode, Node nDepNode) {
         super(name, pN, nN);
         this.gain = gain;
-        refNode1 = Integer.parseInt(pN.name);
-        refNode2 = Integer.parseInt(nN.name);
+        refNode1 = pDepNode;
+        refNode2 = nDepNode;
+
         node1 = pN;
         node2 = nN;
         isDependent = true;
@@ -24,7 +25,7 @@ public class VoltageDepCurrentSrc extends CurrentSrc {
 
     @Override
     public double getCurrent(double time) {
-        double refVoltage = Circuit.nodeList.get(refNode1).getVoltage() - Circuit.nodeList.get(refNode2).getVoltage();
+        double refVoltage = refNode1.getLastVoltage() - refNode2.getLastVoltage();
         return (gain * refVoltage);
     }
 }

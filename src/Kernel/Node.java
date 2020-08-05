@@ -14,7 +14,7 @@ public class Node {
 
     protected double tempV;
     // Declare variable voltage to hold the latest element of voltageList
-    protected double voltage;
+    //protected double voltage;
     public ArrayList<Element> negativeElementList = new ArrayList<Element>();
     public ArrayList<Element> positiveElementList = new ArrayList<Element>();
 
@@ -23,7 +23,7 @@ public class Node {
 
     Node(String givenName) {
         name = givenName;
-        voltage = 0;
+        //voltage = 0;
         tempV = 0;
         voltageList.add(0.00);
     }
@@ -42,7 +42,7 @@ public class Node {
         }
     }
 
-    public static void setElementListForNodes(){
+    public static void setElementListForAllNodes(){
         for (Node node : Circuit.nodeList) {
             node.elementList.clear();
         }
@@ -85,19 +85,12 @@ public class Node {
     }
 
     public double getVoltage() {
-        return voltage;
+        return this.getLastVoltage();
     }
 
     public double getLastVoltage() {
         int lastIndex = voltageList.size() - 1;
         return (voltageList.get(lastIndex));
-    } // Isn't this the same as getVoltage()??!
+    } // +Isn't this the same as getVoltage()??! -from now on, YES! ://
 
-    public void setVoltage(double voltage) {
-        if (name.equals("0")) {
-            System.out.println("Trying to set voltage for ground node!!");
-        } else {
-            this.voltage = voltage;
-        }
-    }
 }

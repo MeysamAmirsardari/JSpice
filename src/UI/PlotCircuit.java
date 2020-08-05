@@ -3,23 +3,25 @@ package UI;
 
 import Kernel.Circuit;
 import Kernel.Element;
-import Kernel.Node;
+import Kernel.IdealDiode;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.text.*;
 import javafx.scene.text.Font;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PlotCircuit {
     static int s = 80;
     static int z = 4;
 
     public static void plot(Pane pane) {
+        if (Circuit.diodeList.size()>0){
+            for (IdealDiode diode : Circuit.diodeList) {
+                Circuit.elementList.add(diode);
+            }
+        }
+
         Dot[][] dot = new Dot[6][6];
         int[] groundTaken = new int[6];
         pane.getChildren().clear();
