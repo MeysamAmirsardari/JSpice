@@ -145,6 +145,8 @@ public class DrawEnvironment {
                         pi.setProgress(1.0f);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -1,6 +1,6 @@
 package Kernel;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Circuit {
@@ -214,8 +214,60 @@ public class Circuit {
             System.out.print("-");
         }
         System.out.println();
-
     }
+
+    public static void saveResults() throws IOException {
+        try {
+            File file = new File("D:\\result.txt");
+            FileWriter fw = new FileWriter(file);
+            fw.write("");
+            BufferedWriter writer = new BufferedWriter(fw);
+            writer.write("Nodes voltages:");
+            writer.newLine();
+            writer.write("0 ) 0.0");
+            writer.newLine();
+            for (Node node : Circuit.nodeList) {
+                int step = node.voltageList.size()/100;
+                String string = node.name + ")    ";
+                for (int i = 0; i<=node.voltageList.size()-step; i+=step) {
+                    double voltage = node.voltageList.get(i);
+                    string += String.format("%f",voltage) +"    ";
+                }
+                writer.write(string);
+                writer.newLine();
+            }
+            writer.write("----------------------------------------------------");
+            writer.newLine();
+            writer.write("Elements details:");
+            writer.newLine();
+            for (Element element : elementList) {
+                String string = element.name + " :    ";
+                int step = element.voltageList.size()/100;
+                for (int i = 0; i<=element.voltageList.size()-step; i+=step) {
+                    double num = element.voltageList.get(i);
+                    string += String.format("( %f , %f ,  %f )    ", num,
+                            element.currentList.get(i), element.currentList.get(i) * num);
+                }
+                writer.write(string);
+                writer.newLine();
+            }
+                for (IdealDiode diode : diodeList) {
+                    int step = diode.voltageList.size()/100;
+                    for (int i = 0; i<=diode.voltageList.size()-step; i+=step) {
+                        double num = diode.voltageList.get(i);
+                        writer.write(String.format("( %f , %f ,  %f )    ", num,
+                                diode.currentList.get(i), diode.currentList.get(i) * num));
+                    }
+                    writer.newLine();
+                    writer.write("--------------------------------------------------");
+                    writer.newLine();
+                }
+                writer.close();
+                fw.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
 
 
     public static Node returnNode(String name) {

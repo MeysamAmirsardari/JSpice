@@ -7,7 +7,6 @@ package Kernel;/*
 
 import UI.Preview;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ public class Launcher {
 
     static Circuit circuit = null;
 
-    public static void launch(String filePath) throws FileNotFoundException {
+    public static void launch(String filePath) throws IOException {
         Circuit.nodeList.clear();
         Circuit.elementList.clear();
         Circuit.nodeList.clear();
@@ -34,6 +33,7 @@ public class Launcher {
         CirSim.simulate(circuit);
         circuit.printUnion();
         CirSim.arrange();
+        Circuit.saveResults();
         CirSim.printResults();
     }
 
