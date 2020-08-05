@@ -171,7 +171,7 @@ public class FileReader {
 
                     if (num == 3) {
                         if (input[0].startsWith("d") || input[0].startsWith("D")) {
-                            IdealDiode idealDiode = new IdealDiode(elemName, 0, pN, nN);
+                            IdealDiode idealDiode = new IdealDiode(elemName, 0, nN, pN);
                             elemList.add(idealDiode);
                             diodeList.add(idealDiode);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
@@ -240,7 +240,7 @@ public class FileReader {
                             pN.elementList.add(idealDiode);
                             nN.elementList.add(idealDiode);
                         } else if (elemName.startsWith("v") || elemName.startsWith("V")) {
-                            VoltageSrc volSrc = new VoltageSrc(elemName, val, 0, 0, 0, nN, pN);
+                            VoltageSrc volSrc = new VoltageSrc(elemName, val, 0, 0, 0, pN, nN);
                             elemList.add(volSrc);
                             volSrcList.add(volSrc);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
@@ -385,7 +385,7 @@ public class FileReader {
                                 pN.elementList.add(CCCS);
                                 nN.elementList.add(CCCS);
                             } else if (elemName.startsWith("h") || elemName.startsWith("H")) {
-                                CurrentDepVoltageSrc CCVS = new CurrentDepVoltageSrc(elemName, gain, pN, nN, refElem);
+                                CurrentDepVoltageSrc CCVS = new CurrentDepVoltageSrc(elemName, gain, nN, pN, refElem);
                                 elemList.add(CCVS);
                                 volSrcList.add(CCVS);
                                 CCVSList.add(CCVS);
@@ -409,7 +409,7 @@ public class FileReader {
                         double frequency = numProcess(input[5], line);
                         double phase = numProcess(input[6], line);
                         if (elemName.startsWith("v") || elemName.startsWith("V")) {
-                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, nN, pN);
+                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, pN, nN);
                             elemList.add(volSrc);
                             volSrcList.add(volSrc);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
@@ -440,7 +440,7 @@ public class FileReader {
                         double frequency = numProcess(input[6], line);
                         double phase = numProcess(input[7], line);
                         if (elemName.startsWith("v") || elemName.startsWith("V")) {
-                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, nN, pN);
+                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, pN, nN);
                             elemList.add(volSrc);
                             volSrcList.add(volSrc);
                             linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
