@@ -87,7 +87,7 @@ public class FileReader {
         String line;
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            if (line.startsWith("*")) {
+            if (line.startsWith("*") || line.startsWith("$")) {
                 // Comment Line: No Action Needed
             } else {
                 String[] input = line.split("\\s+");
@@ -169,8 +169,19 @@ public class FileReader {
                         nN.adjacentNodes.add(pN);
                     }
 
-                    // The condition for passive elements
-                    if (num == 4) {
+                    if (num == 3) {
+                        if (input[0].startsWith("d") || input[0].startsWith("D")) {
+                            IdealDiode idealDiode = new IdealDiode(elemName, 0, pN, nN);
+                            elemList.add(idealDiode);
+                            diodeList.add(idealDiode);
+                            linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                            linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                            pN.elementList.add(idealDiode);
+                            nN.elementList.add(idealDiode);
+                        }
+                    } else if (num == 4) {
+                        // The condition for passive elements
+                        input[3] = input[3].replaceAll("[AaVvhH]", "");
                         val = numProcess(input[3], line);
                         if (input[0].startsWith("r") || input[0].startsWith("R")) {
                             if (val < 0) {
@@ -228,6 +239,24 @@ public class FileReader {
                             linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
                             pN.elementList.add(idealDiode);
                             nN.elementList.add(idealDiode);
+                        } else if (elemName.startsWith("v") || elemName.startsWith("V")) {
+                            VoltageSrc volSrc = new VoltageSrc(elemName, val, 0, 0, 0, nN, pN);
+                            elemList.add(volSrc);
+                            volSrcList.add(volSrc);
+                            linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                            linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                            pN.elementList.add(volSrc);
+                            pN.adjacentSources.add(volSrc);
+                            nN.elementList.add(volSrc);
+                            nN.adjacentSources.add(volSrc);
+                        } else if (elemName.startsWith("i") || elemName.startsWith("I")) {
+                            CurrentSrc curSrc = new CurrentSrc(elemName, val, 0, 0, 0, nN, pN);
+                            elemList.add(curSrc);
+                            curSrcList.add(curSrc);
+                            linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                            linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                            pN.elementList.add(curSrc);
+                            nN.elementList.add(curSrc);
                         } else {
                             // READING ERROR
                             System.out.printf("Error in line (Unknown element):\n\" %s \"\n", line);
@@ -326,14 +355,57 @@ public class FileReader {
                             pN.elementList.add(VCCS);
                             nN.elementList.add(VCCS);
                         } else {
-                            // READING ERROR
-                            System.out.printf("Error in line (No such dependent source):\n\" %s \"\n", line);
+                            // CURRENT CONTROLLED DEPENDENT SOURCES
+                            Element refElem = null;
+                            boolean found = false;
+                            for (int i = 0; i < elemList.size() && !found; i++) {
+                                if (elemList.get(i).positiveNode.name.equals(pDName) && elemList.get(i).negativeNode.name.equals(nDName)) {
+                                    refElem = elemList.get(i);
+                                    found = true;
+                                }
+                            }
+                            if (refElem == null) {
+                                // READING ERROR
+                                System.out.printf("Error in line (No such reference element for dependency):\n\" %s \"\n", line);
+                                System.out.println("Terminating the simulation...");
+                                System.exit(0);
+                            } else if (gain < 0) {
+                                // READING ERROR
+                                System.out.printf("Error in line (Negative value):\n\" %s \"\n", line);
+                                System.out.println("Terminating the simulation...");
+                                System.exit(0);
+                            }
+                            if (elemName.startsWith("f") || elemName.startsWith("F")) {
+                                CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, pN, nN, refElem);
+                                elemList.add(CCCS);
+                                curSrcList.add(CCCS);
+                                CCCSList.add(CCCS);
+                                linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                                linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                                pN.elementList.add(CCCS);
+                                nN.elementList.add(CCCS);
+                            } else if (elemName.startsWith("h") || elemName.startsWith("H")) {
+                                CurrentDepVoltageSrc CCVS = new CurrentDepVoltageSrc(elemName, gain, pN, nN, refElem);
+                                elemList.add(CCVS);
+                                volSrcList.add(CCVS);
+                                CCVSList.add(CCVS);
+                                linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                                linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                                pN.elementList.add(CCVS);
+                                pN.adjacentSources.add(CCVS);
+                                nN.elementList.add(CCVS);
+                                pN.adjacentSources.add(CCVS);
+                            } else
+                                // READING ERROR
+                                System.out.printf("Error in line (No such dependent source):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
                             System.exit(0);
                         }
                     } else if (num == 7) {
                         double offset = numProcess(input[3], line);
+                        input[3] = input[3].replaceAll("[AaVv]", "");
                         double amplitude = numProcess(input[4], line);
+                        input[4] = input[4].replaceAll("[AaVv]", "");
                         double frequency = numProcess(input[5], line);
                         double phase = numProcess(input[6], line);
                         if (elemName.startsWith("v") || elemName.startsWith("V")) {
@@ -360,11 +432,46 @@ public class FileReader {
                             System.out.println("Terminating the simulation...");
                             System.exit(0);
                         }
+                    } else if (num == 8) {
+                        double offset = numProcess(input[4], line);
+                        input[4] = input[4].replaceAll("[AaVv]", "");
+                        double amplitude = numProcess(input[5], line);
+                        input[5] = input[5].replaceAll("[AaVv]", "");
+                        double frequency = numProcess(input[6], line);
+                        double phase = numProcess(input[7], line);
+                        if (elemName.startsWith("v") || elemName.startsWith("V")) {
+                            VoltageSrc volSrc = new VoltageSrc(elemName, offset, amplitude, frequency, phase, nN, pN);
+                            elemList.add(volSrc);
+                            volSrcList.add(volSrc);
+                            linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                            linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                            pN.elementList.add(volSrc);
+                            pN.adjacentSources.add(volSrc);
+                            nN.elementList.add(volSrc);
+                            nN.adjacentSources.add(volSrc);
+                        } else if (elemName.startsWith("i") || elemName.startsWith("I")) {
+                            CurrentSrc curSrc = new CurrentSrc(elemName, offset, amplitude, frequency, phase, nN, pN);
+                            elemList.add(curSrc);
+                            curSrcList.add(curSrc);
+                            linkMat[Integer.parseInt(pN.name)][Integer.parseInt(nN.name)]++;
+                            linkMat[Integer.parseInt(nN.name)][Integer.parseInt(pN.name)]++;
+                            pN.elementList.add(curSrc);
+                            nN.elementList.add(curSrc);
+                        } else {
+                            // READING ERROR
+                            System.out.printf("Error in line (Unknown source element):\n\" %s \"\n", line);
+                            System.out.println("Terminating the simulation...");
+                            System.exit(0);
+                        }
+                    } else {
+                        // READING ERROR
+                        System.out.printf("Error in line (Unknown command):\n\" %s \"\n", line);
+                        System.out.println("Terminating the simulation...");
+                        System.exit(0);
                     }
                 }
             }
         }
-
         return true;
     }
 }

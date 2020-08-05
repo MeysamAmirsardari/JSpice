@@ -25,14 +25,19 @@ public class Preview extends Application {
         Button startButton = new Button();
         startButton.setText("Launch JSpice!");
         startButton.setFont(font);
-        startButton.setPrefSize(200,65);
+        startButton.setPrefSize(200, 65);
         startButton.setWrapText(true);
         startButton.setEffect(shadow);
         startButton.setLayoutX(400);
         startButton.setLayoutY(650);
 
-        java.net.URL url = getClass().getResource("LaunchIcon.gif");
-        Image image = new Image(new FileInputStream(url.getPath()));
+        Image image = null;
+        try {
+            java.net.URL url = getClass().getResource("LaunchIcon.gif");
+            image = new Image(new FileInputStream(url.getPath()));
+        } catch (Exception e) {
+
+        }
         ImageView imageView = new ImageView(image);
         imageView.setX(0);
         imageView.setY(0);
@@ -42,7 +47,7 @@ public class Preview extends Application {
 
         Group root = new Group();
         ObservableList list = root.getChildren();
-        list.addAll(imageView,startButton);
+        list.addAll(imageView, startButton);
 
         Scene scene = new Scene(root, 1000, 800);
         stage.setTitle("Loading JSpice...");
@@ -59,6 +64,7 @@ public class Preview extends Application {
                                 }
         );
     }
+
     public static void show(String args[]) {
         launch(args);
     }
