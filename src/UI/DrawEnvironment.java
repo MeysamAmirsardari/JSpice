@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import java.io.*;
 
 public class DrawEnvironment {
-    public static File selectedFile=null;
+    public static File selectedFile = null;
     public static Pane rootPane = new Pane();
     public static Scene scene;
     public static Element element;
@@ -27,7 +27,7 @@ public class DrawEnvironment {
 
     //@Override
     //public void start(Stage stage) throws Exception {
-    public static void showEnvironment(Stage stage){
+    public static void showEnvironment(Stage stage) {
         //Preview.showFirstPage(Args);
         Font font = Font.font("Verdana", FontWeight.EXTRA_BOLD, 13);
         Font editorFont = Font.font("Verdana", FontWeight.EXTRA_BOLD, 12);
@@ -37,21 +37,21 @@ public class DrawEnvironment {
         TextArea editorArea = new TextArea();
         editorArea.setPrefColumnCount(15);
         editorArea.setFont(editorFont);
-        editorArea.setPrefSize(490,720);
+        editorArea.setPrefSize(490, 720);
         editorArea.setLayoutX(10);
         editorArea.setLayoutY(70);
         editorArea.setEffect(shadow);
 
         TextArea dataField = new TextArea();
         dataField.setEditable(false);
-        dataField.setPrefSize(490,230);
+        dataField.setPrefSize(490, 230);
         dataField.setLayoutX(510);
         dataField.setLayoutY(560);
         dataField.setFont(font);
         dataField.setEffect(shadow);
 
         Pane schematicPane = new Pane();
-        schematicPane.setPrefSize(490,480);
+        schematicPane.setPrefSize(490, 480);
         schematicPane.setLayoutX(510);
         schematicPane.setLayoutY(70);
         schematicPane.setVisible(true);
@@ -60,7 +60,7 @@ public class DrawEnvironment {
         schematicPane.setStyle("-fx-background-color: cornsilk");
 
         Button loadButton = new Button();
-        loadButton.setPrefSize(100,25);
+        loadButton.setPrefSize(100, 25);
         loadButton.setWrapText(true);
         loadButton.setEffect(shadow);
         loadButton.setFont(buttonFont);
@@ -93,11 +93,11 @@ public class DrawEnvironment {
                     }
                 }
             }
-        } );
+        });
 
 
-        Button runButton =new Button();
-        runButton.setPrefSize(100,25);
+        Button runButton = new Button();
+        runButton.setPrefSize(100, 25);
         runButton.setWrapText(true);
         runButton.setEffect(shadow);
         runButton.setText("Run");
@@ -108,7 +108,7 @@ public class DrawEnvironment {
         runButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
-                if (selectedFile!=null) {
+                if (selectedFile != null) {
                     if (!editorArea.getText().isEmpty()) {
                         try {
                             FileWriter fileWriter = new FileWriter(selectedFile);
@@ -116,9 +116,9 @@ public class DrawEnvironment {
                             fileWriter.write("");
                             fileWriter.write(inputText);
                             fileWriter.close();
-                        } catch(FileNotFoundException notFoundException){
+                        } catch (FileNotFoundException notFoundException) {
                             notFoundException.printStackTrace();
-                        } catch(IOException ioException){
+                        } catch (IOException ioException) {
                             ioException.printStackTrace();
                         }
                     } else {
@@ -144,11 +144,11 @@ public class DrawEnvironment {
                     alert.showAndWait();
                 }
             }
-        } );
+        });
 
 
-        Button plotButton =new Button();
-        plotButton.setPrefSize(100,25);
+        Button plotButton = new Button();
+        plotButton.setPrefSize(100, 25);
         plotButton.setWrapText(true);
         plotButton.setEffect(shadow);
         plotButton.setFont(buttonFont);
@@ -160,8 +160,8 @@ public class DrawEnvironment {
         //Group root = new Group();
         ObservableList list = rootPane.getChildren();
         rootPane.setStyle("-fx-background-color: azure");
-        list.addAll(loadButton,runButton,plotButton,editorArea,dataField,schematicPane);
-        scene=new Scene(rootPane,1000,800);
+        list.addAll(loadButton, runButton, plotButton, editorArea, dataField, schematicPane);
+        scene = new Scene(rootPane, 1000, 800);
         //root.getChildren().add(loadButton);
         stage.setScene(scene);
         stage.setTitle("JSpice!");
@@ -194,7 +194,7 @@ public class DrawEnvironment {
                     alert.showAndWait();
                 }
             }
-        } );
+        });
 
     }
     //public static void makeEnvironment(String[] args) {
@@ -202,28 +202,28 @@ public class DrawEnvironment {
     //    launch(args);
     //}
 
-    private static void writeDetails(TextArea field){
+    private static void writeDetails(TextArea field) {
         String text = "Found Elements Names:\n\n";
         for (Element element1 : Circuit.elementList) {
-            Double v = element1.currentList.get(element1.currentList.size()-1);
-            Double i = element1.voltageList.get(element1.voltageList.size()-1);
-            text += element1.getName()+" final Voltage:" + "       "+ String.format("%.6f", v)+"\n";
-            text += element1.getName()+" final Current:" + "       "+ String.format("%.6f", i)+"\n";
-            text += element1.getName()+" final Power:" + "       "+ String.format("%.6f", i*v)+"\n";
+            Double v = element1.currentList.get(element1.currentList.size() - 1);
+            Double i = element1.voltageList.get(element1.voltageList.size() - 1);
+            text += element1.getName() + " final Voltage:" + "       " + String.format("%.6f", v) + "\n";
+            text += element1.getName() + " final Current:" + "       " + String.format("%.6f", i) + "\n";
+            text += element1.getName() + " final Power:" + "       " + String.format("%.6f", i * v) + "\n";
             text += "------------------------\n";
         }
         text += "Found Nodes number:\n\n";
         text += "0\n";
         text += "------------------------\n";
         for (Node node1 : Circuit.nodeList) {
-            text += node1.name + ") " +" final Voltage:\n";
-            text += "       "+String.format("%.6f", node1.voltageList.get(node1.voltageList.size()-1))+"\n";
+            text += node1.name + ") " + " final Voltage:\n";
+            text += "       " + String.format("%.6f", node1.voltageList.get(node1.voltageList.size() - 1)) + "\n";
             text += "------------------------\n";
         }
         field.setText(text);
     }
 
-    private static Element findElement(String elementName){
+    private static Element findElement(String elementName) {
         for (Element element1 : Circuit.elementList) {
             if (element1.getName().equals(elementName))
                 return element1;

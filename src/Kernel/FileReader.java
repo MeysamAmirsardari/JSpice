@@ -269,7 +269,7 @@ public class FileReader {
                         String refElemName = input[3];
                         double gain = numProcess(input[4], line);
                         for (int i = 0; i < elemList.size(); i++) {
-                            if (elemList.get(i).name.equals(refElemName)) {
+                            if (elemList.get(i).name.toUpperCase().equals(refElemName.toUpperCase())) {
                                 refElem = elemList.get(i);
                             }
                         }
@@ -285,7 +285,7 @@ public class FileReader {
                             System.exit(0);
                         }
                         if (elemName.startsWith("f") || elemName.startsWith("F")) {
-                            CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, pN, nN, refElem);
+                            CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, nN, pN, refElem);
                             elemList.add(CCCS);
                             curSrcList.add(CCCS);
                             CCCSList.add(CCCS);
@@ -304,6 +304,11 @@ public class FileReader {
                             pN.adjacentSources.add(CCVS);
                             nN.elementList.add(CCVS);
                             pN.adjacentSources.add(CCVS);
+                        } else {
+                            // READING ERROR
+                            System.out.printf("Error in line (No such dependent source):\n\" %s \"\n", line);
+                            System.out.println("Terminating the simulation...");
+                            System.exit(0);
                         }
 
                     } else if (num == 6) {
@@ -346,7 +351,7 @@ public class FileReader {
                             nN.elementList.add(VCVS);
                             nN.adjacentSources.add(VCVS);
                         } else if (elemName.startsWith("g") || elemName.startsWith("G")) {
-                            VoltageDepCurrentSrc VCCS = new VoltageDepCurrentSrc(elemName, gain, pN, nN, pDepNode, nDepNode);
+                            VoltageDepCurrentSrc VCCS = new VoltageDepCurrentSrc(elemName, gain, nN, pN, pDepNode, nDepNode);
                             elemList.add(VCCS);
                             curSrcList.add(VCCS);
                             VCCSList.add(VCCS);
@@ -359,7 +364,8 @@ public class FileReader {
                             Element refElem = null;
                             boolean found = false;
                             for (int i = 0; i < elemList.size() && !found; i++) {
-                                if (elemList.get(i).positiveNode.name.equals(pDName) && elemList.get(i).negativeNode.name.equals(nDName)) {
+                                if (elemList.get(i).positiveNode.name.toUpperCase().equals(pDName.toUpperCase()) &&
+                                        elemList.get(i).negativeNode.name.toUpperCase().equals(nDName.toUpperCase())) {
                                     refElem = elemList.get(i);
                                     found = true;
                                 }
@@ -376,7 +382,7 @@ public class FileReader {
                                 System.exit(0);
                             }
                             if (elemName.startsWith("f") || elemName.startsWith("F")) {
-                                CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, pN, nN, refElem);
+                                CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, nN, pN, refElem);
                                 elemList.add(CCCS);
                                 curSrcList.add(CCCS);
                                 CCCSList.add(CCCS);
@@ -385,7 +391,7 @@ public class FileReader {
                                 pN.elementList.add(CCCS);
                                 nN.elementList.add(CCCS);
                             } else if (elemName.startsWith("h") || elemName.startsWith("H")) {
-                                CurrentDepVoltageSrc CCVS = new CurrentDepVoltageSrc(elemName, gain, nN, pN, refElem);
+                                CurrentDepVoltageSrc CCVS = new CurrentDepVoltageSrc(elemName, gain, pN, nN, refElem);
                                 elemList.add(CCVS);
                                 volSrcList.add(CCVS);
                                 CCVSList.add(CCVS);
@@ -395,11 +401,12 @@ public class FileReader {
                                 pN.adjacentSources.add(CCVS);
                                 nN.elementList.add(CCVS);
                                 pN.adjacentSources.add(CCVS);
-                            } else
+                            } else {
                                 // READING ERROR
                                 System.out.printf("Error in line (No such dependent source):\n\" %s \"\n", line);
-                            System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                                System.out.println("Terminating the simulation...");
+                                System.exit(0);
+                            }
                         }
                     } else if (num == 7) {
                         double offset = numProcess(input[3], line);
