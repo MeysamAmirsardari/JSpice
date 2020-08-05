@@ -17,8 +17,10 @@ public class Node {
     //protected double voltage;
     public ArrayList<Element> negativeElementList = new ArrayList<Element>();
     public ArrayList<Element> positiveElementList = new ArrayList<Element>();
+    boolean grounded;
 
     Node() {
+        grounded = false;
     }
 
     Node(String givenName) {
@@ -26,6 +28,7 @@ public class Node {
         //voltage = 0;
         tempV = 0;
         voltageList.add(0.00);
+        grounded = false;
     }
 
     public static void setNodesForAllElements() {
@@ -42,7 +45,7 @@ public class Node {
         }
     }
 
-    public static void setElementListForAllNodes(){
+    public static void setElementListForAllNodes() {
         for (Node node : Circuit.nodeList) {
             node.elementList.clear();
         }

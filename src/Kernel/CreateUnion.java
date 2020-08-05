@@ -21,6 +21,14 @@ public class CreateUnion {
             System.out.println("Terminating the simulation...");
             System.exit(0);
         }
+        for (VoltageSrc vSrc : circuit.volSrcList) {
+            if ((vSrc.positiveNode.name.equals(vSrc.negativeNode.name)) &&
+                    (vSrc.Vdc != 0 || vSrc.Vpk != 0)) {
+                System.out.println("Error -4: Voltage source is not operational!! (Two terminals in the same end)");
+                System.out.println("Terminating the simulation...");
+                System.exit(0);
+            }
+        }
 
         setAllNodeNotAdded();
         dependantNodeInquiry(groundNode);
