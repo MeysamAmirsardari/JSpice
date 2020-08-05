@@ -4,10 +4,13 @@ package UI;
 import Kernel.Circuit;
 import Kernel.Element;
 import Kernel.IdealDiode;
+import Kernel.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -16,7 +19,7 @@ public class PlotCircuit {
     static int z = 4;
 
     public static void plot(Pane pane) {
-        if (Circuit.diodeList.size()>0){
+        if (Circuit.diodeList.size() > 0) {
             for (IdealDiode diode : Circuit.diodeList) {
                 Circuit.elementList.add(diode);
             }
@@ -24,6 +27,7 @@ public class PlotCircuit {
 
         Dot[][] dot = new Dot[6][6];
         int[] groundTaken = new int[6];
+        int[] gnd = new int[6];
         pane.getChildren().clear();
         // Plotting ground
         for (int i = 0; i < 6; i++) {
@@ -34,12 +38,18 @@ public class PlotCircuit {
         for (int i = 1; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 dot[i][j] = new Dot(50 + j * s, 50 + 5 * s - s * i, 6 * i + j - 5);
-                label = new Label(Integer.toString(dot[i][j].num));
-                label.setTextFill(Color.BLACK);
-                label.setFont(new Font(12));
-                label.setLayoutX(dot[i][j].x + 5);
-                label.setLayoutY(dot[i][j].y - 5);
-                pane.getChildren().add(label);
+                for (Node node : Circuit.nodeList) {
+                    if (Integer.parseInt(node.name) == 6 * i + j - 5) {
+                        Arc a = new Arc(dot[i][j].x, dot[i][j].y, 3, 3, 0, 360);
+                        label = new Label(Integer.toString(dot[i][j].num));
+                        label.setTextFill(Color.RED);
+                        label.setFont(new Font(12));
+                        label.setLayoutX(dot[i][j].x + 5);
+                        label.setLayoutY(dot[i][j].y);
+                        pane.getChildren().addAll(label, a);
+                    }
+                }
+
             }
         }
         ArrayList<Element> elemList = new ArrayList<>();
@@ -53,8 +63,8 @@ public class PlotCircuit {
                     elemList.add(elem);
                 }
             }
-            if (elemList.size() > 3) {
-                System.out.println("Handling more than three parallel elements makes the representation inconvenient");
+            if (elemList.size() > 5) {
+                System.out.println("Handling more than five parallel elements makes the representation inconvenient");
                 System.out.println("Returning to the parent class...");
                 return;
             } else {
@@ -63,20 +73,22 @@ public class PlotCircuit {
                         int pNum = Integer.parseInt(elemList.get(j).positiveNode.name);
                         nDot = dot[0][(pNum - 1) % 6];
                         pDot = dot[pNum / 6 + 1][(pNum - 1) % 6];
+                        gnd[(pNum - 1) % 6]++;
                         if (pNum > 6) {
-                            DrawElement.draw(elemList.get(j).type, pane, pDot, nDot, color, 0);
+                            DrawElement.draw(elemList.get(j), pane, pDot, nDot, color, 0);
                         } else {
-                            DrawElement.draw(elemList.get(j).type, pane, pDot, nDot, color, groundTaken[pNum - 1]++);
+                            DrawElement.draw(elemList.get(j), pane, pDot, nDot, color, groundTaken[pNum - 1]);
                             groundTaken[pNum - 1]++;
                         }
                     } else if (elemList.get(j).positiveNode.name.equals("0")) {
                         int nNum = Integer.parseInt(elemList.get(j).negativeNode.name);
                         pDot = dot[0][(nNum - 1) % 6];
                         nDot = dot[nNum / 6 + 1][(nNum - 1) % 6];
+                        gnd[(nNum - 1) % 6]++;
                         if (nNum > 6) {
-                            DrawElement.draw(elemList.get(j).type, pane, pDot, nDot, color, 0);
+                            DrawElement.draw(elemList.get(j), pane, pDot, nDot, color, 0);
                         } else {
-                            DrawElement.draw(elemList.get(j).type, pane, pDot, nDot, color, groundTaken[nNum - 1]++);
+                            DrawElement.draw(elemList.get(j), pane, pDot, nDot, color, groundTaken[nNum - 1]);
                             groundTaken[nNum - 1]++;
                         }
                     }
@@ -84,21 +96,22 @@ public class PlotCircuit {
             }
         }
         boolean groundLabel = false;
-        label = new Label("Ground");
-        label.setTextFill(Color.BLACK);
-        label.setFont(new Font(12));
+        Font font = new Font(12);
+        Text text = new Text("Ground");
+        text.setStyle("-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: black;");
         for (int i = 0; i < 6 && !groundLabel; i++) {
-            if (groundTaken[i] != 0) {
+            if (gnd[i] != 0) {
                 groundLabel = true;
-                label.setLayoutX(dot[0][i].x);
-                label.setLayoutY(dot[0][i].y + 7);
-                pane.getChildren().add(label);
+                text.setLayoutX(dot[0][i].x);
+                text.setLayoutY(dot[0][i].y + 15);
+                Arc a = new Arc(dot[0][i].x, dot[0][i].y, 3, 3, 0, 360);
+                pane.getChildren().addAll(text, a);
             }
         }
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if (groundTaken[i] != 0 && groundTaken[j] != 0) {
-                    DrawElement.draw("WIRE", pane, dot[0][i], dot[0][j], color, 0);
+                if (gnd[i] != 0 && gnd[j] != 0) {
+                    DrawElement.drawWire(pane, dot[0][i], dot[0][j], color);
                 }
             }
         }
@@ -120,11 +133,11 @@ public class PlotCircuit {
                         if (Integer.parseInt(elemList.get(j).negativeNode.name) == i) {
                             nDot = dot[i / 6 + 1][(i - 1) % 6];
                             pDot = dot[k / 6 + 1][(k - 1) % 6];
-                            DrawElement.draw(elemList.get(j).type, pane, pDot, nDot, color, j);
+                            DrawElement.draw(elemList.get(j), pane, pDot, nDot, color, j);
                         } else if (Integer.parseInt(elemList.get(j).positiveNode.name) == i) {
                             pDot = dot[i / 6 + 1][(i - 1) % 6];
                             nDot = dot[k / 6 + 1][(k - 1) % 6];
-                            DrawElement.draw(elemList.get(j).type, pane, pDot, nDot, color, j);
+                            DrawElement.draw(elemList.get(j), pane, pDot, nDot, color, j);
                         }
                     }
                 }
