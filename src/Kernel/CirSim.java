@@ -52,19 +52,12 @@ public abstract class CirSim {
 
                 setTempVForAllNodes(0);
                 setUnionIndexForAllElements();
-                for (Element element : Circuit.elementList) {
-                    if (element.voltageList.size() == 0)
-                        element.voltageList.add(0.0);
-                }
-                for (Node node : Circuit.nodeList) {
-                    if (node.voltageList.size() == 0)
-                        node.voltageList.add(0.0);
-                }
+                initializingLists(0.0);
+
                 int n = (int) (timeDomain / Dt);
-                //while (checkAllDeltas()) {       //DC analyze
-                //    solver(0);
-                //}
-                for (int i = 1; i < n; i++) {
+                DC_Analyze();
+
+                for (int i = 2; i < n; i++) {
                     solver(i * Dt);
 
                     isItOk = true;
@@ -88,6 +81,7 @@ public abstract class CirSim {
 
             reArrangeElementListForNodes();
             ArrayList<Node> temp = Circuit.nodeList;
+
             Circuit.nodeList = new ArrayList<Node>();
             for (Node node : temp) {
                 if (!node.name.equals("0"))
@@ -96,21 +90,49 @@ public abstract class CirSim {
 
             setTempVForAllNodes(0);
             setUnionIndexForAllElements();
-            for (Element element : Circuit.elementList) {
-                if (element.voltageList.size() == 0)
-                    element.voltageList.add(0.0);
-            }
-            for (Node node : Circuit.nodeList) {
-                if (node.voltageList.size() == 0)
-                    node.voltageList.add(0.0);
-            }
+            initializingLists(0.0);
+
             int n = (int) (timeDomain / Dt);
-            //while (checkAllDeltas()) {       //DC analyze
-            //    solver(0);
-            //}
-            for (int i = 1; i < n; i++) {
+            DC_Analyze();
+
+            for (int i = 2; i < n; i++) {
                 solver(i * Dt);
             }
+        }
+    }
+
+    private static void DC_Analyze(){
+        int i=0;
+        while (i<35000){
+            for (Union union : Circuit.unionList) {
+                union.doStep(CirSim.Dt);
+                for (Node node : union.nodeList) {
+                    node.voltageList.add(node.getTempV());
+                }
+            }
+            i++;
+        }
+        for (Union union : Circuit.unionList) {
+            for (Node node : union.nodeList) {
+                node.voltageList.add(node.getTempV());
+            }
+        }
+        for (Element element : Circuit.elementList) {
+            element.voltageList.add(element.getVoltage(CirSim.Dt));
+            element.currentList.add(element.getCurrent(CirSim.Dt));
+        }
+    }
+
+    private static void initializingLists(double val){
+        for (Element element : Circuit.elementList) {
+            if (element.voltageList.size() == 0) {
+                element.voltageList.add(val);
+                element.currentList.add(val);
+            }
+        }
+        for (Node node : Circuit.nodeList) {
+            if (node.voltageList.size() == 0)
+                node.voltageList.add(val);
         }
     }
 
@@ -152,7 +174,7 @@ public abstract class CirSim {
     private static boolean checkAllDeltas() {
         boolean isSet = true;
         for (Union union : Circuit.unionList) {
-            if (union.delta > 0.1)
+            if (union.delta > 0.0001)
                 isSet = false;
         }
         return isSet;

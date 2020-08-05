@@ -77,16 +77,16 @@ public class Union {
         I_total1 = this.getTotalCurrent(time);
         this.addToTempV_ForAllNodes(Dv);
         I_total2 = this.getTotalCurrent(time);
-        delta = ((Math.abs(I_total1) - Math.abs(I_total2)) * Dv) / Di;
-        this.addToTempV_ForAllNodes(delta);
+        double change = ((Math.abs(I_total1) - Math.abs(I_total2)) * Dv) / Di;
+        this.addToTempV_ForAllNodes(change);
+        delta = Dv + change;
     }
 
     public double getTotalCurrent(double time) {
         double i = 0;
         for (Node node : nodeList) {
             for (Element element : node.negativeElementList) {
-                //if (element.unionIndex != index)
-
+                //if (element.unionIndex != index
                     i += element.getCurrentFromNegativeNode(time);
             }
             for (Element element : node.positiveElementList) {
