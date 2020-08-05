@@ -36,33 +36,34 @@ public class DrawEnvironment {
         TextArea editorArea = new TextArea();
         editorArea.setPrefColumnCount(15);
         editorArea.setFont(editorFont);
-        editorArea.setPrefSize(660,720);
+        editorArea.setPrefSize(490,720);
         editorArea.setLayoutX(10);
         editorArea.setLayoutY(70);
         editorArea.setEffect(shadow);
 
         TextArea dataField = new TextArea();
         dataField.setEditable(false);
-        dataField.setPrefSize(300,410);
-        dataField.setLayoutX(690);
-        dataField.setLayoutY(380);
+        dataField.setPrefSize(490,230);
+        dataField.setLayoutX(510);
+        dataField.setLayoutY(560);
         dataField.setFont(font);
         dataField.setEffect(shadow);
 
         Pane schematicPane = new Pane();
-        schematicPane.setPrefSize(300,300);
-        schematicPane.setLayoutX(690);
+        schematicPane.setPrefSize(490,480);
+        schematicPane.setLayoutX(510);
         schematicPane.setLayoutY(70);
         schematicPane.setVisible(true);
         //drawElements(schematicPane);
         schematicPane.setEffect(shadow);
+        schematicPane.setStyle("-fx-background-color: cornsilk");
 
         Button loadButton = new Button();
         loadButton.setPrefSize(100,25);
         loadButton.setWrapText(true);
         loadButton.setEffect(shadow);
         loadButton.setText("Load");
-        loadButton.setLayoutX(150);
+        loadButton.setLayoutX(80);
         loadButton.setLayoutY(20);
 
         // create a File chooser
@@ -98,7 +99,7 @@ public class DrawEnvironment {
         runButton.setWrapText(true);
         runButton.setEffect(shadow);
         runButton.setText("Run");
-        runButton.setLayoutX(280);
+        runButton.setLayoutX(210);
         runButton.setLayoutY(20);
 
         runButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -128,6 +129,7 @@ public class DrawEnvironment {
                         isSimulated = true;
                         Launcher.launch(selectedFile.getPath());
                         writeDetails(dataField);
+                        PlotCircuit.plot(schematicPane);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -135,7 +137,7 @@ public class DrawEnvironment {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error!");
                     alert.setHeaderText("Error!");
-                    alert.setContentText("The elected file is not available!");
+                    alert.setContentText("The selected file is not available!");
                     alert.showAndWait();
                 }
             }
@@ -147,7 +149,7 @@ public class DrawEnvironment {
         plotButton.setWrapText(true);
         plotButton.setEffect(shadow);
         plotButton.setText("Plot");
-        plotButton.setLayoutX(410);
+        plotButton.setLayoutX(340);
         plotButton.setLayoutY(20);
 
 
@@ -210,7 +212,7 @@ public class DrawEnvironment {
         text += "0\n";
         text += "------------------------\n";
         for (Node node1 : Circuit.nodeList) {
-            text += node1.name+" final Voltage:\n";
+            text += node1.name + ") " +" final Voltage:\n";
             text += "       "+String.format("%.6f", node1.voltageList.get(node1.voltageList.size()-1))+"\n";
             text += "------------------------\n";
         }
