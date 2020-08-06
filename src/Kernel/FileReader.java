@@ -1,5 +1,7 @@
 package Kernel;
 
+import UI.DrawEnvironment;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -76,7 +78,8 @@ public class FileReader {
                 // READING ERROR
                 System.out.printf("Error in line:\n\" %s \"\n", line);
                 System.out.println("Terminating the simulation...");
-                System.exit(0);
+                DrawEnvironment.showAlert(String.format("Error in line:\n\" %s \"\n", line),"Terminating the simulation...");
+                //System.exit(0);
             }
         }
         return value;
@@ -97,7 +100,8 @@ public class FileReader {
                     // READING ERROR
                     System.out.printf("Error in line:\n\" %s \"\n", line);
                     System.out.println("Terminating the simulation...");
-                    System.exit(0);
+                    DrawEnvironment.showAlert(String.format("Error in line:\n\" %s \"\n", line),"Terminating the simulation...");
+                    //System.exit(0);
                 } else if (num == 2) {
                     val = numProcess(input[1], line);
                     if (val >= 0) {
@@ -118,13 +122,15 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (Not a simulation parameter):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Not a simulation parameter):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                     } else {
                         // READING ERROR
                         System.out.printf("Error in line (Simulation parameter cannot have negative value):\n\" %s \"\n", line);
                         System.out.println("Terminating the simulation...");
-                        System.exit(0);
+                        DrawEnvironment.showAlert(String.format("Error in line (Simulation parameter cannot have negative value):\n\" %s \"\n", line),"Terminating the simulation...");
+                        //System.exit(0);
                     }
                 } else if (num > 2) {
                     Node pN, nN;
@@ -136,7 +142,8 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (Reinitializing an existing element):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Reinitializing an existing element):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                     }
                     boolean pFound = false;
@@ -188,7 +195,8 @@ public class FileReader {
                                 // READING ERROR
                                 System.out.printf("Error in line (Active resistor):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (Active resistor):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             }
                             Resistor resistor = new Resistor(elemName, val, pN, nN);
                             elemList.add(resistor);
@@ -202,7 +210,8 @@ public class FileReader {
                                 // READING ERROR
                                 System.out.printf("Error in line (Negative capacitance):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (Negative capacitance):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             }
                             Capacitor capacitor = new Capacitor(elemName, val, pN, nN);
                             elemList.add(capacitor);
@@ -216,7 +225,8 @@ public class FileReader {
                                 // READING ERROR
                                 System.out.printf("Error in line (Negative inductance):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (Negative capacitance):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             }
                             Inductor inductor = new Inductor(elemName, val, pN, nN);
                             elemList.add(inductor);
@@ -230,7 +240,8 @@ public class FileReader {
                                 // READING ERROR
                                 System.out.printf("Error in line (Convention value not used):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (Convention value not used):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             }
                             IdealDiode idealDiode = new IdealDiode(elemName, val, pN, nN);
                             elemList.add(idealDiode);
@@ -261,7 +272,8 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (Unknown element):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Unknown element):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                     } else if (num == 5) {
                         // CURRENT CONTROLLED DEPENDENT SOURCES
@@ -277,12 +289,14 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (No such reference element for dependency):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (No such reference element for dependency):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         } else if (gain < 0) {
                             // READING ERROR
                             System.out.printf("Error in line (Negative value):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Negative value):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                         if (elemName.startsWith("f") || elemName.startsWith("F")) {
                             CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, nN, pN, refElem);
@@ -308,7 +322,8 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (No such dependent source):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (No such dependent source):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
 
                     } else if (num == 6) {
@@ -332,12 +347,14 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (Dependent source dependency unknown):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Dependent source dependency unknown):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         } else if (gain < 0) {
                             // READING ERROR
                             System.out.printf("Error in line (Negative value):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Negative value):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                         if (elemName.startsWith("e") || elemName.startsWith("E")) {
                             VoltageDepVoltageSrc VCVS = new VoltageDepVoltageSrc(elemName, gain, pN, nN, pDepNode, nDepNode);
@@ -374,12 +391,14 @@ public class FileReader {
                                 // READING ERROR
                                 System.out.printf("Error in line (No such reference element for dependency):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (No such reference element for dependency):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             } else if (gain < 0) {
                                 // READING ERROR
                                 System.out.printf("Error in line (Negative value):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (Negative value):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             }
                             if (elemName.startsWith("f") || elemName.startsWith("F")) {
                                 CurrentDepCurrentSrc CCCS = new CurrentDepCurrentSrc(elemName, gain, nN, pN, refElem);
@@ -405,7 +424,8 @@ public class FileReader {
                                 // READING ERROR
                                 System.out.printf("Error in line (No such dependent source):\n\" %s \"\n", line);
                                 System.out.println("Terminating the simulation...");
-                                System.exit(0);
+                                DrawEnvironment.showAlert(String.format("Error in line (No such dependent source):\n\" %s \"\n", line),"Terminating the simulation...");
+                                //System.exit(0);
                             }
                         }
                     } else if (num == 7) {
@@ -437,7 +457,8 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (Unknown source element):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Unknown source element):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                     } else if (num == 8) {
                         double offset = numProcess(input[4], line);
@@ -468,13 +489,15 @@ public class FileReader {
                             // READING ERROR
                             System.out.printf("Error in line (Unknown source element):\n\" %s \"\n", line);
                             System.out.println("Terminating the simulation...");
-                            System.exit(0);
+                            DrawEnvironment.showAlert(String.format("Error in line (Unknown source element):\n\" %s \"\n", line),"Terminating the simulation...");
+                            //System.exit(0);
                         }
                     } else {
                         // READING ERROR
                         System.out.printf("Error in line (Unknown command):\n\" %s \"\n", line);
                         System.out.println("Terminating the simulation...");
-                        System.exit(0);
+                        DrawEnvironment.showAlert(String.format("Error in line (Unknown command):\n\" %s \"\n", line),"Terminating the simulation...");
+                        //System.exit(0);
                     }
                 }
             }

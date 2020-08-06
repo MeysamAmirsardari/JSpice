@@ -129,7 +129,7 @@ public class PlotResult {
                 double Dt = CirSim.Dt;
                 int step = (int) ((element.voltageList.size()-1)*r/checkPointNum);
 
-                for (int i=1 ; i< (int)(element.voltageList.size()*r)-step ; i+=step ) {
+                for (int i=1 ; i< (int)(element.voltageList.size()*r)-step-1 ; i+=step ) {
                     voltageSeries.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
                     V_Series.getData().add(new XYChart.Data(time, element.voltageList.get(i)));
                     time+=Dt*step;
@@ -138,7 +138,7 @@ public class PlotResult {
                 time=0;
                 step = (int) ((element.currentList.size()-1)*r/checkPointNum);
 
-                for (int i = 0; i <= (int)(element.currentList.size()*r)-step ; i+=step) {
+                for (int i = 1; i <= (int)(element.currentList.size()*r)-step-1 ; i+=step) {
                     currentSeries.getData().add(new XYChart.Data(time, element.currentList.get(i)));
                     powerSeries.getData().add(new XYChart.Data(
                             time,(element.currentList.get(i)*element.voltageList.get(i))));

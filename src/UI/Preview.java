@@ -36,8 +36,14 @@ public class Preview extends Application {
             java.net.URL url = getClass().getResource("LaunchIcon.gif");
             image = new Image(new FileInputStream(url.getPath()));
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
+        //try {
+        //    java.net.URL url2 = getClass().getResource("JSpice.jpg");
+        //    stage.getIcons().add(new Image(getClass().getResourceAsStream(url2.getPath())));
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
         ImageView imageView = new ImageView(image);
         imageView.setX(0);
         imageView.setY(0);

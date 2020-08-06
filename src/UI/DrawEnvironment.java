@@ -235,8 +235,7 @@ public class DrawEnvironment {
         text += "0\n";
         text += "------------------------\n";
         for (Node node1 : Circuit.nodeList) {
-            text += node1.name + ") " +" final Voltage:\n";
-            text += "       "+String.format("%.6f", node1.voltageList.get(node1.voltageList.size()-1))+"\n";
+            text += node1.name + ") " +"\n";
             text += "------------------------\n";
         }
         field.setText(text);
@@ -248,6 +247,14 @@ public class DrawEnvironment {
                 return element1;
         }
         return null;
+    }
+
+    public static void showAlert(String string,String error){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(error);
+        alert.setHeaderText("Error!");
+        alert.setContentText(string);
+        alert.showAndWait();
     }
 }
 

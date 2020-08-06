@@ -1,5 +1,7 @@
 package Kernel;
 
+import UI.DrawEnvironment;
+
 import java.util.ArrayList;
 
 public class CreateUnion {
@@ -19,14 +21,16 @@ public class CreateUnion {
         if (groundNode == null) {
             System.out.println("No ground found in circuit!!");
             System.out.println("Terminating the simulation...");
-            System.exit(0);
+            DrawEnvironment.showAlert("No ground found in circuit!!","Error!");
+            //System.exit(0);
         }
         for (VoltageSrc vSrc : circuit.volSrcList) {
             if ((vSrc.positiveNode.name.equals(vSrc.negativeNode.name)) &&
                     (vSrc.Vdc != 0 || vSrc.Vpk != 0)) {
                 System.out.println("Error -4: Voltage source is not operational!! (Two terminals in the same end)");
                 System.out.println("Terminating the simulation...");
-                System.exit(0);
+                DrawEnvironment.showAlert("Error -4: Voltage source is not operational!! (Two terminals in the same end)","Error -4:");
+                //System.exit(0);
             }
         }
 

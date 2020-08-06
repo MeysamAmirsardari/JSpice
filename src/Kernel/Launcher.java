@@ -5,6 +5,7 @@ package Kernel;/*
  *   Meysam Amirsardari + Amirmahdi Soleimanifar
  */
 
+import UI.DrawEnvironment;
 import UI.Preview;
 
 import java.io.IOException;
@@ -48,7 +49,8 @@ public class Launcher {
                     if (!(c1.Ipk == c2.Ipk && c1.Idc == c2.Idc && c1.frequency == c2.frequency && c1.phase == c2.phase)) {
                         System.out.println("Error -2: Series current sources with different values!!");
                         System.out.println("Terminating the simulation...");
-                        System.exit(0);
+                        DrawEnvironment.showAlert("Error -2: Series current sources with different values!!","Terminating the simulation...");
+                        //System.exit(0);
                     }
                 }
                 if ((list.get(i).positiveNode.name.equals(list.get(j).positiveNode.name) && list.get(i).positiveNode.adjacentNodes.size() == 2)
@@ -58,7 +60,8 @@ public class Launcher {
                     if (!(c1.Ipk == -c2.Ipk && c1.Idc == -c2.Idc && c1.frequency == c2.frequency && c1.phase == c2.phase)) {
                         System.out.println("Error -2: Series current sources with different values!!");
                         System.out.println("Terminating the simulation...");
-                        System.exit(0);
+                        DrawEnvironment.showAlert("Error -2: Series current sources with different values!!","Terminating the simulation...");
+                        //System.exit(0);
                     }
                 }
             }
@@ -74,7 +77,8 @@ public class Launcher {
                     if (!(c1.Vpk == c2.Vpk && c1.Vdc == c2.Vdc && c1.frequency == c2.frequency && c1.phase == c2.phase)) {
                         System.out.println("Error -3: Parallel voltage sources with different values!!");
                         System.out.println("Terminating the simulation...");
-                        System.exit(0);
+                        DrawEnvironment.showAlert("Error -3: Parallel voltage sources with different values!!","Terminating the simulation...");
+                        //System.exit(0);
                     }
                 }
                 if (ls.get(i).positiveNode.name.equals(ls.get(j).negativeNode.name)
@@ -84,7 +88,8 @@ public class Launcher {
                     if (!(c1.Vpk == -c2.Vpk && c1.Vdc == -c2.Vdc && c1.frequency == c2.frequency && c1.phase == c2.phase)) {
                         System.out.println("Error -2: Parallel voltage sources with different values!!");
                         System.out.println("Terminating the simulation...");
-                        System.exit(0);
+                        DrawEnvironment.showAlert("Error -2: Series current sources with different values!!","Terminating the simulation...");
+                        //System.exit(0);
                     }
                 }
             }
@@ -97,7 +102,8 @@ public class Launcher {
             if (node.adjacentNodes.size() < 2) {
                 System.out.println("Error -5: Node " + node.name + " is not in a loop!!");
                 System.out.println("Terminating the simulation...");
-                System.exit(0);
+                DrawEnvironment.showAlert(String.format("Error -5: Node " + node.name + " is not in a loop!!"),"Terminating the simulation...");
+                //System.exit(0);
             }
             if (node.name.equals("0")) {
                 node.grounded = true;
@@ -111,7 +117,8 @@ public class Launcher {
             if (!node.grounded) {
                 System.out.println("Error -5: Node " + node.name + " is not grounded!!");
                 System.out.println("Terminating the simulation...");
-                System.exit(0);
+                DrawEnvironment.showAlert(String.format("Error -5: Node " + node.name + " is not in a loop!!"),"Terminating the simulation...");
+                //System.exit(0);
             }
         }
     }
