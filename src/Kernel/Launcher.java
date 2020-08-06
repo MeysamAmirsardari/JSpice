@@ -34,7 +34,7 @@ public class Launcher {
         CirSim.simulate(circuit);
         circuit.printUnion();
         CirSim.arrange();
-        Circuit.saveResults();
+        //Circuit.saveResults();
         CirSim.printResults();
     }
 
