@@ -12,9 +12,9 @@ https://www.pspice.com/
 
 https://www.orcad.com/pspice-free-trial
 
-This simulator could be use for basic applications!
+This simulator could be used for basic applications!
 
-Created with love and pain (Jun 2020) (OOP EE SUT)
+Created with love (Jun 2020) (EE SUT)
 
 By Amir, Meysam
 
