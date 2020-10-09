@@ -1,4 +1,7 @@
 # JSpice
+
+
+
 Simple electrical circuit simulator
 
 by using electrical circuit simulator making or improving electrical IC's could be easier !
@@ -11,8 +14,10 @@ https://www.orcad.com/pspice-free-trial
 
 This simulator could be use for basic applications!
 
-Created with love and pain (Jun 2020)
+Created with love and pain (Jun 2020) (OOP EE SUT)
 
 By Amir, Meysam
 
 Star Us if you like it !
+
+
